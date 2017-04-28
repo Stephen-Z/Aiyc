@@ -1,0 +1,42 @@
+.page{
+	margin:0 20px;
+    padding-bottom: 30px;
+}
+.page .dataTables_info{
+    height: 35px;
+    line-height: 35px;
+}
+/*wechat*/
+.f_l{ float:left; display:inline;}
+.clearline{ clear:both; font-size:1%; height:1%;}
+.wechat_preview { width:370px; min-height:200px; border:1px solid #CCC;}
+.preview_title_bg{ width:360px; height:200px; background-color:#EFEFEF; margin:5px auto; position:relative;}
+.preview_title{ min-height:26px; width:360px; background-color:#000; margin-bottom:0; position:absolute; bottom:0; color:#FFF; font-size:16px;}
+
+.preview_title1{ padding:5px; width:360px; height:100px;}
+.pr_title{ width:258px; font-size:16px;}
+.pr_img{ margin-left:1px;}
+
+
+/*role*/
+.role{ }
+.role_ul{ margin-left:0; padding-left:0;}
+.role_ul li{ display:inline-block; width:100px; text-align:center;}
+
+.btn-margin{ margin-bottom: 5px;}
+
+.select_btn{
+    margin: 10px 0;
+}
+
+.select_btn .btn{
+    margin-right: 3px;
+}
+
+.table_tr_th td{
+    font-weight: bold;
+}
+
+.panel-body .well{
+    background-color: #f5f5f5;
+}
