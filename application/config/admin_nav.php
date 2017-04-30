@@ -19,9 +19,14 @@ $config['nav']=array(
         'icon' => 'fa-id-badge',
         'child' => array(
           array(
+              'name' => '工作台',
+              'nav_name' => 'workspace',
+              'url' => 'main',
+          ),
+          array(
               'name' => '文章正负面',
               'nav_name' => 'article_goodorbad',
-              'url' => 'main',
+              'url' => 'article/goodORbad',
           ),
           array(
               'name' => '文章评论',
