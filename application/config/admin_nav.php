@@ -31,17 +31,17 @@ $config['nav']=array(
           array(
               'name' => '文章评论',
               'nav_name' => 'article_comment',
-              'url' => 'main',
+              'url' => 'article/comment',
           ),
           array(
               'name' => '评论正负面',
               'nav_name' => 'comment_goodandbad',
-              'url' => 'main',
+              'url' => 'article/comment_positive',
           ),
           array(
               'name' => '评论回复',
               'nav_name' => 'comment_reply',
-              'url' => 'main',
+              'url' => 'article/comment_reply',
           )
         )
     ),
@@ -52,7 +52,7 @@ $config['nav']=array(
         'icon' => 'fa-tachometer',
         'child' => false
     ),
-    /*end*/
+    /*工作人员界面 end*/
     array(
         'name' => '品牌管理',
         'nav_name' => 'brand',

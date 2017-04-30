@@ -12,7 +12,7 @@ class goodORbad extends REST_Controller{
     parent::__construct();
 
     $this->template_patch=REST_Controller::MANAGER_TEMPLATE_PATH;
-    $this->patch=REST_Controller::MANAGER_PATH;
+    $this->path=REST_Controller::MANAGER_PATH;
 
     $this->nav='my_mission';
 
