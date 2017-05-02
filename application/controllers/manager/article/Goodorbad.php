@@ -7,7 +7,7 @@ writing by stephen 2017-04-30
 controller for 文章正负面
 */
 
-class goodORbad extends REST_Controller{
+class Goodorbad extends REST_Controller{
   public function __construct(){
     parent::__construct();
 

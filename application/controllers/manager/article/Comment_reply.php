@@ -5,10 +5,9 @@ require_once(APPPATH.'libraries/REST_Controller.php');
  * Created by PhpStorm.
  * User: stephen
  * Date: 30/4/2017
- * Time: 11:32 PM
- * controller for 评论正负面
+ * Time: 11:45 PM
  */
-class comment_positive extends REST_Controller
+class Comment_reply extends REST_Controller
 {
     public function __construct()
     {
@@ -24,12 +23,11 @@ class comment_positive extends REST_Controller
         $data=array();
 
         $data['nav']=$this->nav;
-        $data['child_nav']='comment_goodandbad';
+        $data['child_nav']='comment_reply';
 
-        $cnrs=array('name' => '评论正负面');
+        $cnrs=array('name' => '评论回复');
         $data['cnrs']=$cnrs;
 
         $this->load->view($this->template_path.'/article/comment_positive',$data);
     }
-
 }

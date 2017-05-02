@@ -9,7 +9,7 @@ require_once(APPPATH.'libraries/REST_Controller.php');
  * Time: 11:04 PM
  * class for 文章评论
  */
-class comment extends REST_Controller
+class Comment extends REST_Controller
 {
     public function __construct()
     {

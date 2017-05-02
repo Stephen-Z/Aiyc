@@ -25,8 +25,8 @@ $config['nav']=array(
           ),
           array(
               'name' => '文章正负面',
-              'nav_name' => 'article_goodorbad',
-              'url' => 'article/goodORbad',
+              'nav_name' => 'article_goodORbad',
+              'url' => 'article/goodorbad',
           ),
           array(
               'name' => '文章评论',
