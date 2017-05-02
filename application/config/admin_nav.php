@@ -47,8 +47,8 @@ $config['nav']=array(
     ),
     array(
         'name' => '签到',
-        'nav_name' => 'check_in',
-        'url' => 'main',
+        'nav_name' => 'sign_in',
+        'url' => 'signin/signinstatus',
         'icon' => 'fa-tachometer',
         'child' => false
     ),

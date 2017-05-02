@@ -98,19 +98,22 @@ $admin_path=REST_Controller::MANAGER_PATH;
                                     echo '未处理';
                                     break;
                             }?></td>
-                        <!-- <td><?php switch($rs_row['status']){
+                        <td><?php switch($rs_row['status']){
                             case 0:
-                                echo '未处理';
+                                echo '<span style="color:#b1b1b1">未评论</span>';
                                 break;
                             case 1:
-                                echo '处理中';
+                                echo '<span style="color:#000000">审核中</span>';
                                 break;
                             case 2:
-                                echo '<span style="color:#ff0000">处理完成</span>';
+                                echo '<span style="color:#ff0000">未通过审核</span>';
                                 break;
-                        }?></td> -->
+                            case 3:
+                                echo '<span style="color:#34a03a">已评论</span>';
+                                break;
+                        }?></td>
                         <td>
-                            <button class="btn btn-white btn-xs btn-margin" onclick="javascript:window.location.href=''">评价</button>
+                            <button class="btn btn-white btn-xs btn-margin" onclick="javascript:window.location.href=''">评论</button>
                         </td>
                     </tr>
                     <?php
