@@ -23,6 +23,9 @@ class Comment extends REST_Controller
     public function index_get(){
         $data=array();
 
+        $data['token_name'] = $this->security->get_csrf_token_name();
+        $data['hash'] = $this->security->get_csrf_hash();
+
         $data['nav']=$this->nav;
         $data['child_nav']='article_comment';
 
@@ -38,7 +41,7 @@ class Comment extends REST_Controller
         init_page_params($skipnum, $length);
 
         $count=$this->List_model->count_all();
-        $rs=$this->List_model->limit($length,$skipnum)->order_by($orderby_name,$orderby_value)->get_all();
+        $rs=$this->List_model->limit($length,$skipnum)->order_by($orderby_name,$orderby_value)->left_join_comment();
 
         $data['rs']=$rs;
         $data['page_total']=$count;

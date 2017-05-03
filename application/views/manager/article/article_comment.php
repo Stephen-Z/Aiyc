@@ -32,6 +32,9 @@ $admin_path=REST_Controller::MANAGER_PATH;
     </div>
 </div>
 
+<script>var clicked=0;</script>
+
+
 <section class="contentpanel">
 
     <header class="panel-heading clearfix" style="padding: 0px;">
@@ -67,10 +70,11 @@ $admin_path=REST_Controller::MANAGER_PATH;
             <tr>
                 <th>ID</th>
                 <th>文章标题</th>
-                <th>来源网站</th>
-                <th>抓取时间</th>
-                <th>派发时间</th>
-                <th>是否高危</th>
+<!--                <th>来源网站</th>-->
+<!--                <th>抓取时间</th>-->
+<!--                <th>派发时间</th>-->
+<!--                <th>是否高危</th>-->
+                <th>评论内容</th>
                 <th>正负面</th>
                 <th>评论状态</th>
                 <th style="width:10%">操作</th>
@@ -82,11 +86,12 @@ $admin_path=REST_Controller::MANAGER_PATH;
                     <tr>
                         <td><?php echo $rs_row['id']?></td>
                         <td><?php echo $rs_row['title']?></td>
-                        <td><?php echo $rs_row['author']?></td>
-                        <td><?php echo date("Y-m-d H:i:s",$rs_row['created']);?></td>
-                        <!-- <td><?php echo $rs_row['pre_reply']?></td> -->
-                        <td>???<!--派发时间--></td>
-                        <td>???<!--是否高危--></td>
+                        <td><?php echo $rs_row['comment_content'] ?></td>
+<!--                        <td>--><?php //echo $rs_row['author']?><!--</td>-->
+<!--                        <td>--><?php //echo date("Y-m-d H:i:s",$rs_row['created']);?><!--</td>-->
+<!--                        <!-- <td>--><?php //echo $rs_row['pre_reply']?><!--</td> -->
+<!--                        <td>???</td>-->
+<!--                        <td>???</td>-->
                         <td><?php switch($rs_row['positive']){
                                 case 0:
                                     echo '负面';
@@ -113,7 +118,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
                                 break;
                         }?></td>
                         <td>
-                            <button class="btn btn-white btn-xs btn-margin" onclick="javascript:window.location.href=''">评论</button>
+                            <button class="btn btn-white btn-xs btn-margin"  type="button"  data-toggle="modal" data-target="#myModal" onclick="setClick(<?php echo $rs_row['id']?>,'<?php echo $rs_row['title']?>');">评论</button>
                         </td>
                     </tr>
                     <?php
@@ -127,56 +132,69 @@ $admin_path=REST_Controller::MANAGER_PATH;
 
     </div>
 </section>
+
+<!-- =============评论模态框============== stephen 2017-05-03 -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">新评论</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label id="commentLabel" for="message-text" class="control-label">Message:</label>
+                    <textarea class="form-control" id="message-text" rows="7" placeholder="=======> 在此添加评论 <======="></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="postComment()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
-
-    $(function(){
-
-        $(".deleted").click(function(){
-            var url = $(this).attr("data-url");
-            $("#deletekey").attr('data-url',url);
-            $("#deletekey").attr('ids',delete_ids());
-        });
-
-        $(".category_del").click(function(){
-            var url = $(this).attr("data-url");
-            var ids = $(this).attr("data-id");
-            $("#deletekey").attr('data-url',url);
-            $("#deletekey").attr('ids',ids);
-        });
-
-
-        $("#deletekey").click(function(){
-            $("#myModal").modal("hide");
-            var url = $(this).attr("data-url");
-            var ids = $(this).attr("ids");
-            var data= {'ids': ids.split(","),"<?php echo $token_name;?>":"<?php echo $hash;?>"};
-            ajaxsubmit(url,data,'<?php echo $this->config->base_url($admin_path);?>/article/listing');
-        });
-
-        $('#datepicker_start').datepicker({
-            dateFormat: "yy-mm-dd"
-        });
-        <?php if (@$startTime): ?>
-        $('#datepicker_start').val('<?php echo $startTime;?>');
-        <?php endif ?>
-
-        $('#datepicker_end').datepicker({
-            dateFormat: "yy-mm-dd"
-        });
-        <?php if (@$endTime): ?>
-        $('#datepicker_end').val('<?php echo $endTime;?>');
-        <?php endif ?>
-    });
-
-
-    function delete_ids(){
-        var chk_value =[];
-        $('input[name=ids]:checked').each(function(){
-            chk_value.push($(this).val());
-        });
-        return chk_value;
+    //设置模态框标题
+    function setClick(articleID,articleTitle){
+        clicked=articleID;
+        document.getElementById("commentLabel").innerHTML='标题： '+articleTitle;
     }
+    //提交评论
+    function postComment(){
+        var articleId=clicked;
+        var commentContent=document.getElementById('message-text').value;
+        document.getElementById('message-text').value='';
+        //alert(articleId);
+        //alert('lala');
 
+        $.ajax({
+            type: "POST",
+            url: "<?php echo base_url($admin_path.'/article/Postcomment/create');?>",
+            dataType: 'json',
+            data: {articleid:articleId,
+                content:commentContent,
+                '<?php echo $token_name; ?>':"<?php echo $hash; ?>"
+            },
+            dataType: "text",
+            cache:false,
+            success:
+                function(data){
+                    if(data=='1'){
+                        alert('评论成功，等待审核');  //as a debugging message.
+                        window.location.href="<?php echo base_url($admin_path.'/article/comment');?>";
+                    }else{
+                        alert('评论失败');  //as a debugging message.
+                        window.location.href="<?php echo base_url($admin_path.'/article/comment');?>";
+                    }
+
+                }
+        });// you have missed this bracket
+
+    }
 </script>
+<!--==================== 评论模态框======================= -->
+
+
 
 <?php $this->load->view("{$template_patch}/public/footer.php");?>

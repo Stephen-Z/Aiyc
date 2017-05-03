@@ -1,15 +1,22 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class List_model extends MY_Model {
-
-    /** @var string 表明 */
-    public $_table = 'article';
+/**
+ * Created by PhpStorm.
+ * User: stephen
+ * Date: 5/3/17
+ * Time: 1:19 PM
+ * model for 评论
+ */
+class Comment_model extends MY_Model
+{
+    /** @var string 表名 */
+    public $_table = 'article_comment';
 
     /** @var string 默认返回数组 */
     protected $return_type = 'array';
 
     /** @var bool 开启软删除 */
-    protected $soft_delete = FALSE;
+    protected $soft_delete = TRUE;
 
     public $before_create = array( 'create_timestamps' );
 
@@ -25,12 +32,5 @@ class List_model extends MY_Model {
         return $row;
     }
 
-    public function left_join_comment(){
-        $this->db->select('*,article.created AS Acreated,article.updated AS Aupdated,article.deleted AS Adeleted');
-        $this->db->from('article');
-        $this->db->join('article_comment','article.id = article_comment.article_id','left');
-        $query=$this->db->get();
-        return $query->result_array();
-    }
 
 }
