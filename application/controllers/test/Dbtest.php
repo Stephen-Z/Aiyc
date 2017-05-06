@@ -12,27 +12,22 @@ class Dbtest extends REST_Controller
     public function __construct($config = 'rest')
     {
         parent::__construct($config);
-        $this->load->model('article/List_model','Comment_model',true);
+        $this->load->model('article/List_model','List_model',true);
     }
 
     public function index_get(){
-        //prepare data
-        $orderby_name='id';
-        $orderby_value='DESC';
+        //$articleId = $this->input->post('articleid');
+        //$newStatus = $this->input->post('status');
+        $articleId=755;
+        $newStatus=1;
 
-        $skipnum = $this->get('skipnum');
-        $length = $this->get('length');
-        init_page_params($skipnum, $length);
+        $data=array();
+        $data['status']=$newStatus;
 
-        $count=$this->Comment_model->count_all();
-
-        $rs=$this->Comment_model->limit($length,$skipnum)->order_by($orderby_name,$orderby_value)->left_join_comment();
-        //$rs=$query->result_array();
-
-        foreach ($rs as $rs_row){
-            var_dump($rs_row);
-            echo '<br>';
-            echo '<br>';
+        if($this->List_model->update($articleId,$data)){
+            echo '1';
+        }else{
+            echo '0';
         }
     }
 

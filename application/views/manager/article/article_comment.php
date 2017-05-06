@@ -170,7 +170,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
 
         $.ajax({
             type: "POST",
-            url: "<?php echo base_url($admin_path.'/article/Postcomment/create');?>",
+            url: "<?php echo base_url($admin_path.'/article/Comment/create');?>",
             dataType: 'json',
             data: {articleid:articleId,
                 content:commentContent,

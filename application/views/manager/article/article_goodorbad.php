@@ -4,6 +4,7 @@ $template_patch=REST_Controller::MANAGER_TEMPLATE_PATH;
 $admin_path=REST_Controller::MANAGER_PATH;
 ?>
 <?php $this->load->view("{$template_patch}/public/header.php");?>
+<script>var CLICKED=0;</script>
 <div class="pageheader">
   <h2><i class="fa fa-bars"></i> 文章正负面
       <?php
@@ -80,7 +81,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
                       <!-- <td><?php echo $rs_row['pre_reply']?></td> -->
                       <td>???<!--派发时间--></td>
                       <td>???<!--是否高危--></td>
-                      <td><?php switch($rs_row['positive']){
+                      <td id="<?php echo 'positive'.strval($rs_row['id']);?>"><?php switch($rs_row['positive']){
                               case 0:
                                   echo '负面';
                                   break;
@@ -103,7 +104,17 @@ $admin_path=REST_Controller::MANAGER_PATH;
                                   break;
                           }?></td> -->
                       <td>
-                          <button class="btn btn-white btn-xs btn-margin" onclick="javascript:window.location.href=''">评价</button>
+                          <div class="dropdown">
+                              <button id="dLabel" class="btn btn-white btn-xs btn-margin" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  评价
+                                  <span class="caret"></span>
+                              </button>
+                              <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel">
+                                  <li><button class="btn btn-white btn-block btn-margin" type="button" onclick="postInfo(<?php echo $rs_row['id']?>,1)">正面</button></li>
+                                  <li><button class="btn btn-white btn-block btn-margin" type="button" onclick="postInfo(<?php echo $rs_row['id']?>,0)">负面</button></li>
+                                  <li><button class="btn btn-white btn-block btn-margin" type="button" onclick="postInfo(<?php echo $rs_row['id']?>,2)">未处理</button></li>
+                              </ul>
+                          </div>
                       </td>
                   </tr>
               <?php
@@ -117,6 +128,47 @@ $admin_path=REST_Controller::MANAGER_PATH;
 
   </div>
 </section>
+
+<!--发表评价 stephen 2017-05-06-->
+<script>
+    var ARTICLEID=-1;
+    var STATUS=-1;
+</script>
+<script>
+    function postInfo(articleID,Status){
+        ARTICLEID=articleID;
+        STATUS=Status;
+
+        $.ajax({
+            type: "POST",
+            async: true,
+            url: "<?php echo base_url($admin_path.'/article/Goodorbad/update');?>",
+            dataType: 'json',
+            data: {articleid:articleID,
+                status:Status,
+                '<?php echo $this->security->get_csrf_token_name()?>':"<?php echo $this->security->get_csrf_hash()?>"
+            },
+            dataType: "text",
+            cache:false,
+            success:
+                function(data){
+                    if(data=='1'){
+                        alert('评价成功');
+
+                        if(STATUS == 0){document.getElementById('positive'+ARTICLEID).innerHTML='负面';}
+                        else if(STATUS == 1){document.getElementById('positive'+ARTICLEID).innerHTML='正面';}
+                        else if(STATUS == 2){document.getElementById('positive'+ARTICLEID).innerHTML='未处理';}
+                    }else{
+                        alert('评价失败');
+
+                    }
+
+                }
+        });
+    }
+</script>
+<!--发表评价 stephen 2017-05-06-->
+
 <script>
 
 $(function(){

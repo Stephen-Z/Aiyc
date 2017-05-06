@@ -12,6 +12,8 @@ class Comment_model extends MY_Model
     /** @var string 表名 */
     public $_table = 'article_comment';
 
+    protected $primary_key = 'order_id';
+
     /** @var string 默认返回数组 */
     protected $return_type = 'array';
 

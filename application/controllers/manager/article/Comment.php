@@ -18,6 +18,7 @@ class Comment extends REST_Controller
         $this->path=REST_Controller::MANAGER_PATH;
         $this->nav='my_mission';
         $this->load->model('article/List_model','List_model',true);
+        $this->load->model('article/Comment_model','Comment_model',true);
     }
 
     public function index_get(){
@@ -47,5 +48,21 @@ class Comment extends REST_Controller
         $data['page_total']=$count;
 
         $this->load->view($this->template_path.'/article/article_comment',$data);
+    }
+
+    //发表评论 stephen 2017-05-06
+    public function create_post(){
+        $articleId = $this->input->post('articleid');
+        $comment_content = $this->input->post('content');
+
+        $data=array();
+        $data['article_id']=$articleId;
+        $data['comment_content']=$comment_content;
+
+        if($this->Comment_model->insert($data)){
+            echo '1';
+        }else{
+            echo '0';
+        }
     }
 }
