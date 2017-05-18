@@ -1,12 +1,12 @@
-<!--template for 点赞, writing by stephen-->
 <?php
 $style_path=REST_Controller::SYSTEM_STYLE_PATH;
 $template_patch=REST_Controller::MANAGER_TEMPLATE_PATH;
 $admin_path=REST_Controller::MANAGER_PATH;
 ?>
 <?php $this->load->view("{$template_patch}/public/header.php");?>
+<script>var CLICKED=0;</script>
 <div class="pageheader">
-    <h2><i class="fa fa-bars"></i> 文章管理 <span>全部列表</span>
+    <h2><i class="fa fa-bars"></i> 点赞
         <?php
         if(!empty($cnrs)){
             echo '<span>'.$cnrs['name'].'</span>';
@@ -16,7 +16,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
     <div class="breadcrumb-wrapper">
         <ol class="breadcrumb">
             <li><a href="<?php echo $this->config->base_url($admin_path);?>/main/dashboard">管理首页</a></li>
-            <li class="active"><a href="<?php echo base_url($admin_path.'/article/listing');?>">全部列表</a></li>
+            <!-- <li class="active"><a href="<?php echo base_url($admin_path.'/article/listing');?>">全部列表</a></li> -->
             <?php
             if(!empty($cnrs)){
                 echo '<li class="active">'.$cnrs['name'].'</li>';
@@ -32,83 +32,22 @@ $admin_path=REST_Controller::MANAGER_PATH;
         <form id="filter" method="get">
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <select class="form-control input-lg m-bot15" name="cid">
-                                <option value="">品牌</option>
-                                <?php foreach($column as $column_row):?>
-                                    <option <?php if(@$_GET['cid']==$column_row['id']){ echo 'selected';}?> value="<?php echo $column_row['id'];?>"><?php echo $column_row['name'];?></option>;
-                                <?php endforeach;?>
-                            </select>
-                        </div>
-                    </div>
 
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <select class="form-control input-lg m-bot15" name="positive">
-                                <?php if(empty($_GET['positive'])){$_GET['positive']=2;}?>
-                                <option <?php if(@$_GET['positive']==2){ echo 'selected';}?> value=2>正负面</option>
-                                <option <?php if(@$_GET['positive']==1){ echo 'selected';}?> value="1">正面</option>
-                                <option <?php if(@$_GET['positive']==0){ echo 'selected';}?> value="0">负面</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <select class="form-control input-lg m-bot15" name="status">
-                                <?php
-                                if(!isset($_GET['status'])){$_GET['status']=3;}
-                                if($_GET['status']==''){$_GET['status']=3;}
-                                ?>
-                                <option <?php if(@$_GET['status']==3){ echo 'selected';}?> value="">处理状态</option>
-                                <option <?php if(@$_GET['status']==0){ echo 'selected';}?> value="0">未处理</option>
-                                <option <?php if(@$_GET['status']==1){ echo 'selected';}?> value="1">处理中</option>
-                                <option <?php if(@$_GET['status']==2){ echo 'selected';}?> value="2">处理完成</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="form-group input-group input-group-lg">
-                            <span class="input-group-addon">回复>= </span>
-                            <input type="text" class="form-control" name="reply" value="<?php echo @$_GET['reply']?>">
+                            <span class="input-group-addon">搜索</span>
+                            <input type="text" class="form-control" name="reply" value="<?php echo @$_GET['search']?>">
                         </div>
                     </div>
-
-                </div>
-                <div class="row" style="margin-top: 20px;">
-
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="发布起始时间" id="datepicker_start"
-                                       name="startTime">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="发布结束时间" id="datepicker_end"
-                                       name="endTime">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="col-md-1">
                         <div class="form-group">
                             <div style="padding-top: 3px">
                                 <button type="submit" class="btn btn-info"><i
-                                        class="glyphicon glyphicon-search"></i> 筛选
+                                        class="glyphicon glyphicon-search"></i> 搜索
                                 </button>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </form>
@@ -121,14 +60,13 @@ $admin_path=REST_Controller::MANAGER_PATH;
             <thead>
             <tr>
                 <th>ID</th>
-                <th>品牌</th>
                 <th>文章标题</th>
-                <th>作者</th>
-                <th>发布时间</th>
-                <th>上次回复数</th>
-                <th>回复数</th>
+                <th>来源网站</th>
+                <th>抓取时间</th>
+                <th>派发时间</th>
+                <th>是否高危</th>
                 <th>正负面</th>
-                <th>处理状态</th>
+                <!-- <th>处理状态</th> -->
                 <th style="width:10%">操作</th>
             </tr>
             </thead>
@@ -136,14 +74,14 @@ $admin_path=REST_Controller::MANAGER_PATH;
             <?php if(!empty($rs)):?>
                 <?php foreach($rs as $rs_row):?>
                     <tr>
-                        <td><?php echo $rs_row['id']?></td>
-                        <td><a href="<?php echo base_url($admin_path.'/article/listing?cid='.$rs_row['brand_id'])?>">[<?php echo $rs_row['cname']?>]</a></td>
+                        <td><?php echo $rs_row['Aid']?></td>
                         <td><?php echo $rs_row['title']?></td>
                         <td><?php echo $rs_row['author']?></td>
-                        <td><?php echo date("Y-m-d H:i:s",$rs_row['release_time']);?></td>
-                        <td><?php echo $rs_row['pre_reply']?></td>
-                        <td><?php echo $rs_row['reply']?></td>
-                        <td><?php switch($rs_row['positive']){
+                        <td><?php echo date("Y-m-d H:i:s",$rs_row['created']);?></td>
+                        <!-- <td><?php echo $rs_row['pre_reply']?></td> -->
+                        <td>???<!--派发时间--></td>
+                        <td>???<!--是否高危--></td>
+                        <td id="<?php echo 'positive'.strval($rs_row['id']);?>"><?php switch($rs_row['positive']){
                                 case 0:
                                     echo '负面';
                                     break;
@@ -154,19 +92,28 @@ $admin_path=REST_Controller::MANAGER_PATH;
                                     echo '未处理';
                                     break;
                             }?></td>
-                        <td><?php switch($rs_row['status']){
-                                case 0:
-                                    echo '未处理';
-                                    break;
-                                case 1:
-                                    echo '处理中';
-                                    break;
-                                case 2:
-                                    echo '<span style="color:red">处理完成</span>';
-                                    break;
-                            }?></td>
+                        <!-- <td><?php switch($rs_row['status']){
+                            case 0:
+                                echo '未处理';
+                                break;
+                            case 1:
+                                echo '处理中';
+                                break;
+                            case 2:
+                                echo '<span style="color:red">处理完成</span>';
+                                break;
+                        }?></td> -->
                         <td>
-                            <button class="btn btn-white btn-xs btn-margin" onclick="javascript:window.location.href='<?php echo base_url($admin_path.'/article/listing/edit?id='.$rs_row['id'])?>'">详情</button>
+                            <div class="dropdown">
+                                <button id="dLabel<?php echo $rs_row['Aid']?>" class="btn btn-white btn-xs btn-margin" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <?php if ($rs_row['islike']==1)echo '已点赞';else echo '点赞'; ?>
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel">
+                                    <li><button id="like<?php echo $rs_row['Aid']?>" class="btn btn-white btn-block btn-margin" <?php if ($rs_row['islike']==1)echo 'disabled' ?> type="button" onclick="postInfo(<?php echo $rs_row['Aid']?>,1)">点赞</button></li>
+                                    <li><button id="unlike<?php echo $rs_row['Aid']?>" class="btn btn-white btn-block btn-margin" <?php if ($rs_row['islike']==0)echo 'disabled' ?> type="button" onclick="postInfo(<?php echo $rs_row['Aid']?>,0)">取消点赞</button></li>
+                                </ul>
+                            </div>
                         </td>
                     </tr>
                     <?php
@@ -180,6 +127,53 @@ $admin_path=REST_Controller::MANAGER_PATH;
 
     </div>
 </section>
+
+<!--发表评价 stephen 2017-05-06-->
+<script>
+    var ARTICLEID=-1;
+    var STATUS=-1;
+</script>
+<script>
+    function postInfo(articleID,Status){
+        ARTICLEID=articleID;
+        STATUS=Status;
+
+        $.ajax({
+            type: "POST",
+            async: true,
+            url: "<?php echo base_url($admin_path.'/article/article_like/updatelike');?>",
+            dataType: 'json',
+            data: {articleid:articleID,
+                status:Status
+            },
+            dataType: "text",
+            cache:false,
+            success:
+                function(data){
+                    if(data=='1'){
+                        alert('操作成功');
+
+                        if(Status == 1){
+                            document.getElementById('like'+ARTICLEID).disabled=true;
+                            document.getElementById('unlike'+ARTICLEID).disabled=false;
+                            document.getElementById('dLabel'+ARTICLEID).innerHTML='已点赞'+'<span class="caret"></span>';
+                        }
+                        else{
+                            document.getElementById('like'+ARTICLEID).disabled=false;
+                            document.getElementById('unlike'+ARTICLEID).disabled=true;
+                            document.getElementById('dLabel'+ARTICLEID).innerHTML='点赞'+'<span class="caret"></span>';
+                        }
+                    }else{
+                        alert('操作失败');
+
+                    }
+
+                }
+        });
+    }
+</script>
+<!--发表评价 stephen 2017-05-06-->
+
 <script>
 
     $(function(){
