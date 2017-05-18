@@ -17,6 +17,8 @@ class Auth extends REST_Controller {
         $this->patch=REST_Controller::MANAGER_PATH;
         $this->load->model('auth/Auth_model','Auth_model',true);
         $this->load->model('system/Log_model','Log_model',true);
+        //table of sign_in model
+        $this->load->model('auth/Signin_model','Signin_model',true);
     }
 
 	public function index_get()
@@ -70,7 +72,17 @@ class Auth extends REST_Controller {
                 $log_data['event']='登陆';
                 $log_data['ip']=$this->input->ip_address();;
                 $this->Log_model->insert($log_data);
-                redirect(base_url($this->patch)."/main");
+
+                /*登录签到 stephen 2017-05-02*/
+                if($this->check_sign_in($rs['id'],$rs['name'])){
+                    redirect(base_url($this->patch)."/main");
+                }
+                else{
+                    echo "<script>alert('签到失败');location.href='" . base_url("manager/auth") . "';</script>";
+                    exit;
+                }
+
+                //
             }else{
                 redirect($url);
             }
@@ -78,6 +90,33 @@ class Auth extends REST_Controller {
             redirect(base_url($this->patch)."/auth");
         }
     }
+    /*登录签到 stephen 2017-05-02*/
+    private function check_sign_in($user_id,$user_name){
+        $current_date=date('Y-m-d');
+        //echo '<script>alert("'.$user_id.'")</script>';
+
+        $cuswhere=array();
+        $cuswhere['login_date']=$current_date;
+        $cuswhere['user_id']=$user_id;
+
+        $rs=$this->Signin_model->get_by($cuswhere);
+
+        if(!$rs) {
+            $data = array();
+            $data['user_id'] = $user_id;
+            $data['login_date'] = $current_date;
+            $data['name'] = $user_name;
+
+            if ($this->Signin_model->insert($data)) {
+                return true;
+            } else {
+                return false;
+            }
+        }else{
+            return true;
+        }
+    }
+    /*登录签到 stephen 2017-05-02*/
 
     public function logout_get() {
         unset($_SESSION['admin']);

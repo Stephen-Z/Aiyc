@@ -7,7 +7,7 @@ writing by stephen 2017-04-30
 controller for 文章正负面
 */
 
-class goodORbad extends REST_Controller{
+class Goodorbad extends REST_Controller{
   public function __construct(){
     parent::__construct();
 
@@ -22,9 +22,12 @@ class goodORbad extends REST_Controller{
   public function index_get(){
     $data=array();
     $data['nav'] = $this->nav;
-    $data['child_nav'] = 'article_goodorbad';
+    $data['child_nav'] = 'article_goodORbad';
     $cnrs = array('name' => '文章正负面');
     $data['cnrs']=$cnrs;
+
+    $data['token_name'] = $this->security->get_csrf_token_name();
+    $data['hash'] = $this->security->get_csrf_hash();
 
     //prepare data
     $orderby_name='id';
@@ -42,4 +45,20 @@ class goodORbad extends REST_Controller{
 
     $this->load->view($this->template_patch.'/article/article_goodorbad',$data);
   }
+
+  //stephen 2017-05-06 positive update;
+    public function update_post(){
+        $articleId = $this->input->post('articleid');
+        $newStatus = $this->input->post('status');
+
+        $data=array();
+        $data['positive']=$newStatus;
+
+        if($this->List_model->update($articleId,$data)){
+            echo '1';
+        }else{
+            echo '0';
+        }
+    }
+
 }

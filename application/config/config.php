@@ -36,6 +36,7 @@ $config['base_url'] = '';
 |
 */
 $config['index_page'] = 'index.php';
+/*$config['index_page'] = '';*/
 
 /*
 |--------------------------------------------------------------------------
@@ -443,7 +444,7 @@ $config['csrf_token_name'] = 'csrf_test_name';
 $config['csrf_cookie_name'] = 'csrf_cookie_name';
 $config['csrf_expire'] = 7200;
 $config['csrf_regenerate'] = TRUE;
-$config['csrf_exclude_uris'] = array('manager/article/listing/editupload','wx/notify');
+$config['csrf_exclude_uris'] = array('manager/article/listing/editupload','wx/notify','manager/article/Goodorbad/update');
 
 /*
 |--------------------------------------------------------------------------
