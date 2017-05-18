@@ -42,6 +42,11 @@ $config['nav']=array(
               'name' => '评论回复',
               'nav_name' => 'comment_reply',
               'url' => 'article/comment_reply',
+          ),
+          array(
+              'name' => '点赞',
+              'nav_name' => 'article_like',
+              'url' => 'article/article_like',
           )
         )
     ),
