@@ -25,10 +25,10 @@ class List_model extends MY_Model {
         return $row;
     }
 
-    public function left_join_comment(){
-        $this->db->select('*,article.created AS Acreated,article.updated AS Aupdated,article.deleted AS Adeleted');
+    public function left_join_comment($user_id){
+        $this->db->select('*,article.created AS Acreated,article.updated AS Aupdated,article.deleted AS Adeleted,article.id AS Aid');
         $this->db->from('article');
-        $this->db->join('article_comment','article.id = article_comment.article_id','left');
+        $this->db->join('site_task_article_comment','article.id = site_task_article_comment.article_id AND site_task_article_comment.deleted=0 AND site_task_article_comment.user_id='.$user_id,'left');
         $query=$this->db->get();
         return $query->result_array();
     }

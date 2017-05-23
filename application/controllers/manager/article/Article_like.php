@@ -59,7 +59,7 @@ class Article_like extends REST_Controller
         if($newStatus == 1){
             $data['article_id']=$articleId;
             $data['user_id']=$userid;
-            $data['isLike']=$newStatus;
+            //$data['isLike']=$newStatus;
 
             if($this->Articlelike_model->insert($data)){
                 echo '1';

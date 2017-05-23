@@ -106,12 +106,12 @@ $admin_path=REST_Controller::MANAGER_PATH;
                         <td>
                             <div class="dropdown">
                                 <button id="dLabel<?php echo $rs_row['Aid']?>" class="btn btn-white btn-xs btn-margin" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <?php if ($rs_row['islike']==1)echo '已点赞';else echo '点赞'; ?>
+                                    <?php if ($rs_row['user_id']!=null)echo '已点赞';else echo '点赞'; ?>
                                     <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel">
-                                    <li><button id="like<?php echo $rs_row['Aid']?>" class="btn btn-white btn-block btn-margin" <?php if ($rs_row['islike']==1)echo 'disabled' ?> type="button" onclick="postInfo(<?php echo $rs_row['Aid']?>,1)">点赞</button></li>
-                                    <li><button id="unlike<?php echo $rs_row['Aid']?>" class="btn btn-white btn-block btn-margin" <?php if ($rs_row['islike']==0)echo 'disabled' ?> type="button" onclick="postInfo(<?php echo $rs_row['Aid']?>,0)">取消点赞</button></li>
+                                    <li><button id="like<?php echo $rs_row['Aid']?>" class="btn btn-white btn-block btn-margin" <?php if ($rs_row['user_id']!=null)echo 'disabled' ?> type="button" onclick="postInfo(<?php echo $rs_row['Aid']?>,1)">点赞</button></li>
+                                    <li><button id="unlike<?php echo $rs_row['Aid']?>" class="btn btn-white btn-block btn-margin" <?php if ($rs_row['user_id']==null)echo 'disabled' ?> type="button" onclick="postInfo(<?php echo $rs_row['Aid']?>,0)">取消点赞</button></li>
                                 </ul>
                             </div>
                         </td>

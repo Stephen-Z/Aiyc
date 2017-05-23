@@ -34,15 +34,17 @@ class Comment extends REST_Controller
         $data['cnrs']=$cnrs;
 
         //preparing data...
-        $orderby_name='id';
+        $orderby_name='Aid';
         $orderby_value='DESC';
 
         $skipnum = $this->get('skipnum');
         $length = $this->get('length');
         init_page_params($skipnum, $length);
 
+        $user_id = $_SESSION['admin']['id'];
+
         $count=$this->List_model->count_all();
-        $rs=$this->List_model->limit($length,$skipnum)->order_by($orderby_name,$orderby_value)->left_join_comment();
+        $rs=$this->List_model->limit($length,$skipnum)->order_by($orderby_name,$orderby_value)->left_join_comment($user_id);
 
         $data['rs']=$rs;
         $data['page_total']=$count;
@@ -54,10 +56,12 @@ class Comment extends REST_Controller
     public function create_post(){
         $articleId = $this->input->post('articleid');
         $comment_content = $this->input->post('content');
+        $user_id = $_SESSION['admin']['id'];
 
         $data=array();
         $data['article_id']=$articleId;
-        $data['comment_content']=$comment_content;
+        $data['content']=$comment_content;
+        $data['user_id']=$user_id;
 
         if($this->Comment_model->insert($data)){
             echo '1';

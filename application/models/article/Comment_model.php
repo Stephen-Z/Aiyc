@@ -10,9 +10,9 @@
 class Comment_model extends MY_Model
 {
     /** @var string 表名 */
-    public $_table = 'article_comment';
+    public $_table = 'site_task_article_comment';
 
-    protected $primary_key = 'order_id';
+    protected $primary_key = 'id';
 
     /** @var string 默认返回数组 */
     protected $return_type = 'array';

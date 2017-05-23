@@ -74,16 +74,16 @@ class Auth extends REST_Controller {
                 $this->Log_model->insert($log_data);
 
                 /*登录签到 stephen 2017-05-02*/
-                redirect(base_url($this->patch)."/main");
-//                if($this->check_sign_in($rs['id'],$rs['name'])){
-//                    redirect(base_url($this->patch)."/main");
-//                }
-//                else{
-//                    echo "<script>alert('签到失败');location.href='" . base_url("manager/auth") . "';</script>";
-//                    exit;
-//                }
+                //redirect(base_url($this->patch)."/main");
+                if($this->check_sign_in($rs['id'],$rs['name'])){
+                    redirect(base_url($this->patch)."/main");
+                }
+                else{
+                    echo "<script>alert('签到失败');location.href='" . base_url("manager/auth") . "';</script>";
+                    exit;
+                }
 
-                //
+
             }else{
                 redirect($url);
             }
