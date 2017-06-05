@@ -51,6 +51,25 @@ $config['nav']=array(
         )
     ),
     array(
+        'name' => '派单系统',
+        'nav_name' => 'dispatch_system',
+        'url' => 'dispatcher/dispatch_system',
+        'icon' => 'fa-tachometer',
+        'child' => array(
+            array(
+                'name' => '文章列表',
+                'nav_name' => 'dispatcher_articleList',
+                'url' => 'dispatcher/article_list',
+            ),
+            array(
+                'name' => '评论列表',
+                'nav_name' => 'dispatcher_commentList',
+                'url' => 'dispatcher/comment_list',
+            ),
+        )
+
+    ),
+    array(
         'name' => '签到',
         'nav_name' => 'sign_in',
         'url' => 'signin/signinstatus',

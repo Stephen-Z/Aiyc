@@ -64,6 +64,17 @@ class Comment extends REST_Controller
         $data['user_id']=$user_id;
 
         if($this->Comment_model->insert($data)){
+            //修改回复数
+            $where=array();
+            $where['id']=$articleId;
+            $tempdata=$this->List_model->get_by($where);
+            $reply=$tempdata['reply'];
+            $preReply=$reply;
+            $reply += 1;
+            $updateData=array();
+            $updateData['pre_reply']=$preReply;
+            $updateData['reply']=$reply;
+            $this->List_model->update_by($where,$updateData);
             echo '1';
         }else{
             echo '0';
