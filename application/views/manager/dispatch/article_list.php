@@ -5,7 +5,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
 ?>
 <?php $this->load->view("{$template_patch}/public/header.php");?>
 <div class="pageheader">
-  <h2><i class="fa fa-bars"></i> 文章管理 <span>全部列表</span>
+  <h2><i class="fa fa-bars"></i> 派单系统 <span>文章列表</span>
       <?php
       if(!empty($cnrs)){
           echo '<span>'.$cnrs['name'].'</span>';
@@ -15,7 +15,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
   <div class="breadcrumb-wrapper">
     <ol class="breadcrumb">
       <li><a href="<?php echo $this->config->base_url($admin_path);?>/main/dashboard">管理首页</a></li>
-      <li class="active"><a href="<?php echo base_url($admin_path.'/article/listing');?>">全部列表</a></li>
+      <li class="active"><a href="<?php echo base_url($admin_path.'/dispatcher/article_list');?>">文章列表</a></li>
       <?php
       if(!empty($cnrs)){
           echo '<li class="active">'.$cnrs['name'].'</li>';
@@ -128,7 +128,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
               <th>回复数</th>
               <th>正负面</th>
               <th>处理状态</th>
-              <th colspan="2" style="width:10%">操作123</th>
+              <th colspan="2" style="width:10%">操作</th>
           </tr>
           </thead>
           <tbody>

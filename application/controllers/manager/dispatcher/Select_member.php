@@ -15,10 +15,9 @@ class Select_member extends REST_Controller
         $this->template_patch=REST_Controller::MANAGER_TEMPLATE_PATH;
         $this->patch=REST_Controller::MANAGER_PATH;
         $this->load->helper('message_encode');
-        $this->load->model('article/Column_model','Column_model',true);
         $this->load->model('article/List_model','List_model',true);
-        $this->load->model('article/Content_model','Content_model',true);
         $this->load->model('auth/Signin_model','Signin_model',true);
+        $this->load->model('dispatch/Dispatch_model','Dispatch_model',true);
         $this->nav = 'dispatch_system';
     }
 
@@ -30,6 +29,9 @@ class Select_member extends REST_Controller
         $data['nav'] = $this->nav;
         $data['child_nav'] = 'dispatcher_articleList';
 
+        $data['token_name'] = $this->security->get_csrf_token_name();
+        $data['hash'] = $this->security->get_csrf_hash();
+
         $where=array();
         $where['login_date']=date('Y-m-d');
 
@@ -38,5 +40,24 @@ class Select_member extends REST_Controller
 
 
         $this->load->view($this->template_patch."/dispatch/dispatch_comment",$data);
+    }
+
+    public function selected_post(){
+        $adminID=$_SESSION['admin']['id'];
+        $memberID=$this->input->post('member_id');
+        $articleID=$this->input->post('article_id');
+
+        $data=array();
+        $data['admin_id']=$adminID;
+        $data['member_id']=$memberID;
+        $data['article_id']=$articleID;
+        $data['operation']=0;
+
+        if($this->Dispatch_model->insert($data)){
+            echo 1;
+        }
+        else{
+            echo 2;
+        }
     }
 }

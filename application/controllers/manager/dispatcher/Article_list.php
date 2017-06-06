@@ -41,7 +41,7 @@ class Article_list extends REST_Controller
 
 
 
-        $cnrs=$this->Column_model->get($cid);
+        $cnrs=array('name' => '派发评论');
 
         $data['cnrs']=$cnrs;
 

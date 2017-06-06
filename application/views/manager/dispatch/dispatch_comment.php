@@ -84,7 +84,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
                         <td><?php echo $rs_row['login_date']?></td>
                         <td>评论文章(id)：<?php echo $article_id ?></td>
                         <td>
-                            <button class="btn btn-white btn-xs btn-margin"  type="button"  data-toggle="modal" data-target="#myModal" >选择</button>
+                            <button class="btn btn-white btn-xs btn-margin"  type="button" onclick="postSelect(<?php echo $rs_row['user_id'] ?>,<?php echo $article_id ?>)"  >选择</button>
                         </td>
                     </tr>
                     <?php
@@ -99,47 +99,16 @@ $admin_path=REST_Controller::MANAGER_PATH;
     </div>
 </section>
 
-<!-- =============评论模态框============== stephen 2017-05-03 -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">新评论</h4>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label id="commentLabel" for="message-text" class="control-label">Message:</label>
-                    <textarea class="form-control" id="message-text" rows="7" placeholder="=======> 在此添加评论 <======="></textarea>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="postComment()">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div>
-<script>
-    //设置模态框标题
-    function setClick(articleID,articleTitle){
-        clicked=articleID;
-        document.getElementById("commentLabel").innerHTML='标题： '+articleTitle;
-    }
-    //提交评论
-    function postComment(){
-        var articleId=clicked;
-        var commentContent=document.getElementById('message-text').value;
-        document.getElementById('message-text').value='';
-        //alert(articleId);
-        //alert('lala');
 
+<script>
+    //提交选择
+    function postSelect(membersID,articleID){
         $.ajax({
             type: "POST",
-            url: "<?php echo base_url($admin_path.'/article/Comment/create');?>",
+            url: "<?php echo base_url($admin_path.'/dispatcher/select_member/selected');?>",
             dataType: 'json',
-            data: {articleid:articleId,
-                content:commentContent,
+            data: {member_id:membersID,
+                article_id:articleID,
                 '<?php echo $token_name; ?>':"<?php echo $hash; ?>"
             },
             dataType: "text",
@@ -147,16 +116,15 @@ $admin_path=REST_Controller::MANAGER_PATH;
             success:
                 function(data){
                     if(data=='1'){
-                        alert('评论成功，等待审核');  //as a debugging message.
-                        window.location.href="<?php echo base_url($admin_path.'/article/comment');?>";
+                        alert('选择成功');  //as a debugging message.
+                        window.location.reload();
                     }else{
-                        alert('评论失败');  //as a debugging message.
-                        window.location.href="<?php echo base_url($admin_path.'/article/comment');?>";
+                        alert('操作失败，请重试');  //as a debugging message.
+                        window.location.reload();
                     }
 
                 }
         });// you have missed this bracket
-
     }
 </script>
 <!--==================== 评论模态框======================= -->
