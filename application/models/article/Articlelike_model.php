@@ -38,7 +38,7 @@ class Articlelike_model extends MY_Model
     public function left_join_like($userid){
         $this->db->select('*,article.created AS Acreated,article.updated AS Aupdated,article.deleted AS Adeleted,article.id AS Aid');
         $this->db->from('article');
-        $this->db->join('site_task_article_like','article.id = site_task_article_like.article_id AND site_task_article_like.deleted=0 AND site_task_article_like.user_id ='.$userid ,'left');
+        $this->db->join('site_task_article_like','article.id = site_task_article_like.article_id AND site_task_article_like.deleted=0 ' ,'left');
         $query=$this->db->get();
         return $query->result_array();
     }

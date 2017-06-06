@@ -51,16 +51,20 @@ class Article_like extends REST_Controller
 
     public function updatelike_post(){
         $articleId = $this->input->post('articleid');
-        $userid = $_SESSION['admin']['id'];
-        $newStatus = $this->input->post('status');
+        //$userid = $_SESSION['admin']['id'];
+        $newStatus = $this->input->post('likeCount');
 
 
         $data=array();
-        if($newStatus == 1){
-            $data['article_id']=$articleId;
-            $data['user_id']=$userid;
-            //$data['isLike']=$newStatus;
 
+        $data['article_id']=$articleId;
+        $data['like_count']=$newStatus;
+
+        $where=array('article_id' => $articleId);
+
+        $Count=$this->Articlelike_model->count_by($where);
+
+        if($Count==0){
             if($this->Articlelike_model->insert($data)){
                 echo '1';
             }else{
@@ -68,15 +72,13 @@ class Article_like extends REST_Controller
             }
         }
         else{
-            $where=array();
-            $where['article_id']=$articleId;
-
-            if($this->Articlelike_model->delete_by($where)){
+            if($this->Articlelike_model->update_by($where,$data)){
                 echo '1';
             }else{
                 echo '0';
             }
         }
+
 
 
 

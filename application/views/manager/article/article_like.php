@@ -104,16 +104,10 @@ $admin_path=REST_Controller::MANAGER_PATH;
                                 break;
                         }?></td> -->
                         <td>
-                            <div class="dropdown">
-                                <button id="dLabel<?php echo $rs_row['Aid']?>" class="btn btn-white btn-xs btn-margin" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <?php if ($rs_row['user_id']!=null)echo '已点赞';else echo '点赞'; ?>
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel">
-                                    <li><button id="like<?php echo $rs_row['Aid']?>" class="btn btn-white btn-block btn-margin" <?php if ($rs_row['user_id']!=null)echo 'disabled' ?> type="button" onclick="postInfo(<?php echo $rs_row['Aid']?>,1)">点赞</button></li>
-                                    <li><button id="unlike<?php echo $rs_row['Aid']?>" class="btn btn-white btn-block btn-margin" <?php if ($rs_row['user_id']==null)echo 'disabled' ?> type="button" onclick="postInfo(<?php echo $rs_row['Aid']?>,0)">取消点赞</button></li>
-                                </ul>
-                            </div>
+                            <button id="dLabel<?php echo $rs_row['Aid']?>" class="btn btn-white btn-xs btn-margin" type="button" data-toggle="modal" data-target="#myModal" onclick="setClick(<?php echo $rs_row['Aid']?>,'<?php echo $rs_row['title']?>');">
+                                <?php if($rs_row['like_count']==null) echo '点赞数:0'; else echo '点赞数:'.$rs_row['like_count'] ?>
+                                <span class="caret"></span>
+                            </button>
                         </td>
                     </tr>
                     <?php
@@ -128,23 +122,56 @@ $admin_path=REST_Controller::MANAGER_PATH;
     </div>
 </section>
 
-<!--发表评价 stephen 2017-05-06-->
 <script>
     var ARTICLEID=-1;
     var STATUS=-1;
 </script>
+<!--===========评论模态框================-->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">修改点赞数</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label id="commentLabel" for="message-text" class="control-label">Message:</label>
+                    <input type="text" style="width: 10%;"  id="max_likes">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="postInfo()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
-    function postInfo(articleID,Status){
+    //设置模态框标题
+    function setClick(articleID,articleTitle){
         ARTICLEID=articleID;
-        STATUS=Status;
+        document.getElementById("commentLabel").innerHTML='标题： '+articleTitle;
+    }
+</script>
+<!--===========评论模态框================-->
+
+<!--发表评价 stephen 2017-05-06-->
+
+<script>
+    function postInfo(){
+        //ARTICLEID=articleID;
+        //STATUS=Status;
+        //alert(document.getElementById('max_likes').value);
+        max_like=document.getElementById('max_likes').value;
 
         $.ajax({
             type: "POST",
             async: true,
             url: "<?php echo base_url($admin_path.'/article/article_like/updatelike');?>",
             dataType: 'json',
-            data: {articleid:articleID,
-                status:Status
+            data: {articleid:ARTICLEID,
+                likeCount:max_like
             },
             dataType: "text",
             cache:false,
@@ -152,20 +179,11 @@ $admin_path=REST_Controller::MANAGER_PATH;
                 function(data){
                     if(data=='1'){
                         alert('操作成功');
+                        window.location.reload();
 
-                        if(Status == 1){
-                            document.getElementById('like'+ARTICLEID).disabled=true;
-                            document.getElementById('unlike'+ARTICLEID).disabled=false;
-                            document.getElementById('dLabel'+ARTICLEID).innerHTML='已点赞'+'<span class="caret"></span>';
-                        }
-                        else{
-                            document.getElementById('like'+ARTICLEID).disabled=false;
-                            document.getElementById('unlike'+ARTICLEID).disabled=true;
-                            document.getElementById('dLabel'+ARTICLEID).innerHTML='点赞'+'<span class="caret"></span>';
-                        }
                     }else{
-                        alert('操作失败');
-
+                        alert('操作失败,请重试');
+                        window.location.reload();
                     }
 
                 }
