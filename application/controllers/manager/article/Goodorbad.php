@@ -17,6 +17,7 @@ class Goodorbad extends REST_Controller{
     $this->nav='my_mission';
 
     $this->load->model('article/List_model','List_model',true);
+    $this->load->model('dispatch/Dispatch_model','Dispatch_model',true);
   }
 
   public function index_get(){
@@ -30,15 +31,21 @@ class Goodorbad extends REST_Controller{
     $data['hash'] = $this->security->get_csrf_hash();
 
     //prepare data
-    $orderby_name='id';
+    $orderby_name='Dcreated';
     $orderby_value='DESC';
 
     $skipnum = $this->get('skipnum');
     $length = $this->get('length');
     init_page_params($skipnum, $length);
 
-    $count=$this->List_model->count_all();
-    $rs=$this->List_model->limit($length,$skipnum)->order_by($orderby_name,$orderby_value)->get_all();
+    $where=array();
+    $where['member_id']=$_SESSION['admin']['id'];
+    $where['operation']=1;
+
+    $tmprs=$this->Dispatch_model->get_many_by($where);
+    $count=count($tmprs);
+
+    $rs=$this->Dispatch_model->limit($length,$skipnum)->order_by($orderby_name,$orderby_value)->join_article($where['member_id'],1);
 
     $data['rs']=$rs;
     $data['page_total']=$count;
