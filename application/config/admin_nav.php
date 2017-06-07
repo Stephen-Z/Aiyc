@@ -26,8 +26,8 @@ $config['nav']=array(
             ),
             array(
                 'name' => '评论列表',
-                'nav_name' => 'dispatcher_commentList',
-                'url' => 'dispatcher/comment_list',
+                'nav_name' => 'article_commentList',
+                'url' => 'article/comment/admincommentlist',
             ),
             array(
                 'name' => '我的派单',
