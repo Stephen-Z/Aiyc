@@ -60,12 +60,13 @@ class Select_member extends REST_Controller
         $adminID=$_SESSION['admin']['id'];
         $memberID=$this->input->post('member_id');
         $articleID=$this->input->post('article_id');
+        $operation=$this->input->post('operation');
 
         $data=array();
         $data['admin_id']=$adminID;
         $data['member_id']=$memberID;
         $data['article_id']=$articleID;
-        $data['operation']=0;
+        $data['operation']=$operation;
 
         if($this->Dispatch_model->insert($data)){
             echo 1;
@@ -73,5 +74,40 @@ class Select_member extends REST_Controller
         else{
             echo 2;
         }
+    }
+
+    public function positive_get($articleID){
+
+        $data=array();
+        $data['article_id']=$articleID;
+        $data['kind']=0;
+        $data['nav'] = $this->nav;
+        $data['child_nav'] = 'dispatcher_articleList';
+
+        $data['token_name'] = $this->security->get_csrf_token_name();
+        $data['hash'] = $this->security->get_csrf_hash();
+
+        $where=array();
+        $where['login_date']=date('Y-m-d');
+        $where['is_admin']=0;
+
+        $rs=$this->Signin_model->get_many_by($where);
+        $cuswhere=array();
+        $cuswhere['operation']=1;
+        $cuswhere['article_id']=$articleID;
+        $cuswhere['deleted']=0;
+        $i=0;
+        foreach($rs as $rs_row ){
+            $cuswhere['member_id']=$rs_row['user_id'];
+            if($this->Dispatch_model->count_by($cuswhere)!=0){
+                unset($rs[$i]);
+            }
+            $i++;
+        }
+
+        $data['rs']=$rs;
+
+
+        $this->load->view($this->template_patch."/dispatch/dispatch_positive",$data);
     }
 }

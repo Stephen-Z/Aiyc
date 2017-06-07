@@ -82,7 +82,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
                         <td><?php echo $rs_row['user_id']?></td>
                         <td style="width: 25%;"><?php echo $rs_row['name']?></td>
                         <td><?php echo $rs_row['login_date']?></td>
-                        <td>评论文章(id)：<?php echo $article_id ?></td>
+                        <td>评价文章(正负面)(id)：<?php echo $article_id ?></td>
                         <td>
                             <button class="btn btn-white btn-xs btn-margin"  type="button" onclick="postSelect(<?php echo $rs_row['user_id'] ?>,<?php echo $article_id ?>)"  >选择</button>
                         </td>
@@ -109,7 +109,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
             dataType: 'json',
             data: {member_id:membersID,
                 article_id:articleID,
-                operation:0,
+                operation:1,
                 '<?php echo $token_name; ?>':"<?php echo $hash; ?>"
             },
             dataType: "text",

@@ -168,7 +168,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
                           <button class="btn btn-white btn-xs btn-margin" onclick="javascript:window.location.href='<?php echo base_url($admin_path.'/dispatcher/select_member/comment/'.$rs_row['id']) ?>'">评论</button>
                       </td>
                       <td>
-                          <button class="btn btn-white btn-xs btn-margin" onclick="javascript:window.location.href='<?php echo base_url($admin_path.'/dispatcher/select_member/positive/'.$rs_row['id'].'/positive')?>'">正负面</button>
+                          <button class="btn btn-white btn-xs btn-margin" onclick="javascript:window.location.href='<?php echo base_url($admin_path.'/dispatcher/select_member/positive/'.$rs_row['id'])?>'">正负面</button>
                       </td>
                   </tr>
               <?php
