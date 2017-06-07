@@ -68,6 +68,16 @@ $config['nav']=array(
                 'nav_name' => 'listing',
                 'url' => 'article/listing',
             ),
+            array(
+                'name' => '评论列表',
+                'nav_name' => 'article_commentList',
+                'url' => 'article/comment/admincommentlist',
+            ),
+            array(
+                'name' => '点赞',
+                'nav_name' => 'article_like',
+                'url' => 'article/article_like',
+            )
         ),
     ),
     array(
@@ -172,6 +182,11 @@ $config['member_nav']=array(
                 'url' => 'article/comment',
             ),
             array(
+                'name' => '我的评论',
+                'nav_name' => 'article_commentList',
+                'url' => 'article/comment/commentlist',
+            ),
+            array(
                 'name' => '评论正负面',
                 'nav_name' => 'comment_goodandbad',
                 'url' => 'article/comment_positive',
@@ -181,11 +196,7 @@ $config['member_nav']=array(
                 'nav_name' => 'comment_reply',
                 'url' => 'article/comment_reply',
             ),
-            array(
-                'name' => '点赞',
-                'nav_name' => 'article_like',
-                'url' => 'article/article_like',
-            )
+
         )
     ),
 );

@@ -4,7 +4,7 @@
  * User: stephen
  * Date: 30/4/2017
  * Time: 11:13 PM
- * view for 文章评论
+ * view for 评论列表
  */
 $style_path=REST_Controller::SYSTEM_STYLE_PATH;
 $template_patch=REST_Controller::MANAGER_TEMPLATE_PATH;
@@ -12,7 +12,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
 ?>
 <?php $this->load->view("{$template_patch}/public/header.php");?>
 <div class="pageheader">
-    <h2><i class="fa fa-bars"></i> 文章评论
+    <h2><i class="fa fa-bars"></i> 评论列表
         <?php
         if(!empty($cnrs)){
             echo '<span>'.$cnrs['name'].'</span>';
@@ -70,7 +70,8 @@ $admin_path=REST_Controller::MANAGER_PATH;
             <tr>
                 <th>ID</th>
                 <th>文章标题</th>
-
+                <th>评论内容</th>
+                <th>用户ID</th>
 <!--                <th>来源网站</th>-->
 <!--                <th>抓取时间</th>-->
 <!--                <th>派发时间</th>-->
@@ -85,7 +86,8 @@ $admin_path=REST_Controller::MANAGER_PATH;
                     <tr>
                         <td><?php echo $rs_row['id']?></td>
                         <td style="width: 45%;"><?php echo $rs_row['title']?></td>
-
+                        <td><?php echo $rs_row['content']?></td>
+                        <td><?php echo $rs_row['user_id']?></td>
 <!--                        <td>--><?php //echo $rs_row['author']?><!--</td>-->
 <!--                        <td>--><?php //echo date("Y-m-d H:i:s",$rs_row['created']);?><!--</td>-->
 <!--                        <!-- <td>--><?php //echo $rs_row['pre_reply']?><!--</td> -->
@@ -102,23 +104,33 @@ $admin_path=REST_Controller::MANAGER_PATH;
 //                                    echo '未处理';
 //                                    break;
 //                            }?><!--</td>-->
-<!--                        <td>--><?php //switch($rs_row['comment_status']){
-//                            case 0:
-//                                echo '<span style="color:#b1b1b1">未评论</span>';
-//                                break;
-//                            case 1:
-//                                echo '<span style="color:#000000">审核中</span>';
-//                                break;
-//                            case 2:
-//                                echo '<span style="color:#ff0000">未通过审核</span>';
-//                                break;
-//                            case 3:
-//                                echo '<span style="color:#34a03a">已评论</span>';
-//                                break;
-//                        }?><!--</td>-->
-                        <td>
-                            <button class="btn btn-white btn-xs btn-margin"  type="button"  data-toggle="modal" data-target="#myModal" onclick="setClick(<?php echo $rs_row['id']?>,'<?php echo $rs_row['title']?>');">评论</button>
-                        </td>
+                       <td><?php switch($rs_row['comment_status']){
+                            case 0:
+                                echo '<span style="color:#b1b1b1">未评论</span>';
+                               break;
+                            case 1:
+                                echo '<span style="color:#000000">审核中</span>';
+                                break;
+                            case 2:
+                                echo '<span style="color:#ff0000">未通过审核</span>';
+                                break;
+                            case 3:
+                                echo '<span style="color:#34a03a">已评论</span>';
+                              break;
+                      }?></td>
+                       <td>
+                           <div class="dropdown">
+                               <button id="dLabel" class="btn btn-white btn-xs btn-margin" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                   处理
+                                   <span class="caret"></span>
+                               </button>
+                               <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel">
+                                   <li><button class="btn btn-white btn-block btn-margin" type="button" onclick="postInfo(<?php echo $rs_row['Aid']?>,<?php echo $rs_row['user_id']?>,3)">通过</button></li>
+                                   <li><button class="btn btn-white btn-block btn-margin" type="button" onclick="postInfo(<?php echo $rs_row['Aid']?>,<?php echo $rs_row['user_id']?>,2)">不通过</button></li>
+
+                               </ul>
+                           </div>
+                       </td>
                     </tr>
                     <?php
                 endforeach;
@@ -132,67 +144,37 @@ $admin_path=REST_Controller::MANAGER_PATH;
     </div>
 </section>
 
-<!-- =============评论模态框============== stephen 2017-05-03 -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">新评论</h4>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label id="commentLabel" for="message-text" class="control-label">Message:</label>
-                    <textarea class="form-control" id="message-text" rows="7" placeholder="=======> 在此添加评论 <======="></textarea>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="postComment()">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div>
 <script>
-    //设置模态框标题
-    function setClick(articleID,articleTitle){
-        clicked=articleID;
-        document.getElementById("commentLabel").innerHTML='标题： '+articleTitle;
-    }
-    //提交评论
-    function postComment(){
-        var articleId=clicked;
-        var commentContent=document.getElementById('message-text').value;
-        document.getElementById('message-text').value='';
-        //alert(articleId);
-        //alert('lala');
+    function postInfo(articleID,userID,Status){
+        ARTICLEID=articleID;
+        STATUS=Status;
 
         $.ajax({
             type: "POST",
-            url: "<?php echo base_url($admin_path.'/article/Comment/create');?>",
+            async: true,
+            url: "<?php echo base_url($admin_path.'/article/comment/updatestatus');?>",
             dataType: 'json',
-            data: {articleid:articleId,
-                content:commentContent,
-                '<?php echo $token_name; ?>':"<?php echo $hash; ?>"
+            data: {articleid:articleID,
+                status:Status,
+                user_id:userID,
+                '<?php echo $this->security->get_csrf_token_name()?>':"<?php echo $this->security->get_csrf_hash()?>"
             },
             dataType: "text",
             cache:false,
             success:
                 function(data){
                     if(data=='1'){
-                        alert('评论成功，等待审核');  //as a debugging message.
-                        window.location.href="<?php echo base_url($admin_path.'/article/comment');?>";
+                        alert('操作成功');
+                        window.location.reload();
                     }else{
-                        alert('评论失败');  //as a debugging message.
-                        window.location.href="<?php echo base_url($admin_path.'/article/comment');?>";
+                        alert('操作失败');
+                        window.location.reload();
                     }
 
                 }
-        });// you have missed this bracket
-
+        });
     }
 </script>
-<!--==================== 评论模态框======================= -->
 
 
 

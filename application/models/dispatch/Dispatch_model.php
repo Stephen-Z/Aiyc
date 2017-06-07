@@ -43,4 +43,12 @@ class Dispatch_model extends MY_Model
         return $query->result_array();
     }
 
+    public function join_article($member_id,$operation){
+        $this->db->select('*,dispatch.id AS Did,dispatch.created AS Dcreated');
+        $this->db->from('dispatch');
+        $this->db->join('article','article.id=dispatch.article_id AND dispatch.member_id='.$member_id.' AND dispatch.deleted = 0 AND dispatch.operation = '.$operation ,'inner');
+        $query=$this->db->get();
+        return $query->result_array();
+    }
+
 }

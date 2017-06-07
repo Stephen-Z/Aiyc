@@ -19,6 +19,7 @@ class Comment extends REST_Controller
         $this->nav='my_mission';
         $this->load->model('article/List_model','List_model',true);
         $this->load->model('article/Comment_model','Comment_model',true);
+        $this->load->model('dispatch/Dispatch_model','Dispatch_model',true);
     }
 
     public function index_get(){
@@ -33,18 +34,22 @@ class Comment extends REST_Controller
         $cnrs=array('name' => '文章评论');
         $data['cnrs']=$cnrs;
 
-        //preparing data...
-        $orderby_name='Aid';
+        //prepare data
+        $orderby_name='Dcreated';
         $orderby_value='DESC';
 
         $skipnum = $this->get('skipnum');
         $length = $this->get('length');
         init_page_params($skipnum, $length);
 
-        $user_id = $_SESSION['admin']['id'];
+        $where=array();
+        $where['member_id']=$_SESSION['admin']['id'];
+        $where['operation']=0;
 
-        $count=$this->List_model->count_all();
-        $rs=$this->List_model->limit($length,$skipnum)->order_by($orderby_name,$orderby_value)->left_join_comment($user_id);
+        $tmprs=$this->Dispatch_model->get_many_by($where);
+        $count=count($tmprs);
+
+        $rs=$this->Dispatch_model->limit($length,$skipnum)->order_by($orderby_name,$orderby_value)->join_article($where['member_id'],0);
 
         $data['rs']=$rs;
         $data['page_total']=$count;
@@ -79,5 +84,84 @@ class Comment extends REST_Controller
         }else{
             echo '0';
         }
+    }
+
+    public function commentlist_get(){
+        $data=array();
+
+        $data['token_name'] = $this->security->get_csrf_token_name();
+        $data['hash'] = $this->security->get_csrf_hash();
+
+        $data['nav']=$this->nav;
+        $data['child_nav']='article_commentList';
+
+        $cnrs=array('name' => '我的评论');
+        $data['cnrs']=$cnrs;
+
+        //preparing data...
+        $orderby_name='Aid';
+        $orderby_value='DESC';
+
+        $skipnum = $this->get('skipnum');
+        $length = $this->get('length');
+        init_page_params($skipnum, $length);
+
+        $user_id = $_SESSION['admin']['id'];
+        $count=$this->List_model->count_all();
+        $rs=$this->List_model->limit($length,$skipnum)->order_by($orderby_name,$orderby_value)->left_join_comment($user_id);
+        $data['rs']=$rs;
+        $data['page_total']=$count;
+
+        $this->load->view($this->template_path.'/article/comment_list',$data);
+    }
+
+    public function admincommentlist_get(){
+        $data=array();
+
+        $data['token_name'] = $this->security->get_csrf_token_name();
+        $data['hash'] = $this->security->get_csrf_hash();
+
+        $data['nav']='article';
+        $data['child_nav']='article_commentList';
+
+        $cnrs=array('name' => '我的评论');
+        $data['cnrs']=$cnrs;
+
+        //preparing data...
+        $orderby_name='Aid';
+        $orderby_value='DESC';
+
+        $skipnum = $this->get('skipnum');
+        $length = $this->get('length');
+        init_page_params($skipnum, $length);
+
+        //$user_id = $_SESSION['admin']['id'];
+        $count=$this->Comment_model->count_all();
+        $rs=$this->List_model->limit($length,$skipnum)->order_by($orderby_name,$orderby_value)->admin_join_comment();
+        $data['rs']=$rs;
+        $data['page_total']=$count;
+
+        $this->load->view($this->template_path.'/article/admincomment_list',$data);
+    }
+
+    public function updatestatus_post(){
+        $articleID=$this->input->post('articleid');
+        $userID=$this->input->post('user_id');
+        $status=$this->input->post('status');
+
+        $cuswhere=array();
+        $cuswhere['user_id']=$userID;
+        $cuswhere['article_id']=$articleID;
+
+        $post_data=array();
+        $post_data['comment_status']=$status;
+
+        if($this->Comment_model->update_by($cuswhere,$post_data)){
+            echo 1;
+        }
+        else{
+            echo 0;
+        }
+
     }
 }
