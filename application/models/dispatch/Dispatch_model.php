@@ -35,11 +35,12 @@ class Dispatch_model extends MY_Model
         return $row;
     }
 
-    public function left_join_like($articleID){
-        $this->db->select('*,article.created AS Acreated,article.updated AS Aupdated,article.deleted AS Adeleted,article.id AS Aid');
-        $this->db->from('article');
-        $this->db->join('site_task_article_like','article.id = site_task_article_like.article_id AND site_task_article_like.deleted=0 ' ,'left');
+    public function left_join_admin($adminID){
+        $this->db->select('*,dispatch.id AS Did');
+        $this->db->from('dispatch');
+        $this->db->join('admin','admin.id=dispatch.member_id AND dispatch.admin_id='.$adminID.' AND dispatch.deleted = 0 ' ,'left');
         $query=$this->db->get();
         return $query->result_array();
     }
+
 }

@@ -34,8 +34,22 @@ class Select_member extends REST_Controller
 
         $where=array();
         $where['login_date']=date('Y-m-d');
+        $where['is_admin']=0;
 
         $rs=$this->Signin_model->get_many_by($where);
+        $cuswhere=array();
+        $cuswhere['operation']=0;
+        $cuswhere['article_id']=$articleID;
+        $cuswhere['deleted']=0;
+        $i=0;
+        foreach($rs as $rs_row ){
+            $cuswhere['member_id']=$rs_row['user_id'];
+            if($this->Dispatch_model->count_by($cuswhere)!=0){
+                unset($rs[$i]);
+            }
+            $i++;
+        }
+
         $data['rs']=$rs;
 
 

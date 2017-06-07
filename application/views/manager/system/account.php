@@ -8,11 +8,11 @@ if(empty($error)) {
 ?>
 <?php $this->load->view("{$template_patch}/public/header.php");?>
 <div class="pageheader">
-  <h2><i class="fa fa-rocket"></i> 管理帐号 <span>管理员列表</span>
+  <h2><i class="fa fa-rocket"></i> 管理帐号 <span><?php if($is_admin==1) echo '管理员列表';else echo '工人列表'; ?></span>
   </h2>
   <div class="breadcrumb-wrapper">
     <ol class="breadcrumb">
-        <li class="active">管理员列表</li>
+        <li class="active"><?php if($is_admin==1) echo '管理员列表';else echo '工人列表'; ?></li>
     </ol>
   </div>
 </div>
@@ -23,7 +23,7 @@ if(empty($error)) {
       <header class="panel-heading clearfix" >
         <span style="float:right">
             <a href="<?php echo $this->config->base_url($admin_path.'/system/add_account');?>">
-                <button type="button" class="btn btn-info add_goods"><i class="icon-plus"></i> 添加管理员</button>
+                <button type="button" class="btn btn-info add_goods"><i class="icon-plus"></i> 添加帐号</button>
             </a>
         </span>
       </header>

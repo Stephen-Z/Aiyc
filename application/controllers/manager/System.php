@@ -92,7 +92,8 @@ class System extends REST_Controller {
         $data['token_name'] = $this->security->get_csrf_token_name();
         $data['hash'] = $this->security->get_csrf_hash();
         $data['nav'] = 'account';
-        $data['child_nav'] = 'FALSE';
+        $data['child_nav'] = 'admin_account';
+        $data['is_admin']=1;
 
         if($_SESSION['admin']['name']!='admin'){
             echo "<script>alert('只有总管理员才有此权限!');location.href='" . base_url("manager/main") . "';</script>";
@@ -103,6 +104,7 @@ class System extends REST_Controller {
         $length = $this->get('length');
         init_page_params($skipnum, $length);
         $where=array();
+        $where['is_admin']=1;
         $count=$this->Admin_model->count_by($where);
 
         $rs=$this->Admin_model->limit($length, $skipnum)->order_by('id','desc')->get_many_by($where);
@@ -113,6 +115,35 @@ class System extends REST_Controller {
 
         $this->load->view($this->template_patch.'/system/account',$data);
     }
+
+    public function member_get(){
+        $data['token_name'] = $this->security->get_csrf_token_name();
+        $data['hash'] = $this->security->get_csrf_hash();
+        $data['nav'] = 'account';
+        $data['child_nav'] = 'member_account';
+        $data['is_admin']=0;
+
+        if($_SESSION['admin']['name']!='admin'){
+            echo "<script>alert('只有总管理员才有此权限!');location.href='" . base_url("manager/main") . "';</script>";
+        }
+
+
+        $skipnum = $this->get('skipnum');
+        $length = $this->get('length');
+        init_page_params($skipnum, $length);
+        $where=array();
+        $where['is_admin']=0;
+        $count=$this->Admin_model->count_by($where);
+
+        $rs=$this->Admin_model->limit($length, $skipnum)->order_by('id','desc')->get_many_by($where);
+
+        $data['page_total']=$count;
+
+        $data['rs']=$rs;
+
+        $this->load->view($this->template_patch.'/system/account',$data);
+    }
+
 
     public function add_account_get(){
         if(!empty($_SESSION['flashdata'])){
@@ -133,15 +164,30 @@ class System extends REST_Controller {
 
         $data['nav'] = 'account';
         $data['child_nav'] = 'FALSE';
+        $name=$this->post('name');
+        $cuswhere=array();
+        $cuswhere['name']=$name;
+        $cuswhere['deleted']=0;
 
-        $this->form_validation->set_rules('name', '帐号', 'trim|required|is_unique[admin.name]');
+        $this->form_validation->set_rules('name', '帐号', 'trim|required');
         $this->form_validation->set_rules('phone', '手机', 'trim|exact_length[11]');
         $this->form_validation->set_rules('password', '密码', 'trim|required');
         $this->form_validation->set_rules('passconf', '确认密码', 'trim|required|matches[password]');
+        $this->form_validation->set_rules('accountClass','帐号类别','trim|required');
 
         if ($this->form_validation->run() == FALSE)
         {
             $error = $this->form_validation->error_array();
+
+            $data['error']=$error;
+
+            $data = array_merge($data, $this->post());
+            $_SESSION['flashdata']=$data;
+            redirect(base_url($this->patch.'/system/add_account'));
+        }
+        elseif ($this->Admin_model->count_by($cuswhere)!=0) {
+            $error['name']='用户已存在';
+
             $data['error']=$error;
 
             $data = array_merge($data, $this->post());
@@ -149,15 +195,19 @@ class System extends REST_Controller {
             redirect(base_url($this->patch.'/system/add_account'));
         }
 
+
         $name=$this->post('name');
         $phone=$this->post('phone');
         $password=$this->post('password');
+
+        $post_data['is_admin']=$this->post('accountClass');
 
         $post_data['name']=$name;
         $post_data['password']=md5($password);
         if(!empty($phone)){
             $post_data['phone']=$phone;
         }
+
 
         $insert_id=$this->Admin_model->insert($post_data);
 
@@ -268,7 +318,12 @@ class System extends REST_Controller {
         }
 
         $this->Admin_model->delete($id);
-        echo "<script>alert('删除成功!');location.href='" . base_url("manager/system/account") . "';</script>";
+        if($rs['is_admin']==1){
+            echo "<script>alert('删除成功!');location.href='" . base_url("manager/system/account") . "';</script>";
+        }
+        else{
+            echo "<script>alert('删除成功!');location.href='" . base_url("manager/system/member") . "';</script>";
+        }
 
     }
 

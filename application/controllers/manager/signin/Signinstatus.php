@@ -15,7 +15,7 @@ class Signinstatus extends REST_Controller
         parent::__construct();
         $this->template_path=REST_Controller::MANAGER_TEMPLATE_PATH;
         $this->path=REST_Controller::MANAGER_PATH;
-        $this->nav='sign_in';
+        $this->nav='account';
         $this->load->model('auth/Signin_model','Signin_model',true);
     }
 
@@ -23,13 +23,13 @@ class Signinstatus extends REST_Controller
         $data=array();
 
         $data['nav']=$this->nav;
-        $data['child_nav']='';
+        $data['child_nav']='sign_in';
 
         $cnrs=array('name' => '签到');
         $data['cnrs']=$cnrs;
 
         $cuswhere=array();
-        $cuswhere['name']=$_SESSION['admin']['name'];
+        $cuswhere['login_date']=date('Y-m-d');
 
         $orderby_name='login_date';
         $orderby_value='DESC';
@@ -39,7 +39,7 @@ class Signinstatus extends REST_Controller
         init_page_params($skipnum, $length);
 
         $count=$this->Signin_model->count_all();
-        $rs=$this->Signin_model->limit($length,$skipnum)->order_by($orderby_name,$orderby_value)->get_many_by($cuswhere);
+        $rs=$this->Signin_model->limit($length,$skipnum)->order_by($orderby_name,$orderby_value)->left_join_admin(date('Y-m-d'));
 
         $data['rs']=$rs;
         $data['page_total']=$count;

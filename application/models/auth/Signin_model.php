@@ -33,4 +33,12 @@ class Signin_model extends MY_Model
         $row['updated'] = time();
         return $row;
     }
+
+    public function left_join_admin($cusdate){
+        $this->db->select('*,sign_in.name as Sname');
+        $this->db->from('sign_in');
+        $this->db->join('admin','sign_in.user_id = admin.id AND DATE(sign_in.login_date)=DATE(now())' ,'left');
+        $query=$this->db->get();
+        return $query->result_array();
+    }
 }

@@ -12,12 +12,12 @@ if(empty($error)) {
 ?>
 
 <div class="pageheader">
-  <h2><i class="fa fa-bars"></i> 系统设置 <span>添加管理员</span></h2>
+  <h2><i class="fa fa-bars"></i> 系统设置 <span>添加帐号</span></h2>
   <div class="breadcrumb-wrapper">
     <ol class="breadcrumb">
       <li><a href="<?php echo $this->config->base_url($admin_path);?>/main">管理首页</a></li>
-        <li><a href="<?php echo $this->config->base_url($admin_path);?>/system/add_account">添加管理员</a></li>
-      <li class="active">添加管理员</li>
+        <li><a href="<?php echo $this->config->base_url($admin_path);?>/system/add_account">添加帐号</a></li>
+      <li class="active">添加帐号</li>
     </ol>
   </div>
 </div>
@@ -69,6 +69,19 @@ if(empty($error)) {
                 <?php
                 if(array_key_exists('passconf',$error)){
                     echo '<label for="code" class="error">'.$error['passconf'].'</label>';
+                }
+                ?>
+            </div>
+        </div>
+
+        <div class="form-group <?php if(array_key_exists('accountClass',$error)): echo 'has-error'; endif; ?>">
+            <label class="col-sm-2 control-label">帐号类别</label>
+            <div class="col-sm-4">
+                <p><input class="" type="radio" name="accountClass" value="1">管理员</p>
+                <p><input class="" type="radio" name="accountClass" value="0">工人</p>
+                <?php
+                if(array_key_exists('accountClass',$error)){
+                    echo '<label for="code" class="error">'.$error['accountClass'].'</label>';
                 }
                 ?>
             </div>

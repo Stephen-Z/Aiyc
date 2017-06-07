@@ -40,6 +40,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
                 <thead>
                 <tr>
                     <th>用户</th>
+                    <th>用户类别</th>
                     <th>日期</th>
                     <th>状态</th>
                 </tr>
@@ -48,7 +49,8 @@ $admin_path=REST_Controller::MANAGER_PATH;
                 <?php if(!empty($rs)):?>
                     <?php foreach($rs as $rs_row):?>
                         <tr>
-                            <td><?php echo $rs_row['name']?></td>
+                            <td><?php echo $rs_row['Sname']?></td>
+                            <td><?php if($rs_row['is_admin']==1) echo '管理员';else echo '工人' ?></td>
                             <td><?php echo $rs_row['login_date']?></td>
                             <td>签到成功</td>
                         </tr>

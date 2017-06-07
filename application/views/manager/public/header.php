@@ -47,7 +47,12 @@
 
         <?php
         $this->config->load('admin_nav', TRUE);
-        $admin_nav = $this->config->item('nav', 'admin_nav');
+        if($_SESSION['admin']['is_admin']==1){
+            $admin_nav = $this->config->item('nav', 'admin_nav');
+        }
+        else{
+            $admin_nav = $this->config->item('member_nav', 'admin_nav');
+        }
         ?>
         <div class="leftpanelinner">
             <h5 class="sidebartitle">管理菜单</h5>

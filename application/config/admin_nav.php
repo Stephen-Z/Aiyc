@@ -12,44 +12,7 @@ $config['nav']=array(
         'child' => false
     ),
     /*stephen 工作人员界面 2017-04-27*/
-    array(
-        'name' => '我的任务',
-        'nav_name' => 'my_mission',
-        'url' => 'main',
-        'icon' => 'fa-id-badge',
-        'child' => array(
-          array(
-              'name' => '工作台',
-              'nav_name' => 'workspace',
-              'url' => 'main',
-          ),
-          array(
-              'name' => '文章正负面',
-              'nav_name' => 'article_goodORbad',
-              'url' => 'article/goodorbad',
-          ),
-          array(
-              'name' => '文章评论',
-              'nav_name' => 'article_comment',
-              'url' => 'article/comment',
-          ),
-          array(
-              'name' => '评论正负面',
-              'nav_name' => 'comment_goodandbad',
-              'url' => 'article/comment_positive',
-          ),
-          array(
-              'name' => '评论回复',
-              'nav_name' => 'comment_reply',
-              'url' => 'article/comment_reply',
-          ),
-          array(
-              'name' => '点赞',
-              'nav_name' => 'article_like',
-              'url' => 'article/article_like',
-          )
-        )
-    ),
+
     array(
         'name' => '派单系统',
         'nav_name' => 'dispatch_system',
@@ -66,16 +29,15 @@ $config['nav']=array(
                 'nav_name' => 'dispatcher_commentList',
                 'url' => 'dispatcher/comment_list',
             ),
+            array(
+                'name' => '我的派单',
+                'nav_name' => 'dispatched_list',
+                'url' => 'dispatcher/dispatched',
+            ),
         )
 
     ),
-    array(
-        'name' => '签到',
-        'nav_name' => 'sign_in',
-        'url' => 'signin/signinstatus',
-        'icon' => 'fa-tachometer',
-        'child' => false
-    ),
+
     /*工作人员界面 end*/
     array(
         'name' => '品牌管理',
@@ -142,9 +104,27 @@ $config['nav']=array(
     array(
         'name' => '管理帐号',
         'nav_name' => 'account',
-        'url' => 'system/account',
+        'url' => false,
         'icon' => 'fa-user',
-        'child' => false
+        'child' => array(
+            array(
+                'name' => '管理员',
+                'nav_name' => 'admin_account',
+                'url' => 'system/account',
+            ),
+            array(
+                'name' => '工人',
+                'nav_name' => 'member_account',
+                'url' => 'system/member',
+            ),
+            array(
+                'name' => '工人签到',
+                'nav_name' => 'sign_in',
+                'url' => 'signin/signinstatus',
+                'icon' => 'fa-tachometer',
+                'child' => false
+            ),
+        ),
     ),
     array(
         'name' => '系统日志',
@@ -166,5 +146,46 @@ $config['nav']=array(
         'url' => 'auth/logout',
         'icon' => ' fa-sign-out',
         'child' => false
+    ),
+);
+
+$config['member_nav']=array(
+    array(
+        'name' => '我的任务',
+        'nav_name' => 'my_mission',
+        'url' => 'main',
+        'icon' => 'fa-id-badge',
+        'child' => array(
+            array(
+                'name' => '工作台',
+                'nav_name' => 'workspace',
+                'url' => 'main',
+            ),
+            array(
+                'name' => '文章正负面',
+                'nav_name' => 'article_goodORbad',
+                'url' => 'article/goodorbad',
+            ),
+            array(
+                'name' => '文章评论',
+                'nav_name' => 'article_comment',
+                'url' => 'article/comment',
+            ),
+            array(
+                'name' => '评论正负面',
+                'nav_name' => 'comment_goodandbad',
+                'url' => 'article/comment_positive',
+            ),
+            array(
+                'name' => '评论回复',
+                'nav_name' => 'comment_reply',
+                'url' => 'article/comment_reply',
+            ),
+            array(
+                'name' => '点赞',
+                'nav_name' => 'article_like',
+                'url' => 'article/article_like',
+            )
+        )
     ),
 );

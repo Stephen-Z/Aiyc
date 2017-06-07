@@ -57,6 +57,7 @@ class Auth extends REST_Controller {
         }
 
         if(!$rs){
+
             redirect(base_url($this->patch)."/auth");
         }
 
@@ -75,7 +76,7 @@ class Auth extends REST_Controller {
 
                 /*登录签到 stephen 2017-05-02*/
                 //redirect(base_url($this->patch)."/main");
-                if($this->check_sign_in($rs['id'],$rs['name'])){
+                if($this->check_sign_in($rs['id'],$rs['name'],$rs['is_admin'])){
                     redirect(base_url($this->patch)."/main");
                 }
                 else{
@@ -92,7 +93,7 @@ class Auth extends REST_Controller {
         }
     }
     /*登录签到 stephen 2017-05-02*/
-    private function check_sign_in($user_id,$user_name){
+    private function check_sign_in($user_id,$user_name,$isadmin){
         $current_date=date('Y-m-d');
         //echo '<script>alert("'.$user_id.'")</script>';
 
@@ -107,6 +108,7 @@ class Auth extends REST_Controller {
             $data['user_id'] = $user_id;
             $data['login_date'] = $current_date;
             $data['name'] = $user_name;
+            $data['is_admin']=$isadmin;
 
             if ($this->Signin_model->insert($data)) {
                 return true;
