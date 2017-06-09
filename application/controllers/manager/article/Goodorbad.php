@@ -62,6 +62,9 @@ class Goodorbad extends REST_Controller{
         $data['positive']=$newStatus;
 
         if($this->List_model->update($articleId,$data)){
+            $update_data=array();
+            $update_data['member_commit']=time();
+            $this->Dispatch_model->update_by(array('member_id' => $_SESSION['admin']['id']),$update_data);
             echo '1';
         }else{
             echo '0';

@@ -64,7 +64,6 @@ $admin_path=REST_Controller::MANAGER_PATH;
               <th>来源网站</th>
               <th>抓取时间</th>
               <th>派发时间</th>
-              <th>是否高危</th>
               <th>正负面</th>
               <!-- <th>处理状态</th> -->
               <th style="width:10%">操作</th>
@@ -79,8 +78,8 @@ $admin_path=REST_Controller::MANAGER_PATH;
                       <td><?php echo $rs_row['author']?></td>
                       <td><?php echo date("Y-m-d H:i:s",$rs_row['created']);?></td>
                       <!-- <td><?php echo $rs_row['pre_reply']?></td> -->
-                      <td>???<!--派发时间--></td>
-                      <td>???<!--是否高危--></td>
+                      <td><?php echo date('Y-m-d H:i:s',$rs_row['Dcreated']) ?></td>
+
                       <td id="<?php echo 'positive'.strval($rs_row['id']);?>"><?php switch($rs_row['positive']){
                               case 0:
                                   echo '负面';

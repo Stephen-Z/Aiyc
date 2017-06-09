@@ -1,0 +1,25 @@
+ALTER TABLE sign_in add COLUMN updated int(11) DEFAULT 0;
+
+
+
+
+ALTER TABLE sign_in add COLUMN logout int DEFAULT 0 not null;
+
+
+
+
+ALTER TABLE sign_in MODIFY name VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+
+
+
+
+alter TABLE dispatch ADD COLUMN member_commit DATETIME NOT NULL;
+
+
+
+alter TABLE dispatch ADD COLUMN member_commit int default 0 NOT NULL;
+
+
+
+ALTER TABLE dispatch ADD COLUMN admin_commit int DEFAULT 0 NOT NULL

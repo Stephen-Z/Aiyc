@@ -14,7 +14,7 @@ class Article_like extends REST_Controller
         parent::__construct();
         $this->template_path=REST_Controller::MANAGER_TEMPLATE_PATH;
         $this->path=REST_Controller::MANAGER_PATH;
-        $this->nav='my_mission';
+        $this->nav='article';
         $this->load->model('article/List_model','List_model',true);
         $this->load->model('article/Articlelike_model','Articlelike_model',true);
     }

@@ -122,7 +122,9 @@ class Auth extends REST_Controller {
     /*登录签到 stephen 2017-05-02*/
 
     public function logout_get() {
+        $user_id=$_SESSION['admin']['id'];
         unset($_SESSION['admin']);
+        $this->Signin_model->update_by(array('user_id' => $user_id),array('logout' => 1));
         redirect(base_url($this->patch)."/auth");
     }
 

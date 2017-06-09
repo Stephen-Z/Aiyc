@@ -70,8 +70,9 @@ $admin_path=REST_Controller::MANAGER_PATH;
             <tr>
                 <th>ID</th>
                 <th>工人名字</th>
-
                 <th>派发任务</th>
+                <th>派发时间</th>
+                <th>工人提交时间</th>
                 <th style="width:10%">操作</th>
             </tr>
             </thead>
@@ -83,6 +84,8 @@ $admin_path=REST_Controller::MANAGER_PATH;
                         <td style="width: 25%;"><?php echo $rs_row['name']?></td>
 
                         <td><?php if($rs_row['operation']==0) echo '评论文章(id)';else echo '评价文章(id)(正负面)' ?>：<?php echo $rs_row['article_id'] ?></td>
+                        <td><?php echo date('Y-m-d H:i:s',$rs_row['created']) ?></td>
+                        <td><?php if($rs_row['member_commit']==0)echo '--';else echo date('Y-m-d H:i:s',$rs_row['member_commit']); ?></td>
                         <td>
                             <button class="btn btn-white btn-xs btn-margin"  type="button" onclick="postDelete(<?php echo $rs_row['member_id'] ?>,<?php echo $rs_row['article_id'] ?>,<?php echo $rs_row['operation'] ?>)"  >删除</button>
                         </td>
