@@ -71,13 +71,18 @@ $config['nav']=array(
             array(
                 'name' => '评论列表',
                 'nav_name' => 'article_commentList',
-                'url' => 'article/comment/admincommentlist',
+                'url' => 'article/comment/onlinecomment',
             ),
             array(
                 'name' => '点赞',
                 'nav_name' => 'article_like',
                 'url' => 'article/article_like',
-            )
+            ),
+            array(
+                'name' => '高危文章',
+                'nav_name' => 'article_danger',
+                'url' => 'article/listing/isdanger',
+            ),
         ),
     ),
     array(

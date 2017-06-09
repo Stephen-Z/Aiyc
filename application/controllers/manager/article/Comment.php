@@ -20,6 +20,7 @@ class Comment extends REST_Controller
         $this->load->model('article/List_model','List_model',true);
         $this->load->model('article/Comment_model','Comment_model',true);
         $this->load->model('dispatch/Dispatch_model','Dispatch_model',true);
+        $this->load->model('article/Onlinecomment_model','Onlinecomment_model',true);
     }
 
     public function index_get(){
@@ -125,7 +126,7 @@ class Comment extends REST_Controller
         $data['token_name'] = $this->security->get_csrf_token_name();
         $data['hash'] = $this->security->get_csrf_hash();
 
-        $data['nav']='article';
+        $data['nav']='dispatch_system';
         $data['child_nav']='article_commentList';
 
         $cnrs=array('name' => '我的评论');
@@ -169,6 +170,35 @@ class Comment extends REST_Controller
         else{
             echo 0;
         }
+    }
 
+
+
+    public function onlinecomment_get(){
+        $data=array();
+        $data['token_name'] = $this->security->get_csrf_token_name();
+        $data['hash'] = $this->security->get_csrf_hash();
+
+        $data['nav']='article';
+        $data['child_nav']='article_commentList';
+
+        $cnrs=array('name' => '评论列表');
+        $data['cnrs']=$cnrs;
+
+        //preparing data...
+        $orderby_name='order_id';
+        $orderby_value='DESC';
+
+        $skipnum = $this->get('skipnum');
+        $length = $this->get('length');
+        init_page_params($skipnum, $length);
+
+        //$user_id = $_SESSION['admin']['id'];
+        $count=$this->Onlinecomment_model->count_all();
+        $rs=$this->Onlinecomment_model->limit($length,$skipnum)->order_by($orderby_name,$orderby_value)->join_article();
+        $data['rs']=$rs;
+        $data['page_total']=$count;
+
+        $this->load->view($this->template_path.'/article/comment_onlinecomment',$data);
     }
 }
