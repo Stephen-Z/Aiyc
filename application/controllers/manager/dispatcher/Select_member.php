@@ -35,6 +35,7 @@ class Select_member extends REST_Controller
         $where=array();
         $where['login_date']=date('Y-m-d');
         $where['is_admin']=0;
+        $where['logout']=0;
 
         $rs=$this->Signin_model->get_many_by($where);
         $cuswhere=array();
