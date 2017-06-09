@@ -14,7 +14,7 @@ ALTER TABLE sign_in MODIFY name VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_gen
 
 
 
-alter TABLE dispatch ADD COLUMN member_commit DATETIME NOT NULL;
+
 
 
 
