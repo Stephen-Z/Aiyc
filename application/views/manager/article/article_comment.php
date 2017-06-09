@@ -73,7 +73,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
 
 <!--                <th>来源网站</th>-->
 <!--                <th>抓取时间</th>-->
-<!--                <th>派发时间</th>-->
+                <th>派发时间</th>
 <!--                <th>是否高危</th>-->
 <!--                <th>评论状态</th>-->
                 <th style="width:10%">操作</th>
@@ -116,6 +116,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
 //                                echo '<span style="color:#34a03a">已评论</span>';
 //                                break;
 //                        }?><!--</td>-->
+                        <td><?php echo date('Y-m-d H:i:s',$rs_row['Dcreated']) ?></td>
                         <td>
                             <button class="btn btn-white btn-xs btn-margin"  type="button"  data-toggle="modal" data-target="#myModal" onclick="setClick(<?php echo $rs_row['id']?>,'<?php echo $rs_row['title']?>');">评论</button>
                         </td>

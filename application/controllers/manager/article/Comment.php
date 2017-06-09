@@ -80,6 +80,10 @@ class Comment extends REST_Controller
             $updateData['pre_reply']=$preReply;
             $updateData['reply']=$reply;
             $this->List_model->update_by($where,$updateData);
+
+            $update_data=array();
+            $update_data['member_commit']=time();
+            $this->Dispatch_model->update_by(array('member_id' => $_SESSION['admin']['id']),$update_data);
             echo '1';
         }else{
             echo '0';
@@ -157,6 +161,9 @@ class Comment extends REST_Controller
         $post_data['comment_status']=$status;
 
         if($this->Comment_model->update_by($cuswhere,$post_data)){
+            $update_data=array();
+            $update_data['admin_commit']=time();
+            $this->Dispatch_model->update_by(array('member_id' => $_SESSION['admin']['id']),$update_data);
             echo 1;
         }
         else{

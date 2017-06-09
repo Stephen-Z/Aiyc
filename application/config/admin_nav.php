@@ -158,7 +158,7 @@ $config['nav']=array(
         'child' => false
     ),
 );
-
+//工人界面
 $config['member_nav']=array(
     array(
         'name' => '我的任务',
@@ -198,5 +198,12 @@ $config['member_nav']=array(
             ),
 
         )
+    ),
+    array(
+        'name' => '注销登陆',
+        'nav_name' => '',
+        'url' => 'auth/logout',
+        'icon' => ' fa-sign-out',
+        'child' => false
     ),
 );
