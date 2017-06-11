@@ -25,7 +25,7 @@ class Article_like extends REST_Controller
         $data['nav']=$this->nav;
         $data['child_nav']='article_like';
 
-        $cnrs=array('name' => '点赞');
+        $cnrs=array('name' => '文章点赞');
         $data['cnrs']=$cnrs;
 
         $data['token_name'] = $this->security->get_csrf_token_name();

@@ -34,5 +34,22 @@ class Comment_model extends MY_Model
         return $row;
     }
 
+    public function left_join_reply($member_id){
+        $this->db->select('*,article_comment.status AS Cstatus,article_comment.created AS Ccreated,article_comment.is_danger AS Cisdanger');
+        $this->db->from('site_task_article_comment');
+        $this->db->join('reply_dispatch','reply_dispatch.reply_id=site_task_article_comment.reply_id AND reply_dispatch.deleted=0 AND site_task_article_comment.is_reply=1 AND site_task_article_comment.user_id='.$member_id,'inner');
+        $this->db->join('article_comment','site_task_article_comment.reply_id = article_comment.order_id ','left');
+        $query=$this->db->get();
+        return $query->result_array();
+    }
 
+    public function admin_join_reply(){
+        $this->db->select('*,article_comment.status AS Cstatus,article_comment.created AS Ccreated,article_comment.is_danger AS Cisdanger,site_task_article_comment.id AS Aid,,site_task_article_comment.comment_status AS Tstatus');
+        $this->db->from('site_task_article_comment');
+        $this->db->join('reply_dispatch','reply_dispatch.reply_id=site_task_article_comment.reply_id AND reply_dispatch.deleted=0','inner');
+        $this->db->join('article_comment','site_task_article_comment.reply_id = article_comment.order_id AND site_task_article_comment.is_reply=1  ','left');
+        $this->db->join('article','article_comment.article_id=article.id','left');
+        $query=$this->db->get();
+        return $query->result_array();
+    }
 }

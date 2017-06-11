@@ -4,7 +4,7 @@
  * User: stephen
  * Date: 30/4/2017
  * Time: 11:13 PM
- * view for 我的评论
+ * view for 文章评论
  */
 $style_path=REST_Controller::SYSTEM_STYLE_PATH;
 $template_patch=REST_Controller::MANAGER_TEMPLATE_PATH;
@@ -12,7 +12,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
 ?>
 <?php $this->load->view("{$template_patch}/public/header.php");?>
 <div class="pageheader">
-    <h2><i class="fa fa-bars"></i> 我的评论
+    <h2><i class="fa fa-bars"></i> 回复评论
         <?php
         if(!empty($cnrs)){
             echo '<span>'.$cnrs['name'].'</span>';
@@ -70,12 +70,12 @@ $admin_path=REST_Controller::MANAGER_PATH;
             <tr>
                 <th>ID</th>
                 <th>文章标题</th>
-                <th>评论内容</th>
+                <th>回复内容</th>
 <!--                <th>来源网站</th>-->
 <!--                <th>抓取时间</th>-->
-<!--                <th>派发时间</th>-->
+                <th>派发时间</th>
 <!--                <th>是否高危</th>-->
-               <th>评论状态</th>
+<!--                <th>评论状态</th>-->
                 <th style="width:10%">操作</th>
             </tr>
             </thead>
@@ -84,8 +84,8 @@ $admin_path=REST_Controller::MANAGER_PATH;
                 <?php foreach($rs as $rs_row):?>
                     <tr>
                         <td><?php echo $rs_row['id']?></td>
-                        <td style="width: 30%;"><?php echo $rs_row['title']?></td>
-                        <td style="width: 40%;"><?php echo $rs_row['content']?></td>
+                        <td style="width: 45%;"><?php echo $rs_row['title']?></td>
+                        <td><?php echo $rs_row['comment_content']?></td>
 <!--                        <td>--><?php //echo $rs_row['author']?><!--</td>-->
 <!--                        <td>--><?php //echo date("Y-m-d H:i:s",$rs_row['created']);?><!--</td>-->
 <!--                        <!-- <td>--><?php //echo $rs_row['pre_reply']?><!--</td> -->
@@ -102,22 +102,23 @@ $admin_path=REST_Controller::MANAGER_PATH;
 //                                    echo '未处理';
 //                                    break;
 //                            }?><!--</td>-->
-                       <td><?php switch($rs_row['comment_status']){
-                            case 0:
-                                echo '<span style="color:#b1b1b1">未评论</span>';
-                               break;
-                            case 1:
-                                echo '<span style="color:#000000">审核中</span>';
-                                break;
-                            case 2:
-                                echo '<span style="color:#ff0000">未通过审核</span>';
-                                break;
-                            case 3:
-                                echo '<span style="color:#34a03a">已评论</span>';
-                              break;
-                      }?></td>
-                       <td>-->
-                            <button class="btn btn-white btn-xs btn-margin"  type="button"  data-toggle="modal" data-target="#myModal" disabled onclick="setClick(<?php echo $rs_row['id']?>,'<?php echo $rs_row['title']?>');">评论</button>
+<!--                        <td>--><?php //switch($rs_row['comment_status']){
+//                            case 0:
+//                                echo '<span style="color:#b1b1b1">未评论</span>';
+//                                break;
+//                            case 1:
+//                                echo '<span style="color:#000000">审核中</span>';
+//                                break;
+//                            case 2:
+//                                echo '<span style="color:#ff0000">未通过审核</span>';
+//                                break;
+//                            case 3:
+//                                echo '<span style="color:#34a03a">已评论</span>';
+//                                break;
+//                        }?><!--</td>-->
+                        <td><?php echo date('Y-m-d H:i:s',$rs_row['Dcreated']) ?></td>
+                        <td>
+                            <button class="btn btn-white btn-xs btn-margin"  type="button"  data-toggle="modal" data-target="#myModal" onclick="setClick(<?php echo $rs_row['id']?>,<?php echo $rs_row['order_id']?>,'<?php echo $rs_row['comment_content']?>');">评论</button>
                         </td>
                     </tr>
                     <?php
@@ -155,8 +156,9 @@ $admin_path=REST_Controller::MANAGER_PATH;
 </div>
 <script>
     //设置模态框标题
-    function setClick(articleID,articleTitle){
+    function setClick(articleID,reply_id,articleTitle){
         clicked=articleID;
+        REPLYID=reply_id;
         document.getElementById("commentLabel").innerHTML='标题： '+articleTitle;
     }
     //提交评论
@@ -172,7 +174,9 @@ $admin_path=REST_Controller::MANAGER_PATH;
             url: "<?php echo base_url($admin_path.'/article/Comment/create');?>",
             dataType: 'json',
             data: {articleid:articleId,
+                reply_id:REPLYID,
                 content:commentContent,
+                isreply:1,
                 '<?php echo $token_name; ?>':"<?php echo $hash; ?>"
             },
             dataType: "text",
@@ -181,10 +185,10 @@ $admin_path=REST_Controller::MANAGER_PATH;
                 function(data){
                     if(data=='1'){
                         alert('评论成功，等待审核');  //as a debugging message.
-                        window.location.href="<?php echo base_url($admin_path.'/article/comment');?>";
+                        window.location.href="<?php echo base_url($admin_path.'/article/comment/reply');?>";
                     }else{
                         alert('评论失败');  //as a debugging message.
-                        window.location.href="<?php echo base_url($admin_path.'/article/comment');?>";
+                        window.location.href="<?php echo base_url($admin_path.'/article/comment/reply');?>";
                     }
 
                 }

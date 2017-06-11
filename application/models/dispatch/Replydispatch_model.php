@@ -4,14 +4,14 @@
 /**
  * Created by PhpStorm.
  * User: stephen
- * Date: 18/5/2017
+ * Date: 5/6/2017
  * Time: 11:01 AM
- * model for 点赞
+ * model for dispatch system
  */
-class Articlelike_model extends MY_Model
+class Replydispatch_model extends MY_Model
 {
     /** @var string 表名 */
-    public $_table = 'site_task_article_like';
+    public $_table = 'reply_dispatch';
 
     protected $primary_key = 'id';
 
@@ -35,12 +35,14 @@ class Articlelike_model extends MY_Model
         return $row;
     }
 
-    public function left_join_like($userid){
-        $this->db->select('*,article.created AS Acreated,article.updated AS Aupdated,article.deleted AS Adeleted,article.id AS Aid');
-        $this->db->from('article');
-        $this->db->join('site_task_article_like','article.id = site_task_article_like.article_id AND site_task_article_like.deleted=0 ' ,'left');
+    public function left_join_comment($memberID,$operation){
+        $this->db->select('*,reply_dispatch.id AS Did,reply_dispatch.created AS Dcreated,article_comment.positive AS Cpositive');
+        $this->db->from('reply_dispatch');
+        $this->db->join('article_comment','article_comment.order_id=reply_dispatch.reply_id AND reply_dispatch.member_id='.$memberID.' AND reply_dispatch.deleted = 0 AND reply_dispatch.operation='.$operation ,'inner');
+        $this->db->join('article','article.id=article_comment.article_id');
         $query=$this->db->get();
         return $query->result_array();
     }
+
 
 }

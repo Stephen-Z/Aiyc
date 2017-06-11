@@ -12,7 +12,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
 ?>
 <?php $this->load->view("{$template_patch}/public/header.php");?>
 <div class="pageheader">
-    <h2><i class="fa fa-bars"></i> 我的评论
+    <h2><i class="fa fa-bars"></i> 我的回复评论
         <?php
         if(!empty($cnrs)){
             echo '<span>'.$cnrs['name'].'</span>';
@@ -69,13 +69,13 @@ $admin_path=REST_Controller::MANAGER_PATH;
             <thead>
             <tr>
                 <th>ID</th>
-                <th>文章标题</th>
+                <th>回复内容</th>
                 <th>评论内容</th>
 <!--                <th>来源网站</th>-->
 <!--                <th>抓取时间</th>-->
 <!--                <th>派发时间</th>-->
 <!--                <th>是否高危</th>-->
-               <th>评论状态</th>
+                <th>评论状态</th>
                 <th style="width:10%">操作</th>
             </tr>
             </thead>
@@ -84,7 +84,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
                 <?php foreach($rs as $rs_row):?>
                     <tr>
                         <td><?php echo $rs_row['id']?></td>
-                        <td style="width: 30%;"><?php echo $rs_row['title']?></td>
+                        <td style="width: 30%;"><?php echo $rs_row['comment_content']?></td>
                         <td style="width: 40%;"><?php echo $rs_row['content']?></td>
 <!--                        <td>--><?php //echo $rs_row['author']?><!--</td>-->
 <!--                        <td>--><?php //echo date("Y-m-d H:i:s",$rs_row['created']);?><!--</td>-->
@@ -116,8 +116,8 @@ $admin_path=REST_Controller::MANAGER_PATH;
                                 echo '<span style="color:#34a03a">已评论</span>';
                               break;
                       }?></td>
-                       <td>-->
-                            <button class="btn btn-white btn-xs btn-margin"  type="button"  data-toggle="modal" data-target="#myModal" disabled onclick="setClick(<?php echo $rs_row['id']?>,'<?php echo $rs_row['title']?>');">评论</button>
+                       <td>
+                            <button class="btn btn-white btn-xs btn-margin"  type="button"  data-toggle="modal" data-target="#myModal" disabled onclick="setClick(<?php echo $rs_row['id']?>);">删除</button>
                         </td>
                     </tr>
                     <?php

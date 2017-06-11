@@ -103,12 +103,14 @@ class Auth extends REST_Controller {
 
         $rs=$this->Signin_model->get_by($cuswhere);
 
+        $data = array();
+        $data['user_id'] = $user_id;
+        $data['name'] = $user_name;
+        $data['is_admin']=$isadmin;
+        $data['logout']=0;
+
         if(!$rs) {
-            $data = array();
-            $data['user_id'] = $user_id;
             $data['login_date'] = $current_date;
-            $data['name'] = $user_name;
-            $data['is_admin']=$isadmin;
 
             if ($this->Signin_model->insert($data)) {
                 return true;
@@ -116,6 +118,7 @@ class Auth extends REST_Controller {
                 return false;
             }
         }else{
+            $this->Signin_model->update($rs['order_id'],$data);
             return true;
         }
     }

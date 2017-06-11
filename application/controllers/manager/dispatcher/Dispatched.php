@@ -17,6 +17,7 @@ class Dispatched extends REST_Controller
         $this->load->helper('message_encode');
         $this->load->model('dispatch/Dispatch_model','Dispatch_model',true);
         $this->load->model('auth/Auth_model','Auth_model',true);
+        $this->load->model('dispatch/Replydispatch_model','Replydispatch_model',true);
         $this->nav = 'dispatch_system';
     }
 
@@ -63,6 +64,50 @@ class Dispatched extends REST_Controller
         else{
             echo 0;
         }
+    }
 
+    public function reply_get(){
+        $data=array();
+        $data['nav']=$this->nav;
+        $data['child_nav']='dispatched_replylist';
+
+        $data['token_name'] = $this->security->get_csrf_token_name();
+        $data['hash'] = $this->security->get_csrf_hash();
+
+        $where=array();
+        $where['admin_id']=$_SESSION['admin']['id'];
+        $rs=$this->Replydispatch_model->get_many_by($where);
+
+        $newrs=array();
+        foreach ($rs as $rs_row){
+            $cuswhere=array();
+            $cuswhere['id']=$rs_row['member_id'];
+            $tmp=$this->Auth_model->get_by($cuswhere);
+            $rs_row['name']=$tmp['name'];
+            array_push($newrs,$rs_row);
+        }
+
+        $data['rs']=$newrs;
+
+        $this->load->view($this->template_patch.'/dispatch/replydispatched_list',$data);
+    }
+
+    public function replydelete_post(){
+        $member_id=$this->input->post('member_id');
+        $article_id=$this->input->post('article_id');
+        $operation=$this->input->post('operation');
+
+        $where=array();
+        $where['member_id']=$member_id;
+        $where['reply_id']=$article_id;
+        $where['admin_id']=$_SESSION['admin']['id'];
+        $where['operation']=$operation;
+
+        if($this->Replydispatch_model->delete_by($where)){
+            echo 1;
+        }
+        else{
+            echo 0;
+        }
     }
 }
