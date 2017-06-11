@@ -25,14 +25,29 @@ $config['nav']=array(
                 'url' => 'dispatcher/article_list',
             ),
             array(
-                'name' => '评论列表',
+                'name' => '回复列表',
+                'nav_name' => 'dispatcher_replylist',
+                'url' => 'dispatcher/reply/replylist',
+            ),
+            array(
+                'name' => '文章评论列表',
                 'nav_name' => 'article_commentList',
                 'url' => 'article/comment/admincommentlist',
             ),
             array(
-                'name' => '我的派单',
+                'name' => '回复评论列表',
+                'nav_name' => 'article_replycommentList',
+                'url' => 'article/comment/adminreplylist',
+            ),
+            array(
+                'name' => '我的文章派单',
                 'nav_name' => 'dispatched_list',
                 'url' => 'dispatcher/dispatched',
+            ),
+            array(
+                'name' => '我的回复派单',
+                'nav_name' => 'dispatched_replylist',
+                'url' => 'dispatcher/dispatched/reply',
             ),
         )
 
@@ -69,19 +84,29 @@ $config['nav']=array(
                 'url' => 'article/listing',
             ),
             array(
-                'name' => '评论列表',
+                'name' => '回复列表',
                 'nav_name' => 'article_commentList',
                 'url' => 'article/comment/onlinecomment',
             ),
             array(
-                'name' => '点赞',
+                'name' => '文章点赞',
                 'nav_name' => 'article_like',
                 'url' => 'article/article_like',
+            ),
+            array(
+                'name' => '回复点赞',
+                'nav_name' => 'Reply',
+                'url' => 'article/reply',
             ),
             array(
                 'name' => '高危文章',
                 'nav_name' => 'article_danger',
                 'url' => 'article/listing/isdanger',
+            ),
+            array(
+                'name' => '高危回复',
+                'nav_name' => 'reply_danger',
+                'url' => 'article/reply/isdanger',
             ),
         ),
     ),
@@ -171,11 +196,7 @@ $config['member_nav']=array(
         'url' => 'main',
         'icon' => 'fa-id-badge',
         'child' => array(
-            array(
-                'name' => '工作台',
-                'nav_name' => 'workspace',
-                'url' => 'main',
-            ),
+
             array(
                 'name' => '文章正负面',
                 'nav_name' => 'article_goodORbad',
@@ -187,20 +208,26 @@ $config['member_nav']=array(
                 'url' => 'article/comment',
             ),
             array(
-                'name' => '我的评论',
+                'name' => '评论回复',
+                'nav_name' => 'reply_comment',
+                'url' => 'article/comment/reply',
+            ),
+            array(
+                'name' => '回复正负面',
+                'nav_name' => 'reply_positive',
+                'url' => 'article/goodorbad/reply',
+            ),
+            array(
+                'name' => '我的文章评论',
                 'nav_name' => 'article_commentList',
                 'url' => 'article/comment/commentlist',
             ),
             array(
-                'name' => '评论正负面',
-                'nav_name' => 'comment_goodandbad',
-                'url' => 'article/comment_positive',
+                'name' => '我的回复评论',
+                'nav_name' => 'article_replycommentList',
+                'url' => 'article/comment/replycommentlist',
             ),
-            array(
-                'name' => '评论回复',
-                'nav_name' => 'comment_reply',
-                'url' => 'article/comment_reply',
-            ),
+
 
         )
     ),

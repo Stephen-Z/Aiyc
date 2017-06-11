@@ -21,11 +21,11 @@ class Comment extends REST_Controller
         $this->load->model('article/Comment_model','Comment_model',true);
         $this->load->model('dispatch/Dispatch_model','Dispatch_model',true);
         $this->load->model('article/Onlinecomment_model','Onlinecomment_model',true);
+        $this->load->model('dispatch/Replydispatch_model','Replydispatch_model',true);
     }
 
     public function index_get(){
         $data=array();
-
         $data['token_name'] = $this->security->get_csrf_token_name();
         $data['hash'] = $this->security->get_csrf_hash();
 
@@ -47,6 +47,7 @@ class Comment extends REST_Controller
         $where['member_id']=$_SESSION['admin']['id'];
         $where['operation']=0;
 
+
         $tmprs=$this->Dispatch_model->get_many_by($where);
         $count=count($tmprs);
 
@@ -62,29 +63,42 @@ class Comment extends REST_Controller
     public function create_post(){
         $articleId = $this->input->post('articleid');
         $comment_content = $this->input->post('content');
+        $isReply=$this->input->post('isreply');
         $user_id = $_SESSION['admin']['id'];
+
 
         $data=array();
         $data['article_id']=$articleId;
         $data['content']=$comment_content;
         $data['user_id']=$user_id;
+        $data['is_reply']=$isReply;
+        if($isReply==1){
+            $data['reply_id']=$this->input->post('reply_id');
+        }
 
         if($this->Comment_model->insert($data)){
             //修改回复数
-            $where=array();
-            $where['id']=$articleId;
-            $tempdata=$this->List_model->get_by($where);
-            $reply=$tempdata['reply'];
-            $preReply=$reply;
-            $reply += 1;
-            $updateData=array();
-            $updateData['pre_reply']=$preReply;
-            $updateData['reply']=$reply;
-            $this->List_model->update_by($where,$updateData);
+            if($isReply==0){
+                $where=array();
+                $where['id']=$articleId;
+                $tempdata=$this->List_model->get_by($where);
+                $reply=$tempdata['reply'];
+                $preReply=$reply;
+                $reply += 1;
+                $updateData=array();
+                $updateData['pre_reply']=$preReply;
+                $updateData['reply']=$reply;
+                $this->List_model->update_by($where,$updateData);
+            }
 
             $update_data=array();
             $update_data['member_commit']=time();
-            $this->Dispatch_model->update_by(array('member_id' => $_SESSION['admin']['id']),$update_data);
+            if($isReply==0){
+                $this->Dispatch_model->update_by(array('member_id' => $_SESSION['admin']['id']),$update_data);
+            }
+            else{
+                $this->Replydispatch_model->update_by(array('member_id' => $_SESSION['admin']['id']),$update_data);
+            }
             echo '1';
         }else{
             echo '0';
@@ -120,6 +134,41 @@ class Comment extends REST_Controller
         $this->load->view($this->template_path.'/article/comment_list',$data);
     }
 
+    public function replycommentlist_get(){
+        $data=array();
+
+        $data['token_name'] = $this->security->get_csrf_token_name();
+        $data['hash'] = $this->security->get_csrf_hash();
+
+        $data['nav']=$this->nav;
+        $data['child_nav']='article_replycommentList';
+
+        $cnrs=array('name' => '我的回复评论');
+        $data['cnrs']=$cnrs;
+
+        //preparing data...
+        $orderby_name='site_task_article_comment.id';
+        $orderby_value='DESC';
+
+        $skipnum = $this->get('skipnum');
+        $length = $this->get('length');
+        init_page_params($skipnum, $length);
+
+        $user_id = $_SESSION['admin']['id'];
+        $where=array();
+        $where['is_reply']=1;
+        $count=$this->Comment_model->count_by($where);
+        $rs=$this->Comment_model->limit($length,$skipnum)->order_by($orderby_name,$orderby_value)->left_join_reply($user_id);
+        $data['rs']=$rs;
+        $data['page_total']=$count;
+
+        $this->load->view($this->template_path.'/article/replycomment_list',$data);
+    }
+
+
+
+
+
     public function admincommentlist_get(){
         $data=array();
 
@@ -141,13 +190,46 @@ class Comment extends REST_Controller
         init_page_params($skipnum, $length);
 
         //$user_id = $_SESSION['admin']['id'];
-        $count=$this->Comment_model->count_all();
+        $where=array('is_reply'=>0);
+        $count=$this->Comment_model->count_by($where);
         $rs=$this->List_model->limit($length,$skipnum)->order_by($orderby_name,$orderby_value)->admin_join_comment();
         $data['rs']=$rs;
         $data['page_total']=$count;
 
         $this->load->view($this->template_path.'/article/admincomment_list',$data);
     }
+
+    public function adminreplylist_get(){
+        $data=array();
+
+        $data['token_name'] = $this->security->get_csrf_token_name();
+        $data['hash'] = $this->security->get_csrf_hash();
+
+        $data['nav']='dispatch_system';
+        $data['child_nav']='article_replycommentList';
+
+        $cnrs=array('name' => '我的回复评论');
+        $data['cnrs']=$cnrs;
+
+        //preparing data...
+        $orderby_name='site_task_article_comment.id';
+        $orderby_value='DESC';
+
+        $skipnum = $this->get('skipnum');
+        $length = $this->get('length');
+        init_page_params($skipnum, $length);
+
+        //$user_id = $_SESSION['admin']['id'];
+        $where=array('is_reply'=>1);
+        $count=$this->Comment_model->count_by($where);
+        $rs=$this->Comment_model->limit($length,$skipnum)->order_by($orderby_name,$orderby_value)->admin_join_reply();
+        $data['rs']=$rs;
+        $data['page_total']=$count;
+
+        $this->load->view($this->template_path.'/article/comment_adminreplylist',$data);
+    }
+
+
 
     public function updatestatus_post(){
         $articleID=$this->input->post('articleid');
@@ -165,6 +247,30 @@ class Comment extends REST_Controller
             $update_data=array();
             $update_data['admin_commit']=time();
             $this->Dispatch_model->update_by(array('member_id' => $_SESSION['admin']['id']),$update_data);
+            echo 1;
+        }
+        else{
+            echo 0;
+        }
+    }
+
+
+    public function updatereplystatus_post(){
+        $articleID=$this->input->post('articleid');
+        $userID=$this->input->post('user_id');
+        $status=$this->input->post('status');
+
+        $cuswhere=array();
+        $cuswhere['user_id']=$userID;
+        $cuswhere['id']=$articleID;
+
+        $post_data=array();
+        $post_data['comment_status']=$status;
+
+        if($this->Comment_model->update_by($cuswhere,$post_data)){
+            $update_data=array();
+            $update_data['admin_commit']=time();
+            $this->Replydispatch_model->update_by(array('member_id' => $_SESSION['admin']['id']),$update_data);
             echo 1;
         }
         else{
@@ -200,5 +306,40 @@ class Comment extends REST_Controller
         $data['page_total']=$count;
 
         $this->load->view($this->template_path.'/article/comment_onlinecomment',$data);
+    }
+
+
+    public function reply_get(){
+        $data=array();
+        $data['token_name'] = $this->security->get_csrf_token_name();
+        $data['hash'] = $this->security->get_csrf_hash();
+
+        $data['nav']=$this->nav;
+        $data['child_nav']='reply_comment';
+
+        $cnrs=array('name' => '回复评论');
+        $data['cnrs']=$cnrs;
+
+        //prepare data
+        $orderby_name='reply_dispatch.created';
+        $orderby_value='DESC';
+
+        $skipnum = $this->get('skipnum');
+        $length = $this->get('length');
+        init_page_params($skipnum, $length);
+
+        $where=array();
+        $where['member_id']=$_SESSION['admin']['id'];
+        $where['operation']=0;
+
+        $tmprs=$this->Replydispatch_model->get_many_by($where);
+        $count=count($tmprs);
+
+        $rs=$this->Replydispatch_model->limit($length,$skipnum)->order_by($orderby_name,$orderby_value)->left_join_comment($where['member_id'],0);
+
+        $data['rs']=$rs;
+        $data['page_total']=$count;
+
+        $this->load->view($this->template_path.'/article/article_replycomment',$data);
     }
 }

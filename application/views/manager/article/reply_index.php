@@ -6,7 +6,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
 <?php $this->load->view("{$template_patch}/public/header.php");?>
 <script>var CLICKED=0;</script>
 <div class="pageheader">
-    <h2><i class="fa fa-bars"></i> 点赞
+    <h2><i class="fa fa-bars"></i> 回复点赞
         <?php
         if(!empty($cnrs)){
             echo '<span>'.$cnrs['name'].'</span>';
@@ -43,7 +43,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
                         <div class="form-group">
                             <div style="padding-top: 3px">
                                 <button type="submit" class="btn btn-info"><i
-                                        class="glyphicon glyphicon-search"></i> 搜索
+                                            class="glyphicon glyphicon-search"></i> 搜索
                                 </button>
                             </div>
                         </div>
@@ -61,10 +61,8 @@ $admin_path=REST_Controller::MANAGER_PATH;
             <tr>
                 <th>ID</th>
                 <th>文章标题</th>
-                <th>来源网站</th>
+                <th>回复内容</th>
                 <th>抓取时间</th>
-
-
                 <!-- <th>处理状态</th> -->
                 <th style="width:10%">操作</th>
             </tr>
@@ -73,27 +71,13 @@ $admin_path=REST_Controller::MANAGER_PATH;
             <?php if(!empty($rs)):?>
                 <?php foreach($rs as $rs_row):?>
                     <tr>
-                        <td><?php echo $rs_row['Aid']?></td>
+                        <td><?php echo $rs_row['order_id']?></td>
                         <td><?php echo $rs_row['title']?></td>
-                        <td><?php echo $rs_row['author']?></td>
-                        <td><?php echo date("Y-m-d H:i:s",$rs_row['created']);?></td>
-                        <!-- <td><?php echo $rs_row['pre_reply']?></td> -->
-
-
-                        <!-- <td><?php switch($rs_row['status']){
-                            case 0:
-                                echo '未处理';
-                                break;
-                            case 1:
-                                echo '处理中';
-                                break;
-                            case 2:
-                                echo '<span style="color:red">处理完成</span>';
-                                break;
-                        }?></td> -->
+                        <td><?php echo $rs_row['comment_content']?></td>
+                        <td><?php echo date("Y-m-d H:i:s",$rs_row['Ccreated']);?></td>
                         <td>
-                            <button id="dLabel<?php echo $rs_row['Aid']?>" class="btn btn-white btn-xs btn-margin" type="button" data-toggle="modal" data-target="#myModal" onclick="setClick(<?php echo $rs_row['Aid']?>,'<?php echo $rs_row['title']?>');">
-                                <?php if($rs_row['like_count']==null) echo '点赞数:0'; else echo '点赞数:'.$rs_row['like_count'] ?>
+                            <button id="dLabel<?php echo $rs_row['order_id']?>" class="btn btn-white btn-xs btn-margin" type="button" data-toggle="modal" data-target="#myModal" onclick="setClick(<?php echo $rs_row['order_id']?>,'<?php echo $rs_row['comment_content']?>');">
+                                <?php if($rs_row['LikeCount']==null) echo '点赞数:0'; else echo '点赞数:'.$rs_row['LikeCount'] ?>
                                 <span class="caret"></span>
                             </button>
                         </td>
@@ -137,9 +121,9 @@ $admin_path=REST_Controller::MANAGER_PATH;
 </div>
 <script>
     //设置模态框标题
-    function setClick(articleID,articleTitle){
-        ARTICLEID=articleID;
-        document.getElementById("commentLabel").innerHTML='标题： '+articleTitle;
+    function setClick(replyID,articleTitle){
+        REPLYID=replyID;
+        document.getElementById("commentLabel").innerHTML='评论内容： '+articleTitle;
     }
 </script>
 <!--===========评论模态框================-->
@@ -156,10 +140,11 @@ $admin_path=REST_Controller::MANAGER_PATH;
         $.ajax({
             type: "POST",
             async: true,
-            url: "<?php echo base_url($admin_path.'/article/article_like/updatelike');?>",
+            url: "<?php echo base_url($admin_path.'/article/reply/updatelike');?>",
             dataType: 'json',
-            data: {articleid:ARTICLEID,
-                likeCount:max_like
+            data: {replyid:REPLYID,
+                likeCount:max_like,
+                '<?php echo $token_name; ?>':"<?php echo $hash; ?>"
             },
             dataType: "text",
             cache:false,

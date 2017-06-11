@@ -34,9 +34,18 @@ class Onlinecomment_model extends MY_Model
     }
 
     public function join_article(){
-        $this->db->select('*,article_comment.status AS Cstatus,');
+        $this->db->select('*,article_comment.status AS Cstatus,article_comment.created AS Ccreated,article_comment.is_danger AS Cisdanger');
         $this->db->from('article_comment');
         $this->db->join('article','article.id = article_comment.article_id AND article_comment.deleted=0 ','inner');
+        $query=$this->db->get();
+        return $query->result_array();
+    }
+
+    public function join_reply_like(){
+        $this->db->select('*,article_id AS Aid,article_comment.created AS Ccreated,site_task_onlinereply_like.like_count AS LikeCount,article_comment.is_danger AS Cisdanger');
+        $this->db->from('article_comment');
+        $this->db->join('site_task_onlinereply_like','article_comment.order_id = site_task_onlinereply_like.reply_id AND article_comment.deleted=0' ,'left');
+        $this->db->join('article','article.id=article_comment.article_id');
         $query=$this->db->get();
         return $query->result_array();
     }
