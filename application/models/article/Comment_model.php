@@ -52,4 +52,13 @@ class Comment_model extends MY_Model
         $query=$this->db->get();
         return $query->result_array();
     }
+
+    public function member_article_comment($memberID){
+        $this->db->select('*,dispatch.id AS Did,article.id AS Aid');
+        $this->db->from('site_task_article_comment');
+        $this->db->join('dispatch','dispatch.id=site_task_article_comment.task_id AND dispatch.deleted=0 AND site_task_article_comment.is_reply=0 AND site_task_article_comment.user_id='.$memberID,'inner');
+        $this->db->join('article','site_task_article_comment.article_id=article.id','left');
+        $query=$this->db->get();
+        return $query->result_array();
+    }
 }

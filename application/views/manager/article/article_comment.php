@@ -32,7 +32,10 @@ $admin_path=REST_Controller::MANAGER_PATH;
     </div>
 </div>
 
-<script>var clicked=0;</script>
+<script>
+    var clicked=0;
+    var task_id=-1;
+</script>
 
 
 <section class="contentpanel">
@@ -74,6 +77,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
 <!--                <th>来源网站</th>-->
 <!--                <th>抓取时间</th>-->
                 <th>派发时间</th>
+                <th>状态</th>
 <!--                <th>是否高危</th>-->
 <!--                <th>评论状态</th>-->
                 <th style="width:10%">操作</th>
@@ -83,8 +87,8 @@ $admin_path=REST_Controller::MANAGER_PATH;
             <?php if(!empty($rs)):?>
                 <?php foreach($rs as $rs_row):?>
                     <tr>
-                        <td><?php echo $rs_row['id']?></td>
-                        <td style="width: 45%;"><?php echo $rs_row['title']?></td>
+                        <td><?php echo $rs_row['Did']?></td>
+                        <td style="width: 45%;"><a href="<?php echo $rs_row['url'] ?>"><?php echo $rs_row['title']?></a></td>
 
 <!--                        <td>--><?php //echo $rs_row['author']?><!--</td>-->
 <!--                        <td>--><?php //echo date("Y-m-d H:i:s",$rs_row['created']);?><!--</td>-->
@@ -102,23 +106,23 @@ $admin_path=REST_Controller::MANAGER_PATH;
 //                                    echo '未处理';
 //                                    break;
 //                            }?><!--</td>-->
-<!--                        <td>--><?php //switch($rs_row['comment_status']){
-//                            case 0:
-//                                echo '<span style="color:#b1b1b1">未评论</span>';
-//                                break;
-//                            case 1:
-//                                echo '<span style="color:#000000">审核中</span>';
-//                                break;
-//                            case 2:
-//                                echo '<span style="color:#ff0000">未通过审核</span>';
-//                                break;
-//                            case 3:
-//                                echo '<span style="color:#34a03a">已评论</span>';
-//                                break;
-//                        }?><!--</td>-->
                         <td><?php echo date('Y-m-d H:i:s',$rs_row['Dcreated']) ?></td>
+                        <td><?php switch($rs_row['task_done']){
+                                case 0:
+                                    echo '<span style="color:#b1b1b1">未评论</span>';
+                                    break;
+                                case 1:
+                                    echo '<span style="color:#000000">审核中</span>';
+                                    break;
+                                case 2:
+                                    echo '<span style="color:#ff0000">未通过审核</span>';
+                                    break;
+                                case 3:
+                                    echo '<span style="color:#34a03a">已评论</span>';
+                                    break;
+                            }?></td>
                         <td>
-                            <button class="btn btn-white btn-xs btn-margin"  type="button"  data-toggle="modal" data-target="#myModal" onclick="setClick(<?php echo $rs_row['id']?>,'<?php echo $rs_row['title']?>');">评论</button>
+                            <button class="btn btn-white btn-xs btn-margin"  type="button"  data-toggle="modal" data-target="#myModal" onclick="setClick(<?php echo $rs_row['Did']?>,<?php echo $rs_row['id']?>,'<?php echo $rs_row['title']?>');">评论</button>
                         </td>
                     </tr>
                     <?php
@@ -156,8 +160,9 @@ $admin_path=REST_Controller::MANAGER_PATH;
 </div>
 <script>
     //设置模态框标题
-    function setClick(articleID,articleTitle){
+    function setClick(taskID,articleID,articleTitle){
         clicked=articleID;
+        task_id=taskID;
         document.getElementById("commentLabel").innerHTML='标题： '+articleTitle;
     }
     //提交评论
@@ -174,6 +179,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
             dataType: 'json',
             data: {articleid:articleId,
                 content:commentContent,
+                taskid:task_id,
                 isreply:0,
                 '<?php echo $token_name; ?>':"<?php echo $hash; ?>"
             },

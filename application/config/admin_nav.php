@@ -208,7 +208,7 @@ $config['member_nav']=array(
                 'url' => 'article/comment',
             ),
             array(
-                'name' => '评论回复',
+                'name' => '回复评论',
                 'nav_name' => 'reply_comment',
                 'url' => 'article/comment/reply',
             ),

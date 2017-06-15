@@ -118,10 +118,10 @@ $admin_path=REST_Controller::MANAGER_PATH;
                 function(data){
                     if(data=='1'){
                         alert('选择成功');  //as a debugging message.
-                        window.location.reload();
+                        window.location.href="/manager/dispatcher/article_list";
                     }else{
                         alert('操作失败，请重试');  //as a debugging message.
-                        window.location.reload();
+                        window.location.href="/manager/dispatcher/article_list";
                     }
 
                 }

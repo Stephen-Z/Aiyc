@@ -1,1 +1,7 @@
-alter TABLE article_comment add COLUMN is_danger int DEFAULT 0 NOT NULL; 
+
+[2017-06-12]
+ALTER TABLE dispatch ADD COLUMN task_done int NOT NULL DEFAULT 0; done
+
+ALTER TABLE reply_dispatch ADD COLUMN task_done int NOT NULL DEFAULT 0; done
+
+ALTER TABLE site_task_article_comment ADD COLUMN task_id BIGINT NOT NULL; done

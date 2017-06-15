@@ -59,6 +59,7 @@ class Goodorbad extends REST_Controller{
     public function update_post(){
         $articleId = $this->input->post('articleid');
         $newStatus = $this->input->post('status');
+        $task_id=$this->input->post('taskid');
 
         $data=array();
         $data['positive']=$newStatus;
@@ -66,7 +67,8 @@ class Goodorbad extends REST_Controller{
         if($this->List_model->update($articleId,$data)){
             $update_data=array();
             $update_data['member_commit']=time();
-            $this->Dispatch_model->update_by(array('member_id' => $_SESSION['admin']['id']),$update_data);
+            $update_data['task_done']=3;
+            $this->Dispatch_model->update_by(array('id' => $task_id),$update_data);
             echo '1';
         }else{
             echo '0';
@@ -76,6 +78,7 @@ class Goodorbad extends REST_Controller{
     public function replyupdate_post(){
         $articleId = $this->input->post('articleid');
         $newStatus = $this->input->post('status');
+        $taskID=$this->input->post("task_id");
 
         $data=array();
         $data['positive']=$newStatus;
@@ -83,7 +86,8 @@ class Goodorbad extends REST_Controller{
         if($this->Onlinecomment_model->update($articleId,$data)){
             $update_data=array();
             $update_data['member_commit']=time();
-            $this->Replydispatch_model->update_by(array('member_id' => $_SESSION['admin']['id']),$update_data);
+            $update_data['task_done']=1;
+            $this->Replydispatch_model->update_by(array('member_id' => $_SESSION['admin']['id'],'id'=>$taskID),$update_data);
             echo '1';
         }else{
             echo '0';
