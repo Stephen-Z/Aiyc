@@ -46,7 +46,16 @@ class Dispatch_model extends MY_Model
     public function join_article($member_id,$operation){
         $this->db->select('*,dispatch.id AS Did,dispatch.created AS Dcreated');
         $this->db->from('dispatch');
-        $this->db->join('article','article.id=dispatch.article_id AND dispatch.member_id='.$member_id.' AND dispatch.deleted = 0 AND dispatch.operation = '.$operation ,'inner');
+        $this->db->join('article','article.id=dispatch.article_id AND dispatch.task_done=0 AND dispatch.member_id='.$member_id.' AND dispatch.deleted = 0 AND dispatch.operation = '.$operation ,'inner');
+        $query=$this->db->get();
+        return $query->result_array();
+    }
+
+    public function admin_join_comment(){
+        $this->db->select('*,dispatch.id AS Did');
+        $this->db->from('site_task_article_comment');
+        $this->db->join('dispatch','dispatch.id = site_task_article_comment.task_id AND dispatch.deleted=0 AND site_task_article_comment.is_reply=0','inner');
+        $this->db->join('article','article.id=site_task_article_comment.article_id','left');
         $query=$this->db->get();
         return $query->result_array();
     }

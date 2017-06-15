@@ -70,8 +70,9 @@ $admin_path=REST_Controller::MANAGER_PATH;
             <tr>
                 <th>ID</th>
                 <th>文章标题</th>
+                <th>回复内容</th>
                 <th>评论内容</th>
-                <th>用户ID</th>
+                <th>用户</th>
 <!--                <th>来源网站</th>-->
 <!--                <th>抓取时间</th>-->
 <!--                <th>派发时间</th>-->
@@ -84,10 +85,11 @@ $admin_path=REST_Controller::MANAGER_PATH;
             <?php if(!empty($rs)):?>
                 <?php foreach($rs as $rs_row):?>
                     <tr>
-                        <td><?php echo $rs_row['Aid']?></td>
+                        <td><?php echo $rs_row['Did']?></td>
                         <td style="width: 25%;"><a href="<?php echo $rs_row['url'] ?>"><?php echo $rs_row['title']?></a></td>
-                        <td style="width: 45%;"><?php echo $rs_row['content']?></td>
-                        <td><?php echo $rs_row['user_id']?></td>
+                        <td style="width: 20%;"><?php echo $rs_row['comment_content']?></td>
+                        <td style="width: 30%;"><?php echo $rs_row['content']?></td>
+                        <td><?php echo $rs_row['name']?></td>
 <!--                        <td>--><?php //echo $rs_row['author']?><!--</td>-->
 <!--                        <td>--><?php //echo date("Y-m-d H:i:s",$rs_row['created']);?><!--</td>-->
 <!--                        <!-- <td>--><?php //echo $rs_row['pre_reply']?><!--</td> -->
@@ -104,7 +106,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
 //                                    echo '未处理';
 //                                    break;
 //                            }?><!--</td>-->
-                       <td><?php switch($rs_row['Tstatus']){
+                       <td><?php switch($rs_row['task_done']){
                             case 0:
                                 echo '<span style="color:#b1b1b1">工人未提交</span>';
                                break;
@@ -125,8 +127,8 @@ $admin_path=REST_Controller::MANAGER_PATH;
                                    <span class="caret"></span>
                                </button>
                                <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel">
-                                   <li><button class="btn btn-white btn-block btn-margin" type="button" onclick="postInfo(<?php echo $rs_row['Aid']?>,<?php echo $rs_row['user_id']?>,3)">通过</button></li>
-                                   <li><button class="btn btn-white btn-block btn-margin" type="button" onclick="postInfo(<?php echo $rs_row['Aid']?>,<?php echo $rs_row['user_id']?>,2)">不通过</button></li>
+                                   <li><button class="btn btn-white btn-block btn-margin" type="button" onclick="postInfo(<?php echo $rs_row['Did']?>,<?php echo $rs_row['Aid']?>,3)">通过</button></li>
+                                   <li><button class="btn btn-white btn-block btn-margin" type="button" onclick="postInfo(<?php echo $rs_row['Did']?>,<?php echo $rs_row['Aid']?>,2)">不通过</button></li>
 
                                </ul>
                            </div>

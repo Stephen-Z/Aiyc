@@ -86,7 +86,7 @@ class Goodorbad extends REST_Controller{
         if($this->Onlinecomment_model->update($articleId,$data)){
             $update_data=array();
             $update_data['member_commit']=time();
-            $update_data['task_done']=1;
+            $update_data['task_done']=3;
             $this->Replydispatch_model->update_by(array('member_id' => $_SESSION['admin']['id'],'id'=>$taskID),$update_data);
             echo '1';
         }else{

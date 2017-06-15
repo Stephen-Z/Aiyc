@@ -85,19 +85,27 @@ $admin_path=REST_Controller::MANAGER_PATH;
                     <tr>
                         <td><?php echo $rs_row['id']?></td>
                         <td style="width: 10%;"><?php echo $rs_row['name']?></td>
-                        <td><?php if($rs_row['operation']==0) echo '评论回复(id)';else echo '评价回复(id)(正负面)' ?>：<?php echo $rs_row['reply_id'] ?></td>
+                        <td><?php if($rs_row['operation']==0) echo '评论回复(id)';else echo '评价回复正负面(id)' ?>：<?php echo $rs_row['reply_id'] ?></td>
                         <td><?php echo $rs_row['article_title'] ?></td>
                         <td><?php echo $rs_row['online_comment'] ?></td>
                         <td><?php echo date('Y-m-d H:i:s',$rs_row['created']) ?></td>
                         <td><?php if($rs_row['member_commit']==0)echo '--';else echo date('Y-m-d H:i:s',$rs_row['member_commit']); ?></td>
-                        <?php switch ($rs_row['task_done']){
-                            case 0:echo '<td style="color: #000000">未完成</td>';break;
-
-                            case 1:echo '<td style="color: #17a90c">已完成</td>';break;
-                        }
-                        ?>
+                        <td><?php switch($rs_row['task_done']){
+                                case 0:
+                                    echo '<span style="color:#b1b1b1">工人未提交</span>';
+                                    break;
+                                case 1:
+                                    echo '<span style="color:#000000">工人已提交</span>';
+                                    break;
+                                case 2:
+                                    echo '<span style="color:#ff0000">未通过审核</span>';
+                                    break;
+                                case 3:
+                                    echo '<span style="color:#34a03a">已通过</span>';
+                                    break;
+                            }?></td>
                         <td>
-                            <button class="btn btn-white btn-xs btn-margin"  type="button" onclick="postDelete(<?php echo $rs_row['member_id'] ?>,<?php echo $rs_row['reply_id'] ?>,<?php echo $rs_row['operation'] ?>)"  >删除</button>
+                            <button class="btn btn-white btn-xs btn-margin"  type="button" onclick="postDelete(<?php echo $rs_row['id'] ?>)"  >删除</button>
                         </td>
                     </tr>
                     <?php
@@ -115,14 +123,13 @@ $admin_path=REST_Controller::MANAGER_PATH;
 
 <script>
     //提交选择
-    function postDelete(membersID,articleID,operation){
+    function postDelete(task_id){
         $.ajax({
             type: "POST",
             url: "<?php echo base_url($admin_path.'/dispatcher/dispatched/replydelete');?>",
             dataType: 'json',
-            data: {member_id:membersID,
-                article_id:articleID,
-                operation:operation,
+            data: {taskid:task_id,
+
                 '<?php echo $token_name; ?>':"<?php echo $hash; ?>"
             },
             dataType: "text",

@@ -38,7 +38,7 @@ class Replydispatch_model extends MY_Model
     public function left_join_comment($memberID,$operation){
         $this->db->select('*,reply_dispatch.id AS Did,reply_dispatch.created AS Dcreated,article_comment.positive AS Cpositive');
         $this->db->from('reply_dispatch');
-        $this->db->join('article_comment','article_comment.order_id=reply_dispatch.reply_id AND reply_dispatch.member_id='.$memberID.' AND reply_dispatch.deleted = 0 AND reply_dispatch.operation='.$operation ,'inner');
+        $this->db->join('article_comment','article_comment.order_id=reply_dispatch.reply_id AND reply_dispatch.task_done=0 AND reply_dispatch.member_id='.$memberID.' AND reply_dispatch.deleted = 0 AND reply_dispatch.operation='.$operation ,'inner');
         $this->db->join('article','article.id=article_comment.article_id');
         $query=$this->db->get();
         return $query->result_array();
