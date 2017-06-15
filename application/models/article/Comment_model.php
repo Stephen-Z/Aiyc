@@ -35,25 +35,35 @@ class Comment_model extends MY_Model
     }
 
     public function left_join_reply($member_id){
-        $this->db->select('*,article_comment.status AS Cstatus,article_comment.created AS Ccreated,article_comment.is_danger AS Cisdanger');
+        $this->db->select('*,article_comment.status AS Cstatus,article_comment.created AS Ccreated,article_comment.is_danger AS Cisdanger,reply_dispatch.id AS Did');
         $this->db->from('site_task_article_comment');
-        $this->db->join('reply_dispatch','reply_dispatch.reply_id=site_task_article_comment.reply_id AND reply_dispatch.deleted=0 AND site_task_article_comment.is_reply=1 AND site_task_article_comment.user_id='.$member_id,'inner');
+        $this->db->join('reply_dispatch','reply_dispatch.id=site_task_article_comment.task_id AND reply_dispatch.deleted=0 AND site_task_article_comment.is_reply=1 AND site_task_article_comment.user_id='.$member_id,'inner');
         $this->db->join('article_comment','site_task_article_comment.reply_id = article_comment.order_id ','left');
         $query=$this->db->get();
         return $query->result_array();
     }
 
     public function admin_join_reply(){
-        $this->db->select('*,article_comment.status AS Cstatus,article_comment.created AS Ccreated,article_comment.is_danger AS Cisdanger,site_task_article_comment.id AS Aid,,site_task_article_comment.comment_status AS Tstatus');
+        $this->db->select('*,reply_dispatch.id AS Did,article_comment.status AS Cstatus,article_comment.created AS Ccreated,article_comment.is_danger AS Cisdanger,site_task_article_comment.id AS Aid,,site_task_article_comment.comment_status AS Tstatus');
         $this->db->from('site_task_article_comment');
-        $this->db->join('reply_dispatch','reply_dispatch.reply_id=site_task_article_comment.reply_id AND reply_dispatch.deleted=0','inner');
-        $this->db->join('article_comment','site_task_article_comment.reply_id = article_comment.order_id AND site_task_article_comment.is_reply=1  ','left');
-        $this->db->join('article','article_comment.article_id=article.id','left');
+        $this->db->join('reply_dispatch','reply_dispatch.id=site_task_article_comment.task_id AND reply_dispatch.deleted=0','inner');
+        $this->db->join('article_comment','site_task_article_comment.reply_id = article_comment.order_id AND site_task_article_comment.is_reply=1  ','inner');
+        $this->db->join('article','article_comment.article_id=article.id','inner');
+        $this->db->join('admin','admin.id=reply_dispatch.member_id');
         $query=$this->db->get();
         return $query->result_array();
     }
 
     public function member_article_comment($memberID){
+        $this->db->select('*,dispatch.id AS Did,article.id AS Aid');
+        $this->db->from('site_task_article_comment');
+        $this->db->join('dispatch','dispatch.id=site_task_article_comment.task_id AND dispatch.task_done=0 AND dispatch.deleted=0 AND site_task_article_comment.is_reply=0 AND site_task_article_comment.user_id='.$memberID,'inner');
+        $this->db->join('article','site_task_article_comment.article_id=article.id','left');
+        $query=$this->db->get();
+        return $query->result_array();
+    }
+
+    public function member_article_allcomment($memberID){
         $this->db->select('*,dispatch.id AS Did,article.id AS Aid');
         $this->db->from('site_task_article_comment');
         $this->db->join('dispatch','dispatch.id=site_task_article_comment.task_id AND dispatch.deleted=0 AND site_task_article_comment.is_reply=0 AND site_task_article_comment.user_id='.$memberID,'inner');

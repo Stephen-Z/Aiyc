@@ -130,7 +130,7 @@ class Comment extends REST_Controller
 
         $user_id = $_SESSION['admin']['id'];
         $count=$this->Comment_model->count_by(array('user_id' => $user_id));
-        $rs=$this->Comment_model->limit($length,$skipnum)->order_by($orderby_name,$orderby_value)->member_article_comment($user_id);
+        $rs=$this->Comment_model->limit($length,$skipnum)->order_by($orderby_name,$orderby_value)->member_article_allcomment($user_id);
         $data['rs']=$rs;
         $data['page_total']=$count;
 
@@ -185,7 +185,7 @@ class Comment extends REST_Controller
         $data['cnrs']=$cnrs;
 
         //preparing data...
-        $orderby_name='Aid';
+        $orderby_name='Did';
         $orderby_value='DESC';
 
         $skipnum = $this->get('skipnum');
@@ -195,7 +195,7 @@ class Comment extends REST_Controller
         //$user_id = $_SESSION['admin']['id'];
         $where=array('is_reply'=>0);
         $count=$this->Comment_model->count_by($where);
-        $rs=$this->List_model->limit($length,$skipnum)->order_by($orderby_name,$orderby_value)->admin_join_comment();
+        $rs=$this->Dispatch_model->limit($length,$skipnum)->order_by($orderby_name,$orderby_value)->admin_join_comment();
         $data['rs']=$rs;
         $data['page_total']=$count;
 
@@ -235,8 +235,8 @@ class Comment extends REST_Controller
 
 
     public function updatestatus_post(){
-        $articleID=$this->input->post('articleid');
-        $userID=$this->input->post('user_id');
+//        $articleID=$this->input->post('articleid');
+//        $userID=$this->input->post('user_id');
         $status=$this->input->post('status');
         $task_id=$this->input->post('task_id');
 
@@ -265,11 +265,11 @@ class Comment extends REST_Controller
         $articleID=$this->input->post('articleid');
         $userID=$this->input->post('user_id');
         $status=$this->input->post('status');
-        $task_id=$this->input->post('task_id');
+        //$task_id=$this->input->post('task_id');
 
         $cuswhere=array();
-        $cuswhere['user_id']=$userID;
-        $cuswhere['id']=$articleID;
+        //$cuswhere['user_id']=$userID;
+        $cuswhere['id']=$userID;
 
         $post_data=array();
         $post_data['comment_status']=$status;
@@ -277,8 +277,8 @@ class Comment extends REST_Controller
         if($this->Comment_model->update_by($cuswhere,$post_data)){
             $update_data=array();
             $update_data['admin_commit']=time();
-            $update_data['task_done']=2;
-            $this->Replydispatch_model->update_by(array('member_id' => $_SESSION['admin']['id'],'id'=>$task_id),$update_data);
+            $update_data['task_done']=$status;
+            $this->Replydispatch_model->update_by(array('id'=>$articleID),$update_data);
             echo 1;
         }
         else{

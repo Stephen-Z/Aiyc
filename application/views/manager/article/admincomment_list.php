@@ -125,8 +125,8 @@ $admin_path=REST_Controller::MANAGER_PATH;
                                    <span class="caret"></span>
                                </button>
                                <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel">
-                                   <li><button class="btn btn-white btn-block btn-margin" type="button" onclick="postInfo(<?php echo $rs_row['Did']?>,<?php echo $rs_row['Aid']?>,<?php echo $rs_row['user_id']?>,3)">通过</button></li>
-                                   <li><button class="btn btn-white btn-block btn-margin" type="button" onclick="postInfo(<?php echo $rs_row['Did']?>,<?php echo $rs_row['Aid']?>,<?php echo $rs_row['user_id']?>,2)">不通过</button></li>
+                                   <li><button class="btn btn-white btn-block btn-margin" type="button" onclick="postInfo(<?php echo $rs_row['Did']?>,3)">通过</button></li>
+                                   <li><button class="btn btn-white btn-block btn-margin" type="button" onclick="postInfo(<?php echo $rs_row['Did']?>,2)">不通过</button></li>
 
                                </ul>
                            </div>
@@ -145,18 +145,14 @@ $admin_path=REST_Controller::MANAGER_PATH;
 </section>
 
 <script>
-    function postInfo(taskID,articleID,userID,Status){
-        ARTICLEID=articleID;
-        STATUS=Status;
-
+    function postInfo(taskID,Status){
         $.ajax({
             type: "POST",
             async: true,
             url: "<?php echo base_url($admin_path.'/article/comment/updatestatus');?>",
             dataType: 'json',
-            data: {articleid:articleID,
+            data: {
                 status:Status,
-                user_id:userID,
                 task_id:taskID,
                 '<?php echo $this->security->get_csrf_token_name()?>':"<?php echo $this->security->get_csrf_hash()?>"
             },

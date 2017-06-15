@@ -83,7 +83,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
             <?php if(!empty($rs)):?>
                 <?php foreach($rs as $rs_row):?>
                     <tr>
-                        <td><?php echo $rs_row['id']?></td>
+                        <td><?php echo $rs_row['Did']?></td>
                         <td style="width: 30%;"><?php echo $rs_row['comment_content']?></td>
                         <td style="width: 40%;"><?php echo $rs_row['content']?></td>
 <!--                        <td>--><?php //echo $rs_row['author']?><!--</td>-->

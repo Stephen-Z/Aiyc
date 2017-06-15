@@ -84,7 +84,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
                     <tr>
                         <td><?php echo $rs_row['id']?></td>
                         <td style="width: 10%;"><?php echo $rs_row['name']?></td>
-                        <td><?php if($rs_row['operation']==0) echo '评论文章(id)';else echo '评价文章(id)(正负面)' ?>：<?php echo $rs_row['article_id'] ?></td>
+                        <td><?php if($rs_row['operation']==0) echo '评论文章(id)';else echo '评价文章正负面(id)' ?>：<?php echo $rs_row['article_id'] ?></td>
                         <td><?php echo $rs_row['article_title'] ?></td>
                         <td><?php echo date('Y-m-d H:i:s',$rs_row['created']) ?></td>
                         <td><?php if($rs_row['member_commit']==0)echo '--';else echo date('Y-m-d H:i:s',$rs_row['member_commit']); ?></td>

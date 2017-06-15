@@ -155,13 +155,13 @@ $admin_path=REST_Controller::MANAGER_PATH;
                 function(data){
                     if(data=='1'){
                         alert('评价成功');
-
-                        if(STATUS == 0){document.getElementById('positive'+ARTICLEID).innerHTML='负面';}
-                        else if(STATUS == 1){document.getElementById('positive'+ARTICLEID).innerHTML='正面';}
-                        else if(STATUS == 2){document.getElementById('positive'+ARTICLEID).innerHTML='未处理';}
+                        window.location.reload();
+//                        if(STATUS == 0){document.getElementById('positive'+ARTICLEID).innerHTML='负面';}
+//                        else if(STATUS == 1){document.getElementById('positive'+ARTICLEID).innerHTML='正面';}
+//                        else if(STATUS == 2){document.getElementById('positive'+ARTICLEID).innerHTML='未处理';}
                     }else{
                         alert('评价失败');
-
+                        window.location.reload();
                     }
 
                 }
