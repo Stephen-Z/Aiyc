@@ -84,8 +84,8 @@ $admin_path=REST_Controller::MANAGER_PATH;
             <?php if(!empty($rs)):?>
                 <?php foreach($rs as $rs_row):?>
                     <tr>
-                        <td><?php echo $rs_row['order_id']?></td>
-                        <td style="width: 45%;"><?php echo $rs_row['title']?></td>
+                        <td><?php echo $rs_row['Did']?></td>
+                        <td style="width: 45%;"><a href="<?php echo $rs_row['url'] ?>"><?php echo $rs_row['title']?></a></td>
                         <td><?php echo $rs_row['comment_content']?></td>
 <!--                        <td>--><?php //echo $rs_row['author']?><!--</td>-->
 <!--                        <td>--><?php //echo date("Y-m-d H:i:s",$rs_row['created']);?><!--</td>-->
@@ -125,9 +125,9 @@ $admin_path=REST_Controller::MANAGER_PATH;
                                     <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel">
-                                    <li><button class="btn btn-white btn-block btn-margin" type="button" onclick="postInfo(<?php echo $rs_row['order_id']?>,1)">正面</button></li>
-                                    <li><button class="btn btn-white btn-block btn-margin" type="button" onclick="postInfo(<?php echo $rs_row['order_id']?>,-1)">负面</button></li>
-                                    <li><button class="btn btn-white btn-block btn-margin" type="button" onclick="postInfo(<?php echo $rs_row['order_id']?>,0)">未处理</button></li>
+                                    <li><button class="btn btn-white btn-block btn-margin" type="button" onclick="postInfo(<?php echo $rs_row['Did']?>,<?php echo $rs_row['order_id']?>,1)">正面</button></li>
+                                    <li><button class="btn btn-white btn-block btn-margin" type="button" onclick="postInfo(<?php echo $rs_row['Did']?>,<?php echo $rs_row['order_id']?>,-1)">负面</button></li>
+                                    <li><button class="btn btn-white btn-block btn-margin" type="button" onclick="postInfo(<?php echo $rs_row['Did']?>,<?php echo $rs_row['order_id']?>,0)">未处理</button></li>
                                 </ul>
                             </div>
                         </td>
@@ -149,7 +149,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
     var STATUS=-1;
 </script>
 <script>
-    function postInfo(articleID,Status){
+    function postInfo(taskid,articleID,Status){
         ARTICLEID=articleID;
         STATUS=Status;
 
@@ -160,6 +160,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
             dataType: 'json',
             data: {articleid:articleID,
                 status:Status,
+                task_id:taskid,
                 '<?php echo $this->security->get_csrf_token_name()?>':"<?php echo $this->security->get_csrf_hash()?>"
             },
             dataType: "text",

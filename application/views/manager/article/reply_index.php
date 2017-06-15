@@ -72,7 +72,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
                 <?php foreach($rs as $rs_row):?>
                     <tr>
                         <td><?php echo $rs_row['order_id']?></td>
-                        <td><?php echo $rs_row['title']?></td>
+                        <td><a href="<?php echo $rs_row['url'] ?>"><?php echo $rs_row['title']?></a></td>
                         <td><?php echo $rs_row['comment_content']?></td>
                         <td><?php echo date("Y-m-d H:i:s",$rs_row['Ccreated']);?></td>
                         <td>

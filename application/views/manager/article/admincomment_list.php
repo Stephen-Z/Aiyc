@@ -84,9 +84,9 @@ $admin_path=REST_Controller::MANAGER_PATH;
             <?php if(!empty($rs)):?>
                 <?php foreach($rs as $rs_row):?>
                     <tr>
-                        <td><?php echo $rs_row['id']?></td>
-                        <td style="width: 45%;"><?php echo $rs_row['title']?></td>
-                        <td><?php echo $rs_row['content']?></td>
+                        <td><?php echo $rs_row['Did']?></td>
+                        <td style="width: 25%;"><a href="<?php echo $rs_row['url'] ?>"><?php echo $rs_row['title']?></a></td>
+                        <td style="width: 45%;"><?php echo $rs_row['content']?></td>
                         <td><?php echo $rs_row['user_id']?></td>
 <!--                        <td>--><?php //echo $rs_row['author']?><!--</td>-->
 <!--                        <td>--><?php //echo date("Y-m-d H:i:s",$rs_row['created']);?><!--</td>-->
@@ -104,18 +104,18 @@ $admin_path=REST_Controller::MANAGER_PATH;
 //                                    echo '未处理';
 //                                    break;
 //                            }?><!--</td>-->
-                       <td><?php switch($rs_row['comment_status']){
+                       <td><?php switch($rs_row['task_done']){
                             case 0:
-                                echo '<span style="color:#b1b1b1">未评论</span>';
+                                echo '<span style="color:#b1b1b1">工人未提交</span>';
                                break;
                             case 1:
-                                echo '<span style="color:#000000">审核中</span>';
+                                echo '<span style="color:#000000">工人已提交</span>';
                                 break;
                             case 2:
                                 echo '<span style="color:#ff0000">未通过审核</span>';
                                 break;
                             case 3:
-                                echo '<span style="color:#34a03a">已评论</span>';
+                                echo '<span style="color:#34a03a">已通过</span>';
                               break;
                       }?></td>
                        <td>
@@ -125,8 +125,8 @@ $admin_path=REST_Controller::MANAGER_PATH;
                                    <span class="caret"></span>
                                </button>
                                <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel">
-                                   <li><button class="btn btn-white btn-block btn-margin" type="button" onclick="postInfo(<?php echo $rs_row['Aid']?>,<?php echo $rs_row['user_id']?>,3)">通过</button></li>
-                                   <li><button class="btn btn-white btn-block btn-margin" type="button" onclick="postInfo(<?php echo $rs_row['Aid']?>,<?php echo $rs_row['user_id']?>,2)">不通过</button></li>
+                                   <li><button class="btn btn-white btn-block btn-margin" type="button" onclick="postInfo(<?php echo $rs_row['Did']?>,<?php echo $rs_row['Aid']?>,<?php echo $rs_row['user_id']?>,3)">通过</button></li>
+                                   <li><button class="btn btn-white btn-block btn-margin" type="button" onclick="postInfo(<?php echo $rs_row['Did']?>,<?php echo $rs_row['Aid']?>,<?php echo $rs_row['user_id']?>,2)">不通过</button></li>
 
                                </ul>
                            </div>
@@ -145,7 +145,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
 </section>
 
 <script>
-    function postInfo(articleID,userID,Status){
+    function postInfo(taskID,articleID,userID,Status){
         ARTICLEID=articleID;
         STATUS=Status;
 
@@ -157,6 +157,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
             data: {articleid:articleID,
                 status:Status,
                 user_id:userID,
+                task_id:taskID,
                 '<?php echo $this->security->get_csrf_token_name()?>':"<?php echo $this->security->get_csrf_hash()?>"
             },
             dataType: "text",

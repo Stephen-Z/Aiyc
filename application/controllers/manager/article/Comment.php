@@ -65,6 +65,7 @@ class Comment extends REST_Controller
         $comment_content = $this->input->post('content');
         $isReply=$this->input->post('isreply');
         $user_id = $_SESSION['admin']['id'];
+        $task_id=$this->input->post('taskid');
 
 
         $data=array();
@@ -72,6 +73,7 @@ class Comment extends REST_Controller
         $data['content']=$comment_content;
         $data['user_id']=$user_id;
         $data['is_reply']=$isReply;
+        $data['task_id']=$task_id;
         if($isReply==1){
             $data['reply_id']=$this->input->post('reply_id');
         }
@@ -93,11 +95,12 @@ class Comment extends REST_Controller
 
             $update_data=array();
             $update_data['member_commit']=time();
+            $update_data['task_done']=1;
             if($isReply==0){
-                $this->Dispatch_model->update_by(array('member_id' => $_SESSION['admin']['id']),$update_data);
+                $this->Dispatch_model->update_by(array('member_id' => $_SESSION['admin']['id'],'id'=>$task_id),$update_data);
             }
             else{
-                $this->Replydispatch_model->update_by(array('member_id' => $_SESSION['admin']['id']),$update_data);
+                $this->Replydispatch_model->update_by(array('member_id' => $_SESSION['admin']['id'],'id'=>$task_id),$update_data);
             }
             echo '1';
         }else{
@@ -118,7 +121,7 @@ class Comment extends REST_Controller
         $data['cnrs']=$cnrs;
 
         //preparing data...
-        $orderby_name='Aid';
+        $orderby_name='Did';
         $orderby_value='DESC';
 
         $skipnum = $this->get('skipnum');
@@ -126,8 +129,8 @@ class Comment extends REST_Controller
         init_page_params($skipnum, $length);
 
         $user_id = $_SESSION['admin']['id'];
-        $count=$this->List_model->count_all();
-        $rs=$this->List_model->limit($length,$skipnum)->order_by($orderby_name,$orderby_value)->left_join_comment($user_id);
+        $count=$this->Comment_model->count_by(array('user_id' => $user_id));
+        $rs=$this->Comment_model->limit($length,$skipnum)->order_by($orderby_name,$orderby_value)->member_article_comment($user_id);
         $data['rs']=$rs;
         $data['page_total']=$count;
 
@@ -235,10 +238,12 @@ class Comment extends REST_Controller
         $articleID=$this->input->post('articleid');
         $userID=$this->input->post('user_id');
         $status=$this->input->post('status');
+        $task_id=$this->input->post('task_id');
 
         $cuswhere=array();
-        $cuswhere['user_id']=$userID;
-        $cuswhere['article_id']=$articleID;
+//        $cuswhere['user_id']=$userID;
+//        $cuswhere['article_id']=$articleID;
+        $cuswhere['task_id']=$task_id;
 
         $post_data=array();
         $post_data['comment_status']=$status;
@@ -246,7 +251,8 @@ class Comment extends REST_Controller
         if($this->Comment_model->update_by($cuswhere,$post_data)){
             $update_data=array();
             $update_data['admin_commit']=time();
-            $this->Dispatch_model->update_by(array('member_id' => $_SESSION['admin']['id']),$update_data);
+            $update_data['task_done']=$status;
+            $this->Dispatch_model->update_by(array('id'=>$task_id),$update_data);
             echo 1;
         }
         else{
@@ -259,6 +265,7 @@ class Comment extends REST_Controller
         $articleID=$this->input->post('articleid');
         $userID=$this->input->post('user_id');
         $status=$this->input->post('status');
+        $task_id=$this->input->post('task_id');
 
         $cuswhere=array();
         $cuswhere['user_id']=$userID;
@@ -270,7 +277,8 @@ class Comment extends REST_Controller
         if($this->Comment_model->update_by($cuswhere,$post_data)){
             $update_data=array();
             $update_data['admin_commit']=time();
-            $this->Replydispatch_model->update_by(array('member_id' => $_SESSION['admin']['id']),$update_data);
+            $update_data['task_done']=2;
+            $this->Replydispatch_model->update_by(array('member_id' => $_SESSION['admin']['id'],'id'=>$task_id),$update_data);
             echo 1;
         }
         else{

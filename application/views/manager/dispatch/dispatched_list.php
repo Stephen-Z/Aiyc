@@ -71,8 +71,10 @@ $admin_path=REST_Controller::MANAGER_PATH;
                 <th>ID</th>
                 <th>工人名字</th>
                 <th>派发任务</th>
+                <th>相关文章标题</th>
                 <th>派发时间</th>
                 <th>工人提交时间</th>
+                <th>状态</th>
                 <th style="width:10%">操作</th>
             </tr>
             </thead>
@@ -81,11 +83,25 @@ $admin_path=REST_Controller::MANAGER_PATH;
                 <?php foreach($rs as $rs_row):?>
                     <tr>
                         <td><?php echo $rs_row['id']?></td>
-                        <td style="width: 25%;"><?php echo $rs_row['name']?></td>
-
+                        <td style="width: 10%;"><?php echo $rs_row['name']?></td>
                         <td><?php if($rs_row['operation']==0) echo '评论文章(id)';else echo '评价文章(id)(正负面)' ?>：<?php echo $rs_row['article_id'] ?></td>
+                        <td><?php echo $rs_row['article_title'] ?></td>
                         <td><?php echo date('Y-m-d H:i:s',$rs_row['created']) ?></td>
                         <td><?php if($rs_row['member_commit']==0)echo '--';else echo date('Y-m-d H:i:s',$rs_row['member_commit']); ?></td>
+                        <td><?php switch($rs_row['task_done']){
+                                case 0:
+                                    echo '<span style="color:#b1b1b1">工人未提交</span>';
+                                    break;
+                                case 1:
+                                    echo '<span style="color:#000000">工人已提交</span>';
+                                    break;
+                                case 2:
+                                    echo '<span style="color:#ff0000">未通过审核</span>';
+                                    break;
+                                case 3:
+                                    echo '<span style="color:#34a03a">已通过</span>';
+                                    break;
+                            }?></td>
                         <td>
                             <button class="btn btn-white btn-xs btn-margin"  type="button" onclick="postDelete(<?php echo $rs_row['member_id'] ?>,<?php echo $rs_row['article_id'] ?>,<?php echo $rs_row['operation'] ?>)"  >删除</button>
                         </td>

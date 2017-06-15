@@ -18,6 +18,8 @@ class Dispatched extends REST_Controller
         $this->load->model('dispatch/Dispatch_model','Dispatch_model',true);
         $this->load->model('auth/Auth_model','Auth_model',true);
         $this->load->model('dispatch/Replydispatch_model','Replydispatch_model',true);
+        $this->load->model('article/List_model','List_model',true);
+        $this->load->model('article/Onlinecomment_model','Onlinecomment_model',true);
         $this->nav = 'dispatch_system';
     }
 
@@ -39,6 +41,10 @@ class Dispatched extends REST_Controller
             $cuswhere['id']=$rs_row['member_id'];
             $tmp=$this->Auth_model->get_by($cuswhere);
             $rs_row['name']=$tmp['name'];
+            $cuswhere=array();
+            $cuswhere['id']=$rs_row['article_id'];
+            $article_tmp=$this->List_model->get_by($cuswhere);
+            $rs_row['article_title']=$article_tmp['title'];
             array_push($newrs,$rs_row);
         }
 
@@ -84,9 +90,16 @@ class Dispatched extends REST_Controller
             $cuswhere['id']=$rs_row['member_id'];
             $tmp=$this->Auth_model->get_by($cuswhere);
             $rs_row['name']=$tmp['name'];
+            $cuswhere=array();
+            $cuswhere['order_id']=$rs_row['reply_id'];
+            $comment_tmp=$this->Onlinecomment_model->get_by($cuswhere);
+            $rs_row['online_comment']=$comment_tmp['comment_content'];
+            $cuswhere=array();
+            $cuswhere['id']=$comment_tmp['article_id'];
+            $article_tmp=$this->List_model->get_by($cuswhere);
+            $rs_row['article_title']=$article_tmp['title'];
             array_push($newrs,$rs_row);
         }
-
         $data['rs']=$newrs;
 
         $this->load->view($this->template_patch.'/dispatch/replydispatched_list',$data);

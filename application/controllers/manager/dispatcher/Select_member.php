@@ -41,18 +41,18 @@ class Select_member extends REST_Controller
         $where['logout']=0;
 
         $rs=$this->Signin_model->get_many_by($where);
-        $cuswhere=array();
-        $cuswhere['operation']=0;
-        $cuswhere['article_id']=$articleID;
-        $cuswhere['deleted']=0;
-        $i=0;
-        foreach($rs as $rs_row ){
-            $cuswhere['member_id']=$rs_row['user_id'];
-            if($this->Dispatch_model->count_by($cuswhere)!=0){
-                unset($rs[$i]);
-            }
-            $i++;
-        }
+//        $cuswhere=array();
+//        $cuswhere['operation']=0;
+//        $cuswhere['article_id']=$articleID;
+//        $cuswhere['deleted']=0;
+//        $i=0;
+//        foreach($rs as $rs_row ){
+//            $cuswhere['member_id']=$rs_row['user_id'];
+//            if($this->Dispatch_model->count_by($cuswhere)!=0){
+//                unset($rs[$i]);
+//            }
+//            $i++;
+//        }
 
         $data['rs']=$rs;
 
@@ -98,18 +98,18 @@ class Select_member extends REST_Controller
         $where['logout']=0;
 
         $rs=$this->Signin_model->get_many_by($where);
-        $cuswhere=array();
-        $cuswhere['operation']=1;
-        $cuswhere['article_id']=$articleID;
-        $cuswhere['deleted']=0;
-        $i=0;
-        foreach($rs as $rs_row ){
-            $cuswhere['member_id']=$rs_row['user_id'];
-            if($this->Dispatch_model->count_by($cuswhere)!=0){
-                unset($rs[$i]);
-            }
-            $i++;
-        }
+//        $cuswhere=array();
+//        $cuswhere['operation']=1;
+//        $cuswhere['article_id']=$articleID;
+//        $cuswhere['deleted']=0;
+//        $i=0;
+//        foreach($rs as $rs_row ){
+//            $cuswhere['member_id']=$rs_row['user_id'];
+//            if($this->Dispatch_model->count_by($cuswhere)!=0){
+//                unset($rs[$i]);
+//            }
+//            $i++;
+//        }
         $data['rs']=$rs;
         $this->load->view($this->template_patch."/dispatch/dispatch_positive",$data);
     }
@@ -132,18 +132,18 @@ class Select_member extends REST_Controller
         $where['logout']=0;
 
         $rs=$this->Signin_model->get_many_by($where);
-        $cuswhere=array();
-        $cuswhere['operation']=1;
-        $cuswhere['reply_id']=$articleID;
-        $cuswhere['deleted']=0;
-        $i=0;
-        foreach($rs as $rs_row ){
-            $cuswhere['member_id']=$rs_row['user_id'];
-            if($this->Replydispatch_model->count_by($cuswhere)!=0){
-                unset($rs[$i]);
-            }
-            $i++;
-        }
+//        $cuswhere=array();
+//        $cuswhere['operation']=1;
+//        $cuswhere['reply_id']=$articleID;
+//        $cuswhere['deleted']=0;
+//        $i=0;
+//        foreach($rs as $rs_row ){
+//            $cuswhere['member_id']=$rs_row['user_id'];
+//            if($this->Replydispatch_model->count_by($cuswhere)!=0){
+//                unset($rs[$i]);
+//            }
+//            $i++;
+//        }
         $data['rs']=$rs;
         $this->load->view($this->template_patch."/dispatch/selectmember_replypositive",$data);
     }
@@ -167,18 +167,18 @@ class Select_member extends REST_Controller
         $where['logout']=0;
 
         $rs=$this->Signin_model->get_many_by($where);
-        $cuswhere=array();
-        $cuswhere['operation']=0;
-        $cuswhere['reply_id']=$replyid;
-        $cuswhere['deleted']=0;
-        $i=0;
-        foreach($rs as $rs_row ){
-            $cuswhere['member_id']=$rs_row['user_id'];
-            if($this->Replydispatch_model->count_by($cuswhere)!=0){
-                unset($rs[$i]);
-            }
-            $i++;
-        }
+//        $cuswhere=array();
+//        $cuswhere['operation']=0;
+//        $cuswhere['reply_id']=$replyid;
+//        $cuswhere['deleted']=0;
+//        $i=0;
+//        foreach($rs as $rs_row ){
+//            $cuswhere['member_id']=$rs_row['user_id'];
+//            if($this->Replydispatch_model->count_by($cuswhere)!=0){
+//                unset($rs[$i]);
+//            }
+//            $i++;
+//        }
 
         $data['rs']=$rs;
 
