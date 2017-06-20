@@ -4,7 +4,7 @@
  * User: stephen
  * Date: 30/4/2017
  * Time: 11:13 PM
- * view for 文章评论
+ * view for dispatch system
  */
 $style_path=REST_Controller::SYSTEM_STYLE_PATH;
 $template_patch=REST_Controller::MANAGER_TEMPLATE_PATH;
@@ -12,7 +12,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
 ?>
 <?php $this->load->view("{$template_patch}/public/header.php");?>
 <div class="pageheader">
-    <h2><i class="fa fa-bars"></i> 回复评价
+    <h2><i class="fa fa-bars"></i>回复正负面二次维护
         <?php
         if(!empty($cnrs)){
             echo '<span>'.$cnrs['name'].'</span>';
@@ -69,14 +69,14 @@ $admin_path=REST_Controller::MANAGER_PATH;
             <thead>
             <tr>
                 <th>ID</th>
-                <th>文章标题</th>
-                <th>回复内容</th>
-<!--                <th>来源网站</th>-->
-<!--                <th>抓取时间</th>-->
+                <th>工人名字</th>
+                <th>派发任务</th>
+                <th>相关文章标题</th>
+                <th>相关回复</th>
                 <th>派发时间</th>
+                <th>工人提交时间</th>
                 <th>正负面</th>
-<!--                <th>是否高危</th>-->
-<!--                <th>评论状态</th>-->
+                <th>状态</th>
                 <th style="width:10%">操作</th>
             </tr>
             </thead>
@@ -84,50 +84,45 @@ $admin_path=REST_Controller::MANAGER_PATH;
             <?php if(!empty($rs)):?>
                 <?php foreach($rs as $rs_row):?>
                     <tr>
-                        <td><?php echo $rs_row['Did']?></td>
-                        <td style="width: 45%;"><a href="<?php echo $rs_row['url'] ?>"><?php echo $rs_row['title']?></a></td>
-                        <td><?php echo $rs_row['comment_content']?></td>
-<!--                        <td>--><?php //echo $rs_row['author']?><!--</td>-->
-<!--                        <td>--><?php //echo date("Y-m-d H:i:s",$rs_row['created']);?><!--</td>-->
-<!--                        <!-- <td>--><?php //echo $rs_row['pre_reply']?><!--</td> -->
-<!--                        <td>???</td>-->
-<!--                        <td>???</td>-->
-                        <td><?php echo date('Y-m-d H:i:s',$rs_row['Dcreated']) ?></td>
-                        <td><?php switch($rs_row['Cpositive']){
-                                case -1:
+                        <td><?php echo $rs_row['id']?></td>
+                        <td style="width: 10%;"><?php echo $rs_row['name']?></td>
+                        <td><?php if($rs_row['operation']==0) echo '评论文章(id)';else echo '评价回复正负面(id)' ?>：<?php echo $rs_row['reply_id'] ?></td>
+                        <td><?php echo $rs_row['article_title'] ?></td>
+                        <td><?php echo $rs_row['online_comment'] ?></td>
+                        <td><?php echo date('Y-m-d H:i:s',$rs_row['created']) ?></td>
+                        <td><?php if($rs_row['member_commit']==0)echo '--';else echo date('Y-m-d H:i:s',$rs_row['member_commit']); ?></td>
+                        <td><?php switch($rs_row['comment_positive']){
+                                case 0:
                                     echo '负面';
                                     break;
                                 case 1:
                                     echo '正面';
                                     break;
-                                case 0:
+                                case 2:
                                     echo '未处理';
                                     break;
                             }?></td>
-<!--                        <td>--><?php //switch($rs_row['comment_status']){
-//                            case 0:
-//                                echo '<span style="color:#b1b1b1">未评论</span>';
-//                                break;
-//                            case 1:
-//                                echo '<span style="color:#000000">审核中</span>';
-//                                break;
-//                            case 2:
-//                                echo '<span style="color:#ff0000">未通过审核</span>';
-//                                break;
-//                            case 3:
-//                                echo '<span style="color:#34a03a">已评论</span>';
-//                                break;
-//                        }?><!--</td>-->
+                        <td><?php switch($rs_row['second_confirm']){
+                                case 0:
+                                    echo '<span style="color:#000000">未确认</span>';
+                                    break;
+                                case 1:
+                                    echo '<span style="color:#038c01">完成</span>';
+                                    break;
+                                case 2:
+                                    echo '<span style="color:#ff0000">完成</span>';
+                                    break;
+                            }?></td>
                         <td>
                             <div class="dropdown">
+                                <button class="btn btn-white btn-xs btn-margin"  type="button" onclick="postInfo(<?php echo $rs_row['Did'] ?>,1,<?php echo $rs_row['reply_id'] ?>,-1)"  >确认</button>
                                 <button id="dLabel" class="btn btn-white btn-xs btn-margin" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     评价
                                     <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel">
-                                    <li><button class="btn btn-white btn-block btn-margin" type="button" onclick="postInfo(<?php echo $rs_row['Did']?>,<?php echo $rs_row['order_id']?>,1)">正面</button></li>
-                                    <li><button class="btn btn-white btn-block btn-margin" type="button" onclick="postInfo(<?php echo $rs_row['Did']?>,<?php echo $rs_row['order_id']?>,0)">负面</button></li>
-                                    <li><button class="btn btn-white btn-block btn-margin" type="button" onclick="postInfo(<?php echo $rs_row['Did']?>,<?php echo $rs_row['order_id']?>,-1)">未处理</button></li>
+                                    <li><button class="btn btn-white btn-block btn-margin" type="button" onclick="postInfo(<?php echo $rs_row['Did'] ?>,2,<?php echo $rs_row['reply_id'] ?>,1)">正面</button></li>
+                                    <li><button class="btn btn-white btn-block btn-margin" type="button" onclick="postInfo(<?php echo $rs_row['Did'] ?>,2,<?php echo $rs_row['reply_id'] ?>,0)">负面</button></li>
                                 </ul>
                             </div>
                         </td>
@@ -144,40 +139,37 @@ $admin_path=REST_Controller::MANAGER_PATH;
     </div>
 </section>
 
-<script>
-    var ARTICLEID=-1;
-    var STATUS=-1;
-</script>
-<script>
-    function postInfo(taskid,articleID,Status){
-        ARTICLEID=articleID;
-        STATUS=Status;
 
+<script>
+    //提交选择
+    function postInfo(dispatchID,dispatchSecondConfirm,articleID,positives){
         $.ajax({
             type: "POST",
-            async: true,
-            url: "<?php echo base_url($admin_path.'/article/Goodorbad/replyupdate');?>",
+            url: "<?php echo base_url($admin_path.'/dispatcher/dispatched/setreplysecondconfirm');?>",
             dataType: 'json',
-            data: {articleid:articleID,
-                status:Status,
-                task_id:taskid,
-                '<?php echo $this->security->get_csrf_token_name()?>':"<?php echo $this->security->get_csrf_hash()?>"
+            data: {dispatchID:dispatchID,
+                dispatchSecondConfirm:dispatchSecondConfirm,
+                articleID:articleID,
+                positives:positives,
+                '<?php echo $token_name; ?>':"<?php echo $hash; ?>"
             },
             dataType: "text",
             cache:false,
             success:
                 function(data){
                     if(data=='1'){
-                        alert('评价成功');
+                        alert('操作成功');  //as a debugging message.
                         window.location.reload();
                     }else{
-                        alert('评价失败');
+                        alert('操作失败，请重试');  //as a debugging message.
                         window.location.reload();
                     }
+
                 }
-        });
+        });// you have missed this bracket
     }
 </script>
+<!--==================== 评论模态框======================= -->
 
 
 

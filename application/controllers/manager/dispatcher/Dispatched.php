@@ -118,4 +118,139 @@ class Dispatched extends REST_Controller
             echo 0;
         }
     }
+
+    public function secondconfirmarticle_get(){
+        $before_time=strtotime('-2 hour');
+        //echo $before_time;
+
+        $data=array();
+        $data['nav']=$this->nav;
+        $data['child_nav']='article_second_confirm';
+
+        $data['token_name'] = $this->security->get_csrf_token_name();
+        $data['hash'] = $this->security->get_csrf_hash();
+
+        $skipnum = $this->get('skipnum');
+        $length = $this->get('length');
+        init_page_params($skipnum, $length);
+
+        $orderby_name='member_commit';
+        $orderby_value='DESC';
+
+
+        $where=array();
+        $where['admin_id']=$_SESSION['admin']['id'];
+        $rs=$this->Dispatch_model->limit($length, $skipnum)->order_by($orderby_name,$orderby_value)->second_confirm($where['admin_id'],$before_time);
+
+        //$count=count($rs);
+
+        $newrs=array();
+        foreach ($rs as $rs_row){
+            $cuswhere=array();
+            $cuswhere['id']=$rs_row['member_id'];
+            $tmp=$this->Auth_model->get_by($cuswhere);
+            $rs_row['name']=$tmp['name'];
+            $cuswhere=array();
+            $cuswhere['id']=$rs_row['article_id'];
+            $article_tmp=$this->List_model->get_by($cuswhere);
+            $rs_row['article_title']=$article_tmp['title'];
+            $rs_row['article_positive']=$article_tmp['positive'];
+            array_push($newrs,$rs_row);
+        }
+
+        $data['rs']=$newrs;
+
+        $data['page_total']=count($newrs);
+
+        $this->load->view($this->template_patch.'/dispatch/article_second_confirm',$data);
+    }
+
+
+    public function secondconfirmreply_get(){
+        $before_time=strtotime('-2 hour');
+        //echo $before_time;
+
+        $data=array();
+        $data['nav']=$this->nav;
+        $data['child_nav']='reply_second_confirm';
+
+        $data['token_name'] = $this->security->get_csrf_token_name();
+        $data['hash'] = $this->security->get_csrf_hash();
+
+        $skipnum = $this->get('skipnum');
+        $length = $this->get('length');
+        init_page_params($skipnum, $length);
+
+        $orderby_name='member_commit';
+        $orderby_value='DESC';
+
+
+        $where=array();
+        $where['admin_id']=$_SESSION['admin']['id'];
+        $rs=$this->Replydispatch_model->limit($length, $skipnum)->order_by('second_confirm','asc')->order_by($orderby_name,$orderby_value)->second_confirm($where['admin_id'],$before_time);
+
+        //$count=count($rs);
+
+        $newrs=array();
+        foreach ($rs as $rs_row){
+            $cuswhere=array();
+            $cuswhere['id']=$rs_row['member_id'];
+            $tmp=$this->Auth_model->get_by($cuswhere);
+            $rs_row['name']=$tmp['name'];
+            $cuswhere=array();
+            $cuswhere['order_id']=$rs_row['reply_id'];
+            $comment_tmp=$this->Onlinecomment_model->get_by($cuswhere);
+            $rs_row['online_comment']=$comment_tmp['comment_content'];
+            $rs_row['comment_positive']=$comment_tmp['positive'];
+            $cuswhere=array();
+            $cuswhere['id']=$comment_tmp['article_id'];
+            $article_tmp=$this->List_model->get_by($cuswhere);
+            $rs_row['article_title']=$article_tmp['title'];
+            array_push($newrs,$rs_row);
+        }
+
+        $data['rs']=$newrs;
+
+        $data['page_total']=count($newrs);
+
+        $this->load->view($this->template_patch.'/dispatch/reply_second_confirm',$data);
+    }
+
+
+    public function setarticlesecondconfirm_post(){
+        $dispatchID=$this->input->post('dispatchID');
+        $dispatchSecondConfirm=$this->input->post('dispatchSecondConfirm');
+        $articleID=$this->input->post('articleID');
+        $positives=$this->input->post('positives');
+
+        $cuswhere=array();
+        //$cuswhere['id']=$dispatchID;
+        $cuswhere['second_confirm']=$dispatchSecondConfirm;
+        $this->Dispatch_model->update($dispatchID,$cuswhere);
+
+        if($positives!=-1){
+            $this->List_model->update($articleID,array('positive' => $positives));
+        }
+
+        echo '1';
+    }
+
+
+    public function setreplysecondconfirm_post(){
+        $dispatchID=$this->input->post('dispatchID');
+        $dispatchSecondConfirm=$this->input->post('dispatchSecondConfirm');
+        $articleID=$this->input->post('articleID');
+        $positives=$this->input->post('positives');
+
+        $cuswhere=array();
+        //$cuswhere['id']=$dispatchID;
+        $cuswhere['second_confirm']=$dispatchSecondConfirm;
+        $this->Replydispatch_model->update($dispatchID,$cuswhere);
+
+        if($positives!=-1){
+            $this->Onlinecomment_model->update($articleID,array('positive' => $positives));
+        }
+
+        echo '1';
+    }
 }

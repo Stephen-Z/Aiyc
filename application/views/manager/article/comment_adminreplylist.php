@@ -77,7 +77,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
 <!--                <th>抓取时间</th>-->
 <!--                <th>派发时间</th>-->
 <!--                <th>是否高危</th>-->
-<!--                <th>评论状态</th>-->
+                <th>评论状态</th>
                 <th style="width:10%">操作</th>
             </tr>
             </thead>

@@ -116,8 +116,12 @@ $admin_path=REST_Controller::MANAGER_PATH;
                                 echo '<span style="color:#34a03a">已评论</span>';
                               break;
                       }?></td>
-                       <td>
-                            <button class="btn btn-white btn-xs btn-margin"  type="button"  data-toggle="modal" data-target="#myModal" disabled onclick="setClick(<?php echo $rs_row['id']?>);">删除</button>
+                        <td>
+                            <?php if($rs_row['task_done']!=2):?>
+                                <button class="btn btn-white btn-xs btn-margin"  type="button"  data-toggle="modal" data-target="#myModal" disabled onclick="setClick(<?php echo $rs_row['Did'] ?>,<?php echo $rs_row['id']?>,<?php echo $rs_row['order_id']?>,'<?php echo $rs_row['comment_content']?>');">评论</button>
+                            <?php else:?>
+                                <button class="btn btn-white btn-xs btn-margin"  type="button"  data-toggle="modal" data-target="#myModal" onclick="setClick(<?php echo $rs_row['Did'] ?>,<?php echo $rs_row['id']?>,<?php echo $rs_row['order_id']?>,'<?php echo $rs_row['comment_content']?>');">评论</button>
+                            <?php endif;?>
                         </td>
                     </tr>
                     <?php
@@ -155,8 +159,10 @@ $admin_path=REST_Controller::MANAGER_PATH;
 </div>
 <script>
     //设置模态框标题
-    function setClick(articleID,articleTitle){
+    function setClick(taskID,articleID,reply_id,articleTitle){
         clicked=articleID;
+        REPLYID=reply_id;
+        TASKID=taskID;
         document.getElementById("commentLabel").innerHTML='标题： '+articleTitle;
     }
     //提交评论
@@ -172,7 +178,10 @@ $admin_path=REST_Controller::MANAGER_PATH;
             url: "<?php echo base_url($admin_path.'/article/Comment/create');?>",
             dataType: 'json',
             data: {articleid:articleId,
+                reply_id:REPLYID,
                 content:commentContent,
+                taskid:TASKID,
+                isreply:1,
                 '<?php echo $token_name; ?>':"<?php echo $hash; ?>"
             },
             dataType: "text",
@@ -181,10 +190,10 @@ $admin_path=REST_Controller::MANAGER_PATH;
                 function(data){
                     if(data=='1'){
                         alert('评论成功，等待审核');  //as a debugging message.
-                        window.location.href="<?php echo base_url($admin_path.'/article/comment');?>";
+                        window.location.href="<?php echo base_url($admin_path.'/article/comment/reply');?>";
                     }else{
                         alert('评论失败');  //as a debugging message.
-                        window.location.href="<?php echo base_url($admin_path.'/article/comment');?>";
+                        window.location.href="<?php echo base_url($admin_path.'/article/comment/reply');?>";
                     }
 
                 }
