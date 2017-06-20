@@ -117,7 +117,11 @@ $admin_path=REST_Controller::MANAGER_PATH;
                               break;
                       }?></td>
                        <td>
-                            <button class="btn btn-white btn-xs btn-margin"  type="button"  data-toggle="modal" data-target="#myModal" disabled onclick="setClick(<?php echo $rs_row['Did']?>,'<?php echo $rs_row['title']?>');">评论</button>
+                           <?php if($rs_row['task_done']!=2):?>
+                               <button class="btn btn-white btn-xs btn-margin"  type="button"  data-toggle="modal" data-target="#myModal" disabled  onclick="setClick(<?php echo $rs_row['Did']?>,<?php echo $rs_row['id']?>,'<?php echo $rs_row['title']?>');">评论</button>
+                           <?php else:?>
+                               <button class="btn btn-white btn-xs btn-margin"  type="button"  data-toggle="modal" data-target="#myModal"   onclick="setClick(<?php echo $rs_row['Did']?>,<?php echo $rs_row['id']?>,'<?php echo $rs_row['title']?>');">评论</button>
+                           <?php endif;?>
                         </td>
                     </tr>
                     <?php
@@ -155,8 +159,9 @@ $admin_path=REST_Controller::MANAGER_PATH;
 </div>
 <script>
     //设置模态框标题
-    function setClick(articleID,articleTitle){
+    function setClick(taskID,articleID,articleTitle){
         clicked=articleID;
+        task_id=taskID;
         document.getElementById("commentLabel").innerHTML='标题： '+articleTitle;
     }
     //提交评论
@@ -173,7 +178,8 @@ $admin_path=REST_Controller::MANAGER_PATH;
             dataType: 'json',
             data: {articleid:articleId,
                 content:commentContent,
-                taskid:
+                taskid:task_id,
+                isreply:0,
                 '<?php echo $token_name; ?>':"<?php echo $hash; ?>"
             },
             dataType: "text",
@@ -182,10 +188,10 @@ $admin_path=REST_Controller::MANAGER_PATH;
                 function(data){
                     if(data=='1'){
                         alert('评论成功，等待审核');  //as a debugging message.
-                        window.location.href="<?php echo base_url($admin_path.'/article/comment');?>";
+                        window.location.reload();
                     }else{
                         alert('评论失败');  //as a debugging message.
-                        window.location.href="<?php echo base_url($admin_path.'/article/comment');?>";
+                        window.location.reload();
                     }
 
                 }

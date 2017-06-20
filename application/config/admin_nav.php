@@ -49,6 +49,21 @@ $config['nav']=array(
                 'nav_name' => 'dispatched_replylist',
                 'url' => 'dispatcher/dispatched/reply',
             ),
+            array(
+                'name' => '文章二次维护',
+                'nav_name' => 'article_second_confirm',
+                'url' => 'dispatcher/dispatched/secondconfirmarticle',
+            ),
+            array(
+                'name' => '回复二次维护',
+                'nav_name' => 'reply_second_confirm',
+                'url' => 'dispatcher/dispatched/secondconfirmreply',
+            ),
+            array(
+                'name' => '统计',
+                'nav_name' => 'member_statistic',
+                'url' => 'statistic/member_statistic',
+            ),
         )
 
     ),

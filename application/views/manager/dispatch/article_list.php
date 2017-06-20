@@ -107,11 +107,27 @@ $admin_path=REST_Controller::MANAGER_PATH;
                             </div>
                         </div>
                     </div>
-
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <div style="padding-top: 3px">
+                                <button type="button" class="btn btn-info" onclick="special_article()" >
+                                    <i class="glyphicon glyphicon-search"></i> 今日问答
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </form>
     </header>
+
+<!--    今日问答-->
+    <script>
+        function special_article(){
+            alert('11');
+            window.location.href='/manager/dispatcher/article_list/todayquestion';
+        }
+    </script>
 
 
     <div id="sample_1_wrapper" class="panel-heading dataTables_wrapper form-inline ischeckbox" role="grid">

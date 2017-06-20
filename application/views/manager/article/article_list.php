@@ -140,8 +140,20 @@ $admin_path=REST_Controller::MANAGER_PATH;
                       <td><a href="<?php echo $rs_row['url'] ?>"><?php echo $rs_row['title']?></a></td>
                       <td><?php echo $rs_row['author']?></td>
                       <td><?php echo date("Y-m-d H:i:s",$rs_row['release_time']);?></td>
-                      <td><?php echo $rs_row['pre_reply']?></td>
-                      <td><?php echo $rs_row['reply']?></td>
+                      <td>
+                          <?php if($rs_row['reply']-$rs_row['pre_reply']<10):?>
+                          <span style="color: #000000"><?php echo $rs_row['pre_reply']?></span>
+                          <?php else:?>
+                          <span style="color: #ac0000"><?php echo $rs_row['pre_reply']?></span>
+                          <?php endif; ?>
+                      </td>
+                      <td>
+                          <?php if($rs_row['reply']-$rs_row['pre_reply']<10):?>
+                              <span style="color: #000000"><?php echo $rs_row['reply']?></span>
+                          <?php else:?>
+                              <span style="color: #ac0000"><?php echo $rs_row['reply']?></span>
+                          <?php endif; ?>
+                      </td>
                       <td><?php switch($rs_row['positive']){
                               case 0:
                                   echo '负面';

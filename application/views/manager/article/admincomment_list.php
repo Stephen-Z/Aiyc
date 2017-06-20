@@ -71,12 +71,12 @@ $admin_path=REST_Controller::MANAGER_PATH;
                 <th>ID</th>
                 <th>文章标题</th>
                 <th>评论内容</th>
-                <th>用户ID</th>
+                <th>用户</th>
 <!--                <th>来源网站</th>-->
 <!--                <th>抓取时间</th>-->
 <!--                <th>派发时间</th>-->
 <!--                <th>是否高危</th>-->
-<!--                <th>评论状态</th>-->
+                <th>评论状态</th>
                 <th style="width:10%">操作</th>
             </tr>
             </thead>
@@ -87,7 +87,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
                         <td><?php echo $rs_row['Did']?></td>
                         <td style="width: 25%;"><a href="<?php echo $rs_row['url'] ?>"><?php echo $rs_row['title']?></a></td>
                         <td style="width: 45%;"><?php echo $rs_row['content']?></td>
-                        <td><?php echo $rs_row['user_id']?></td>
+                        <td><?php echo $rs_row['name']?></td>
 <!--                        <td>--><?php //echo $rs_row['author']?><!--</td>-->
 <!--                        <td>--><?php //echo date("Y-m-d H:i:s",$rs_row['created']);?><!--</td>-->
 <!--                        <!-- <td>--><?php //echo $rs_row['pre_reply']?><!--</td> -->

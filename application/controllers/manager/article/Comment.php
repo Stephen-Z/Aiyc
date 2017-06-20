@@ -78,34 +78,56 @@ class Comment extends REST_Controller
             $data['reply_id']=$this->input->post('reply_id');
         }
 
-        if($this->Comment_model->insert($data)){
-            //修改回复数
-            if($isReply==0){
-                $where=array();
-                $where['id']=$articleId;
-                $tempdata=$this->List_model->get_by($where);
-                $reply=$tempdata['reply'];
-                $preReply=$reply;
-                $reply += 1;
-                $updateData=array();
-                $updateData['pre_reply']=$preReply;
-                $updateData['reply']=$reply;
-                $this->List_model->update_by($where,$updateData);
-            }
+        $is_exist=$this->Comment_model->count_by(array('task_id'=>$task_id,'is_reply'=>$isReply));
+        if($is_exist==0){
+            if($this->Comment_model->insert($data)){
+                //修改回复数
+                if($isReply==0){
+                    $where=array();
+                    $where['id']=$articleId;
+                    $tempdata=$this->List_model->get_by($where);
+                    $reply=$tempdata['reply'];
+                    $preReply=$reply;
+                    $reply += 1;
+                    $updateData=array();
+                    $updateData['pre_reply']=$preReply;
+                    $updateData['reply']=$reply;
+                    $this->List_model->update_by($where,$updateData);
+                }
 
-            $update_data=array();
-            $update_data['member_commit']=time();
-            $update_data['task_done']=1;
-            if($isReply==0){
-                $this->Dispatch_model->update_by(array('member_id' => $_SESSION['admin']['id'],'id'=>$task_id),$update_data);
+                $update_data=array();
+                $update_data['member_commit']=time();
+                $update_data['task_done']=1;
+                if($isReply==0){
+                    $this->Dispatch_model->update_by(array('member_id' => $_SESSION['admin']['id'],'id'=>$task_id),$update_data);
+                }
+                else{
+                    $this->Replydispatch_model->update_by(array('member_id' => $_SESSION['admin']['id'],'id'=>$task_id),$update_data);
+                }
+                echo '1';
+            }else{
+                echo '0';
+            }
+        }
+        else{
+            if($this->Comment_model->update_by(array('task_id'=>$task_id,'is_reply'=>$isReply),array('content'=>$comment_content))){
+                $update_data=array();
+                $update_data['member_commit']=time();
+                $update_data['task_done']=1;
+                if($isReply==0){
+                    $this->Dispatch_model->update_by(array('member_id' => $_SESSION['admin']['id'],'id'=>$task_id),$update_data);
+                }
+                else{
+                    $this->Replydispatch_model->update_by(array('member_id' => $_SESSION['admin']['id'],'id'=>$task_id),$update_data);
+                }
+                echo '1';
             }
             else{
-                $this->Replydispatch_model->update_by(array('member_id' => $_SESSION['admin']['id'],'id'=>$task_id),$update_data);
+                echo '0';
             }
-            echo '1';
-        }else{
-            echo '0';
         }
+
+
     }
 
     public function commentlist_get(){
