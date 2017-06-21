@@ -102,7 +102,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
 //                                    echo '未处理';
 //                                    break;
 //                            }?><!--</td>-->
-                       <td><?php switch($rs_row['comment_status']){
+                       <td><?php switch($rs_row['task_done']){
                             case 0:
                                 echo '<span style="color:#b1b1b1">未评论</span>';
                                break;
