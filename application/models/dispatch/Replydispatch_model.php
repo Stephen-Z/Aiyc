@@ -47,7 +47,7 @@ class Replydispatch_model extends MY_Model
     public function second_confirm($adminID,$times){
         $this->db->select('*,reply_dispatch.id AS Did');
         $this->db->from('reply_dispatch');
-        $this->db->where('operation=1');
+        $this->db->where('operation=1 AND deleted=0');
         //$this->db->join('article','dispatch.article_id=article.id AND dispatch.task_done=3 AND dispatch.deleted=0 AND dispatch.admin_id="'.$adminID.'" AND dispatch.member_commit<'.$times);
         $query=$this->db->get();
         return $query->result_array();

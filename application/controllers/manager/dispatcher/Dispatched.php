@@ -54,15 +54,16 @@ class Dispatched extends REST_Controller
     }
 
     public function deleted_post(){
-        $member_id=$this->input->post('member_id');
-        $article_id=$this->input->post('article_id');
-        $operation=$this->input->post('operation');
+//        $member_id=$this->input->post('member_id');
+//        $article_id=$this->input->post('article_id');
+//        $operation=$this->input->post('operation');
+        $task_id=$this->input->post('task_id');
 
         $where=array();
-        $where['member_id']=$member_id;
-        $where['article_id']=$article_id;
-        $where['admin_id']=$_SESSION['admin']['id'];
-        $where['operation']=$operation;
+        $where['id']=$task_id;
+//        $where['article_id']=$article_id;
+//        $where['admin_id']=$_SESSION['admin']['id'];
+//        $where['operation']=$operation;
 
         if($this->Dispatch_model->delete_by($where)){
             echo 1;
