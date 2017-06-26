@@ -124,7 +124,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
 <!--    今日问答-->
     <script>
         function special_article(){
-            alert('11');
+            //alert('11');
             window.location.href='/manager/dispatcher/article_list/todayquestion';
         }
     </script>
