@@ -19,6 +19,7 @@ class Dispatched extends REST_Controller
         $this->load->model('auth/Auth_model','Auth_model',true);
         $this->load->model('dispatch/Replydispatch_model','Replydispatch_model',true);
         $this->load->model('article/List_model','List_model',true);
+        $this->load->model('article/Comment_model','Comment_model',true);
         $this->load->model('article/Onlinecomment_model','Onlinecomment_model',true);
         $this->nav = 'dispatch_system';
     }
@@ -55,9 +56,13 @@ class Dispatched extends REST_Controller
 
     public function deleted_post(){
 //        $member_id=$this->input->post('member_id');
-//        $article_id=$this->input->post('article_id');
+        $article_id=$this->input->post('article_id');
 //        $operation=$this->input->post('operation');
         $task_id=$this->input->post('task_id');
+
+//        $article_tmp=$this->List_model->get_by(array('id'=>$article_id));
+//        $replycount=$article_tmp['reply'];
+//        $replycount-=1;
 
         $where=array();
         $where['id']=$task_id;
@@ -66,6 +71,8 @@ class Dispatched extends REST_Controller
 //        $where['operation']=$operation;
 
         if($this->Dispatch_model->delete_by($where)){
+            $replycount=$this->Dispatch_model->count_by(array('article_id'=>$article_id,'task_done'=>3,'deleted'=>0,'operation'=>0));
+            $this->List_model->update_by(array('id'=>$article_id),array('reply'=>$replycount));
             echo 1;
         }
         else{

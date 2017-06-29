@@ -444,7 +444,12 @@ $config['csrf_token_name'] = 'csrf_test_name';
 $config['csrf_cookie_name'] = 'csrf_cookie_name';
 $config['csrf_expire'] = 7200;
 $config['csrf_regenerate'] = TRUE;
-$config['csrf_exclude_uris'] = array('manager/article/article_like/updatelike','manager/article/listing/editupload','wx/notify','manager/article/Goodorbad/update');
+$config['csrf_exclude_uris'] = array('manager/article/article_like/updatelike',
+    'manager/article/listing/editupload',
+    'wx/notify',
+    'manager/article/Goodorbad/update',
+    'manager/article/Export/request_export'
+    );
 
 /*
 |--------------------------------------------------------------------------

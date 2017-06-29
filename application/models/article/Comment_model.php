@@ -71,4 +71,13 @@ class Comment_model extends MY_Model
         $query=$this->db->get();
         return $query->result_array();
     }
+
+//    public function export_list($articleID){
+//        $this->db->select('*,article.id AS Aid');
+//        $this->db->from('article');
+//        $this->db->join('site_task_article_comment','article.id=site_task_article_comment.article_id AND article.id='.$articleID,'inner');
+////        $this->db->join('dispatch','dispatch.id=site_task_article_comment.task_id AND dispatch.deleted=0 AND dispatch.task_done=3','inner');
+//        $query=$this->db->get();
+//        return $query->result_array();
+//    }
 }

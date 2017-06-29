@@ -103,7 +103,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
                                     break;
                             }?></td>
                         <td>
-                            <button class="btn btn-white btn-xs btn-margin"  type="button" onclick="postDelete(<?php echo $rs_row['id'] ?>)"  >删除</button>
+                            <button class="btn btn-white btn-xs btn-margin"  type="button" onclick="postDelete(<?php echo $rs_row['id'] ?>,<?php echo $rs_row['article_id'] ?>)"  >删除</button>
                         </td>
                     </tr>
                     <?php
@@ -121,12 +121,13 @@ $admin_path=REST_Controller::MANAGER_PATH;
 
 <script>
     //提交选择
-    function postDelete(taskID){
+    function postDelete(taskID,articleID){
         $.ajax({
             type: "POST",
             url: "<?php echo base_url($admin_path.'/dispatcher/dispatched/deleted');?>",
             dataType: 'json',
             data: {task_id:taskID,
+                article_id:articleID,
                 '<?php echo $token_name; ?>':"<?php echo $hash; ?>"
             },
             dataType: "text",
