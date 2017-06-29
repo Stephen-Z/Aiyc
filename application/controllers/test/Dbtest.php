@@ -13,10 +13,12 @@ class Dbtest extends REST_Controller
     {
         parent::__construct($config);
         $this->load->model('article/Onlinecomment_model','Onlinecomment_model',true);
+        $this->load->model('article/List_model','List_model',true);
+
     }
 
     public function index_get(){
-        var_dump($this->Onlinecomment_model->join_reply_like());
+        echo $this->List_model->update_by(array('id'=>1416),array('reply'=>0));
     }
 
 }
