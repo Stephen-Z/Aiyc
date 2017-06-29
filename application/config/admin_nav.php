@@ -123,6 +123,11 @@ $config['nav']=array(
                 'nav_name' => 'reply_danger',
                 'url' => 'article/reply/isdanger',
             ),
+            array(
+                'name' => '工人评论导出',
+                'nav_name' => 'export_comment',
+                'url' => 'article/export/comment',
+            ),
         ),
     ),
     array(
