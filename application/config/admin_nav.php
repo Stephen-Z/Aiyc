@@ -14,18 +14,18 @@ $config['nav']=array(
     /*stephen 工作人员界面 2017-04-27*/
 
     array(
-        'name' => '派单系统',
+        'name' => '舆情管理',
         'nav_name' => 'dispatch_system',
         'url' => 'dispatcher/dispatch_system',
         'icon' => 'fa-tachometer',
         'child' => array(
             array(
-                'name' => '文章列表',
+                'name' => '待维护文章列表',
                 'nav_name' => 'dispatcher_articleList',
                 'url' => 'dispatcher/article_list',
             ),
             array(
-                'name' => '回复列表',
+                'name' => '待维护回复列表',
                 'nav_name' => 'dispatcher_replylist',
                 'url' => 'dispatcher/reply/replylist',
             ),
@@ -50,12 +50,12 @@ $config['nav']=array(
                 'url' => 'dispatcher/dispatched/reply',
             ),
             array(
-                'name' => '文章二次维护',
+                'name' => '待再次维护文章列表',
                 'nav_name' => 'article_second_confirm',
                 'url' => 'dispatcher/dispatched/secondconfirmarticle',
             ),
             array(
-                'name' => '回复二次维护',
+                'name' => '待再次维护回复列表',
                 'nav_name' => 'reply_second_confirm',
                 'url' => 'dispatcher/dispatched/secondconfirmreply',
             ),

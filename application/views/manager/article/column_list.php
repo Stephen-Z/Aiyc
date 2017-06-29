@@ -44,7 +44,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
                       <td><strong><a href="<?php echo base_url($admin_path.'/article/listing?cid='.$rs_row['id'])?>"><?php echo $rs_row['name']?></a></strong></td>
                       <td><?php echo date("Y-m-d H:i:s",$rs_row['created']);?></td>
                       <td>
-                          <button class="btn btn-white btn-xs btn-margin search_send" data-toggle="modal" data-target="#myModalSearch" data-url="http://120.27.214.29/toutiaoApi?keyword=<?php echo $rs_row['name']?>&count=2000&offset=0">爬取执行</button>
+                          <button class="btn btn-white btn-xs btn-margin search_send" data-toggle="modal" data-target="#myModalSearch" data-url="http://120.27.214.29:8099/toutiaoApiDB?keyword=<?php echo $rs_row['name']?>&count=2000&offset=0">爬取执行</button>
                           <button class="btn btn-white btn-xs btn-margin" onclick="javascript:window.location.href='<?php echo base_url($admin_path.'/article/column/edit?id='.$rs_row['id'])?>'">编辑</button>
                           <button class="btn btn-white btn-xs btn-margin category_del" data-toggle="modal" data-target="#myModal" data-id="<?php echo $rs_row['id'];?>" data-url="<?php echo $this->config->base_url($admin_path);?>/article/column/delete">删除</button>
                       </td>
