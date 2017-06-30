@@ -136,7 +136,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
                   <tr>
                       <td><?php echo $rs_row['id']?></td>
                       <td><a href="<?php echo base_url($admin_path.'/article/listing?cid='.$rs_row['brand_id'])?>">[<?php echo $rs_row['cname']?>]</a></td>
-                      <td><?php echo $rs_row['title']?></td>
+                      <td><a target="_blank" href="<?php echo $rs_row['url'] ?>"><?php echo $rs_row['title']?></a></td>
                       <td><?php echo $rs_row['author']?></td>
                       <td><?php echo date("Y-m-d H:i:s",$rs_row['release_time']);?></td>
                       <td><?php switch($rs_row['is_danger']){

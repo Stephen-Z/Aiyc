@@ -80,7 +80,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
                 <?php foreach($rs as $rs_row):?>
                     <tr>
                         <td><?php echo $rs_row['order_id']?></td>
-                        <td style="width: 45%;"><a href="<?php echo $rs_row['url'] ?>"><?php echo $rs_row['title']?></a></td>
+                        <td style="width: 45%;"><a target="_blank" href="<?php echo $rs_row['url'] ?>"><?php echo $rs_row['title']?></a></td>
                         <td><?php echo $rs_row['comment_content']?></td>
                         <td><?php switch($rs_row['Cstatus']){
                                 case 0:
