@@ -448,7 +448,8 @@ $config['csrf_exclude_uris'] = array('manager/article/article_like/updatelike',
     'manager/article/listing/editupload',
     'wx/notify',
     'manager/article/Goodorbad/update',
-    'manager/article/Export/request_export'
+    'manager/article/Export/request_export',
+    'manager/dispatcher/article_list'
     );
 
 /*

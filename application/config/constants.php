@@ -83,3 +83,24 @@ defined('EXIT_USER_INPUT')     OR define('EXIT_USER_INPUT', 7); // invalid user 
 defined('EXIT_DATABASE')       OR define('EXIT_DATABASE', 8); // database error
 defined('EXIT__AUTO_MIN')      OR define('EXIT__AUTO_MIN', 9); // lowest automatically-assigned error code
 defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
+
+
+
+////$cid='-1';
+//$author='';
+//$status='';
+//$positive=2;
+//$reply='';
+//$start_time='';
+//$end_time='';
+//$keywords='';
+
+//$GLOBALS['cid']='-1';
+//$GLOBALS['author']='';
+//$GLOBALS['status']='';
+//$GLOBALS['positive']='';
+//$GLOBALS['reply']='';
+//$GLOBALS['start_time']='';
+//$GLOBALS['end_time']='';
+//$GLOBALS['keywords']='';
+//$GLOBALS['']='';

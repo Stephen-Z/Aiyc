@@ -176,6 +176,14 @@ class MY_Model extends CI_Model
         return $this->get_all();
     }
 
+//    public function get_many_like_by($where,$likes){
+//        $this->_set_where($where);
+//        $this->_set_like($likes);
+//
+//        return $this->get_all();
+//    }
+
+
     public function get_many_join_by()
     {
         $where = func_get_args();
@@ -848,6 +856,11 @@ class MY_Model extends CI_Model
         return $this;
     }
 
+    public function title_like($keywords){
+        $this->_database->like('title',$keywords);
+        return $this;
+    }
+
     /**
      * A wrapper to $this->_database->limit()
      */
@@ -1037,6 +1050,12 @@ class MY_Model extends CI_Model
         if($this->primary_key == NULl)
         {
             $this->primary_key = $this->_database->query("SHOW KEYS FROM `".$this->_table."` WHERE Key_name = 'PRIMARY'")->row()->Column_name;
+        }
+    }
+
+    private function _set_like($params){
+        foreach ($params[0] as $field=>$filter){
+            $this->_database->like($field,$filter);
         }
     }
 
