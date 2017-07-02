@@ -34,17 +34,25 @@ class Listing extends REST_Controller {
         $data['token_name'] = $this->security->get_csrf_token_name();
         $data['hash'] = $this->security->get_csrf_hash();
 
-        $cid=$this->get('cid');
-        $author=$this->get('author');
-        $status=$this->get('status');
-        $positive=$this->get('positive');
-        $reply=$this->get('reply');
-        $start_time=$this->get('startTime');
-        $end_time=$this->get('endTime');
+//        $cid=$this->get('cid');
+//        $author=$this->get('author');
+//        $status=$this->get('status');
+//        $positive=$this->get('positive');
+//        $reply=$this->get('reply');
+//        $start_time=$this->get('startTime');
+//        $end_time=$this->get('endTime');
+        $tmpcid=$this->get('cid');
+        $tmpauthor=$this->get('author');
+        $tmpstatus=$this->get('status');
+        $tmppositive=$this->get('positive');
+        $tmpreply=$this->get('reply');
+        $tmpstart_time=$this->get('startTime');
+        $tmpend_time=$this->get('endTime');
+        $tmpkeywords=$this->get('keyword');
 
 
 
-        $cnrs=$this->Column_model->get($cid);
+        $cnrs=$this->Column_model->get($tmpcid);
 
         $data['cnrs']=$cnrs;
 
@@ -56,32 +64,71 @@ class Listing extends REST_Controller {
 
         $where=array();
 
-        if(!empty($cid)){
-            $where['brand_id']=intval($cid);
-        }
+        //unset($_SESSION['filter']);
 
-        if(!empty($author)){
-            $where['author']=$author;
+        if(!array_key_exists('filter',$_SESSION)){
+            $_SESSION['filter']['cid']=-1;
+            //$_SESSION['filter']['author']='';
+            $_SESSION['filter']['status']=0;
+            $_SESSION['filter']['positive']=2;
+            $_SESSION['filter']['reply']=0;
+            $_SESSION['filter']['startTime']='2010-01-01';
+            $_SESSION['filter']['endTime']='2210-01-01';
+            $_SESSION['filter']['keyword']='';
         }
-
-        if($positive!='' and $positive!=2){
-            $where['positive']=$positive;
+        if(!empty($tmpcid)){
+            $_SESSION['filter']['cid']=$tmpcid;
         }
+        if($_SESSION['filter']['cid']==-1){
 
-        if($status!=''){
-            $where['status']=$status;
         }
-
-        if($reply!=''){
-            $where['reply >=']=intval($reply);
+        else{
+            $where['brand_id']=intval($_SESSION['filter']['cid']);
         }
+        $data['form_brand_id']=intval($_SESSION['filter']['cid']);
 
-        if(!empty($start_time) or !empty($end_time)){
-            if(empty($start_time)){
-                $start_time=2010-01-01;
+//        if(!empty($tmpauthor)){
+//            $_SESSION['filter']['author']=$tmpauthor;
+//        }
+//        $where['author']=$_SESSION['filter']['author'];
+//        $data['form_author']=$_SESSION['filter']['author'];
+
+        if($tmppositive!='' ){
+            $_SESSION['filter']['positive']=$tmppositive;
+        }
+        if($_SESSION['filter']['positive']==2){
+            //$where['positive']=array(0,1);
+        }
+        else{
+            $where['positive']=$_SESSION['filter']['positive'];
+        }
+        $data['form_positive']=$_SESSION['filter']['positive'];
+
+        if($tmpstatus!=''){
+            $_SESSION['filter']['status']=$tmpstatus;
+        }
+        $where['status']=$_SESSION['filter']['status'];
+        $data['form_status']=$_SESSION['filter']['status'];
+
+        if($tmpreply!=''){
+            $_SESSION['filter']['reply']=$tmpreply;
+        }
+        $where['reply >=']=intval($_SESSION['filter']['reply']);
+        $data['form_reply']=intval($_SESSION['filter']['reply']);
+
+        //$keywords='';
+        if($tmpkeywords!=''){
+            $_SESSION['filter']['keyword']=$tmpkeywords;
+        }
+        $keywords= $_SESSION['filter']['keyword'];
+        $data['form_keyword']=$_SESSION['filter']['keyword'];
+
+        if(!empty($tmpstart_time) or !empty($tmpend_time)){
+            if(empty($tmpstart_time)){
+                $start_time=$_SESSION['filter']['startTime'];
             }
-            if(empty($end_time)){
-                $end_time=2210-01-01;
+            if(empty($tmpend_time)){
+                $end_time=$_SESSION['filter']['endTime'];
             }
             $start_time=strtotime($start_time);
             $end_time=strtotime($end_time);
@@ -93,9 +140,9 @@ class Listing extends REST_Controller {
         $orderby_name='id';
         $orderby_value='DESC';
 
-        $count=$this->List_model->count_by($where);
+        $count=$this->List_model->title_like($keywords)->count_by($where);
 
-        $rs = $this->List_model->limit($length, $skipnum)->order_by($orderby_name,$orderby_value)->get_many_by($where);
+        $rs = $this->List_model->title_like($keywords)->limit($length, $skipnum)->order_by($orderby_name,$orderby_value)->get_many_by($where);
 
         $i=0;
         foreach($rs as $rs_row){
@@ -116,6 +163,18 @@ class Listing extends REST_Controller {
 
         $this->load->view($this->template_patch.'/article/article_list',$data);
 	}
+
+    public function clearfilter_get(){
+        unset($_SESSION['filter']);
+        $this->load->helper('url');
+        redirect('/manager/article/listing','refresh');
+    }
+
+    public function clearkeyword_get(){
+        $_SESSION['filter']['keyword']='';
+        $this->load->helper('url');
+        redirect('/manager/article/listing','refresh');
+    }
 
     public function add_get(){
 

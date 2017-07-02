@@ -154,8 +154,6 @@ class Article_list extends REST_Controller
 
         $data['page_total']=$count;
 
-
-        //$data['vardumps']=var_dump($_SESSION['filter']['cid']);
         $this->load->view($this->template_patch.'/dispatch/article_list',$data);
     }
 

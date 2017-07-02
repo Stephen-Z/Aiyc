@@ -34,9 +34,9 @@ $admin_path=REST_Controller::MANAGER_PATH;
                     <div class="col-md-2">
                         <div class="form-group">
                             <select class="form-control input-lg m-bot15" name="cid">
-                                <option value="">品牌</option>
+                                <option value=-1>品牌</option>
                                 <?php foreach($column as $column_row):?>
-                                   <option <?php if(@$_GET['cid']==$column_row['id']){ echo 'selected';}?> value="<?php echo $column_row['id'];?>"><?php echo $column_row['name'];?></option>;
+                                    <option <?php if(@$form_brand_id==$column_row['id']){ echo 'selected';}?> value="<?php echo $column_row['id'];?>"><?php echo $column_row['name'];?></option>;
                                 <?php endforeach;?>
                             </select>
                         </div>
@@ -45,10 +45,10 @@ $admin_path=REST_Controller::MANAGER_PATH;
                     <div class="col-md-2">
                         <div class="form-group">
                             <select class="form-control input-lg m-bot15" name="positive">
-                                <?php if(empty($_GET['positive'])){$_GET['positive']=2;}?>
-                                <option <?php if(@$_GET['positive']==2){ echo 'selected';}?> value=2>正负面</option>
-                                <option <?php if(@$_GET['positive']==1){ echo 'selected';}?> value="1">正面</option>
-                                <option <?php if(@$_GET['positive']==0){ echo 'selected';}?> value="0">负面</option>
+                                <?php if(empty(@$form_positive)){@$form_positive=2;}?>
+                                <option <?php if(@$form_positive==2){ echo 'selected';}?> value=2>正负面</option>
+                                <option <?php if(@$form_positive==1){ echo 'selected';}?> value="1">正面</option>
+                                <option <?php if(@$form_positive==0){ echo 'selected';}?> value="0">负面</option>
                             </select>
                         </div>
                     </div>
@@ -57,13 +57,13 @@ $admin_path=REST_Controller::MANAGER_PATH;
                         <div class="form-group">
                             <select class="form-control input-lg m-bot15" name="status">
                                 <?php
-                                    if(!isset($_GET['status'])){$_GET['status']=3;}
-                                    if($_GET['status']==''){$_GET['status']=3;}
+                                if(!isset($_GET['status'])){$_GET['status']=3;}
+                                if($_GET['status']==''){$_GET['status']=3;}
                                 ?>
-                                <option <?php if(@$_GET['status']==3){ echo 'selected';}?> value="">处理状态</option>
-                                <option <?php if(@$_GET['status']==0){ echo 'selected';}?> value="0">未处理</option>
-                                <option <?php if(@$_GET['status']==1){ echo 'selected';}?> value="1">处理中</option>
-                                <option <?php if(@$_GET['status']==2){ echo 'selected';}?> value="2">处理完成</option>
+                                <option <?php if(@$form_status==3){ echo 'selected';}?> value="">处理状态</option>
+                                <option <?php if(@$form_status==0){ echo 'selected';}?> value="0">未处理</option>
+                                <option <?php if(@$form_status==1){ echo 'selected';}?> value="1">处理中</option>
+                                <option <?php if(@$form_status==2){ echo 'selected';}?> value="2">处理完成</option>
                             </select>
                         </div>
                     </div>
@@ -71,7 +71,14 @@ $admin_path=REST_Controller::MANAGER_PATH;
                     <div class="col-md-3">
                         <div class="form-group input-group input-group-lg">
                             <span class="input-group-addon">回复>= </span>
-                            <input type="text" class="form-control" name="reply" value="<?php echo @$_GET['reply']?>">
+                            <input type="text" class="form-control" name="reply" value="<?php echo @$form_reply?>">
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group input-group input-group-lg">
+                            <span class="input-group-addon">关键字<a style="margin-left: 10%;" href="/manager/article/listing/clearkeyword">(清除)</a></span>
+                            <input type="text" class="form-control" name="keyword" value="<?php echo @$form_keyword ?>">
                         </div>
                     </div>
 
@@ -108,10 +115,26 @@ $admin_path=REST_Controller::MANAGER_PATH;
                         </div>
                     </div>
 
+                    <div class="col-md-1">
+                    <div class="form-group">
+                        <div style="padding-top: 3px">
+                            <button type="button" class="btn btn-info" onclick="clear_filter()" >
+                                <i class="glyphicon glyphicon-search"></i> 清除筛选
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
                 </div>
             </div>
         </form>
     </header>
+
+    <script>
+        function clear_filter() {
+            window.location.href='/manager/article/listing/clearfilter';
+        }
+    </script>
 
 
     <div id="sample_1_wrapper" class="panel-heading dataTables_wrapper form-inline ischeckbox" role="grid">
