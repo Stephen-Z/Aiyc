@@ -86,7 +86,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
                 <?php foreach($rs as $rs_row):?>
                     <tr>
                         <td><?php echo $rs_row['Did']?></td>
-                        <td style="width: 25%;"><a href="<?php echo $rs_row['url'] ?>"><?php echo $rs_row['title']?></a></td>
+                        <td style="width: 25%;"><a target="_blank" href="<?php echo $rs_row['url'] ?>"><?php echo $rs_row['title']?></a></td>
                         <td style="width: 20%;"><?php echo $rs_row['comment_content']?></td>
                         <td style="width: 30%;"><?php echo $rs_row['content']?></td>
                         <td><?php echo $rs_row['name']?></td>

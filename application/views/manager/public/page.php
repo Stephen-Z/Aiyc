@@ -1,5 +1,6 @@
 <?php
 $path=uri_string();
+//$path=current_url();
 
 if(!empty($page_parameter)){
     $str='&'.$page_parameter;
