@@ -11,7 +11,7 @@ if(!empty($page_parameter)){
 }
 
 //每页显示多久条数据,显示数目需要与后台匹配一致
-$pageNum=10;
+$pageNum=100;
 //显示分页的数字的数量,请填奇数，如填偶数会自动+1；
 $pageTake=5;
 

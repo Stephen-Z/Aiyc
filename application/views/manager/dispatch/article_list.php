@@ -166,6 +166,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
               <th>发布时间</th>
               <th>上次回复数</th>
               <th>回复数</th>
+              <th>阅读数</th>
               <th>正负面</th>
               <th>处理状态</th>
               <th colspan="2" style="width:10%">操作</th>
@@ -182,6 +183,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
                       <td><?php echo date("Y-m-d H:i:s",$rs_row['release_time']);?></td>
                       <td><?php echo $rs_row['pre_reply']?></td>
                       <td><?php echo $rs_row['reply']?></td>
+                      <td><?php echo $rs_row['read_count']?></td>
                       <td><?php switch($rs_row['positive']){
                               case 0:
                                   echo '负面';

@@ -24,41 +24,41 @@ $config['nav']=array(
                 'nav_name' => 'dispatcher_articleList',
                 'url' => 'dispatcher/article_list',
             ),
-            array(
+            /*array(
                 'name' => '待维护回复列表',
                 'nav_name' => 'dispatcher_replylist',
                 'url' => 'dispatcher/reply/replylist',
-            ),
+            ),*/
             array(
                 'name' => '文章评论列表',
                 'nav_name' => 'article_commentList',
                 'url' => 'article/comment/admincommentlist',
             ),
-            array(
+            /*array(
                 'name' => '回复评论列表',
                 'nav_name' => 'article_replycommentList',
                 'url' => 'article/comment/adminreplylist',
-            ),
+            ),*/
             array(
                 'name' => '我的文章派单',
                 'nav_name' => 'dispatched_list',
                 'url' => 'dispatcher/dispatched',
             ),
-            array(
+            /*array(
                 'name' => '我的回复派单',
                 'nav_name' => 'dispatched_replylist',
                 'url' => 'dispatcher/dispatched/reply',
-            ),
+            ),*/
             array(
                 'name' => '待再次维护文章列表',
                 'nav_name' => 'article_second_confirm',
                 'url' => 'dispatcher/dispatched/secondconfirmarticle',
             ),
-            array(
+            /*array(
                 'name' => '待再次维护回复列表',
                 'nav_name' => 'reply_second_confirm',
                 'url' => 'dispatcher/dispatched/secondconfirmreply',
-            ),
+            ),*/
             array(
                 'name' => '统计',
                 'nav_name' => 'member_statistic',
@@ -70,18 +70,18 @@ $config['nav']=array(
 
     /*工作人员界面 end*/
     array(
-        'name' => '品牌管理',
+        'name' => '关键字管理',
         'nav_name' => 'brand',
         'url' => false,
         'icon' => 'fa-indent',
         'child' => array(
             array(
-                'name' => '品牌列表',
+                'name' => '关键字列表',
                 'nav_name' => 'brand_list',
                 'url' => 'article/column',
             ),
             array(
-                'name' => '添加品牌',
+                'name' => '添加关键字',
                 'nav_name' => 'brand_add',
                 'url' => 'article/column/add',
             ),
@@ -124,7 +124,7 @@ $config['nav']=array(
                 'url' => 'article/reply/isdanger',
             ),
             array(
-                'name' => '工人评论导出',
+                'name' => '写手评论导出',
                 'nav_name' => 'export_comment',
                 'url' => 'article/export/comment',
             ),
@@ -173,12 +173,12 @@ $config['nav']=array(
                 'url' => 'system/account',
             ),
             array(
-                'name' => '工人',
+                'name' => '写手',
                 'nav_name' => 'member_account',
                 'url' => 'system/member',
             ),
             array(
-                'name' => '工人签到',
+                'name' => '写手签到',
                 'nav_name' => 'sign_in',
                 'url' => 'signin/signinstatus',
                 'icon' => 'fa-tachometer',

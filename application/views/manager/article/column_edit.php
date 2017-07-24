@@ -8,11 +8,11 @@ if(empty($error)) {
 ?>
 <?php $this->load->view("{$template_patch}/public/header.php");?>
 <div class="pageheader">
-  <h2><i class="fa fa-indent"></i> 品牌管理 <span>编辑品牌</span></h2>
+  <h2><i class="fa fa-indent"></i> 关键字管理 <span>编辑关键字</span></h2>
   <div class="breadcrumb-wrapper">
     <ol class="breadcrumb">
       <li><a href="<?php echo $this->config->base_url($admin_path.'/main');?>">管理首页</a></li>
-      <li class="active">编辑品牌</li>
+      <li class="active">编辑关键字</li>
     </ol>
   </div>
 </div>
@@ -27,7 +27,7 @@ if(empty($error)) {
                 <input type="hidden" name="updated" value="<?php echo @$info['updated'];?>" />
 
                 <div class="form-group <?php if(array_key_exists('name',$error)): echo 'has-error'; endif; ?>">
-                    <label class="col-sm-2 control-label">品牌名称</label>
+                    <label class="col-sm-2 control-label">关键字</label>
                     <div class="col-sm-4">
                         <input class="form-control" type="text" name="name" value="<?php echo @$info['name']; ?>">
                         <?php

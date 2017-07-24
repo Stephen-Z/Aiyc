@@ -113,9 +113,8 @@ class Column extends REST_Controller {
         $data['nav'] = $this->nav;
         $data['child_nav'] = 'column';
 
-        $this->form_validation->set_rules('name', '品牌名称', 'required');
-
-        if ($this->form_validation->run() == FALSE)
+        $this->form_validation->set_rules('name', '关键字', 'required');
+       if ($this->form_validation->run() == FALSE)
         {
             $error = $this->form_validation->error_array();
             $data['error']=$error;
@@ -147,7 +146,7 @@ class Column extends REST_Controller {
         $data['nav'] = $this->nav;
         $data['child_nav'] = 'column';
 
-        $this->form_validation->set_rules('name', '品牌名称', 'required');
+        $this->form_validation->set_rules('name', '关键字', 'required');
 
         $id=$this->post('id');
 

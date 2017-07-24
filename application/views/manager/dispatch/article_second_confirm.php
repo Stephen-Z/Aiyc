@@ -69,11 +69,11 @@ $admin_path=REST_Controller::MANAGER_PATH;
             <thead>
             <tr>
                 <th>ID</th>
-                <th>工人名字</th>
+                <th>写手名字</th>
                 <th>派发任务</th>
                 <th>相关文章标题</th>
                 <th>派发时间</th>
-                <th>工人提交时间</th>
+                <th>写手提交时间</th>
                 <th>正负面</th>
                 <th>状态</th>
                 <th style="width:10%">操作</th>

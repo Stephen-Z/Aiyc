@@ -7,7 +7,7 @@ if ( ! function_exists('init_page_params')) {
             $skipnum = 0;
         }
         if ($length == false || intval($length) == 0) {
-            $length = 10;
+            $length = 100;
         }
     }
 

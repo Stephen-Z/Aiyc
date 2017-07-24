@@ -5,11 +5,11 @@ $admin_path=REST_Controller::MANAGER_PATH;
 ?>
 <?php $this->load->view("{$template_patch}/public/header.php");?>
 <div class="pageheader">
-  <h2><i class="fa fa-indent"></i> 品牌管理 <span>品牌列表</span></h2>
+  <h2><i class="fa fa-indent"></i> 关键字管理 <span>关键字列表</span></h2>
   <div class="breadcrumb-wrapper">
     <ol class="breadcrumb">
       <li><a href="<?php echo $this->config->base_url($admin_path.'/main');?>">管理首页</a></li>
-      <li class="active">品牌列表</li>
+      <li class="active">关键字列表</li>
     </ol>
   </div>
 </div>
@@ -20,7 +20,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
       <header class="panel-heading clearfix" >
         <span style="float:right">
             <a href="<?php echo $this->config->base_url($admin_path.'/article/column/add');?>">
-                <button type="button" class="btn btn-info add_goods"><i class="icon-plus"></i> 添加品牌</button>
+                <button type="button" class="btn btn-info add_goods"><i class="icon-plus"></i> 添加关键字</button>
             </a>
         </span>
       </header>
@@ -30,7 +30,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
           <tr>
               <th></th>
               <th>ID</th>
-              <th>品牌名称</th>
+              <th>关键字</th>
               <th>创建时间</th>
               <th style="width:30%">操作</th>
           </tr>

@@ -143,12 +143,13 @@ $admin_path=REST_Controller::MANAGER_PATH;
           <thead>
           <tr>
               <th>ID</th>
-              <th>品牌</th>
+              <th>关键字</th>
               <th>文章标题</th>
               <th>作者</th>
               <th>发布时间</th>
               <th>上次回复数</th>
               <th>回复数</th>
+              <th>阅读数</th>
               <th>正负面</th>
               <th>处理状态</th>
               <th style="width:10%">操作</th>
@@ -177,6 +178,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
                               <span style="color: #ac0000"><?php echo $rs_row['reply']?></span>
                           <?php endif; ?>
                       </td>
+                      <td><?php echo $rs_row['read_count']?></td>
                       <td><?php switch($rs_row['positive']){
                               case 0:
                                   echo '负面';
