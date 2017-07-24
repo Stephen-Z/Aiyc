@@ -116,11 +116,26 @@ class Article_list extends REST_Controller
         $keywords= $_SESSION['filter']['keyword'];
         $data['form_keyword']=$_SESSION['filter']['keyword'];
 
+        $start_time=$_SESSION['filter']['startTime'];
+        $end_time=$_SESSION['filter']['endTime'];
+        $start_time=strtotime($start_time);
+        $end_time=strtotime($end_time);
+        $where["release_time >= {$start_time} and release_time <= {$end_time}"]=null;
+        $data['startTime']=date('Y-m-d',$start_time);
+        $data['endTime']=date('Y-m-d',$end_time);
         if(!empty($tmpstart_time) or !empty($tmpend_time)){
             if(empty($tmpstart_time)){
                 $start_time=$_SESSION['filter']['startTime'];
             }
+            else{
+                $_SESSION['filter']['startTime']=$tmpstart_time;
+                $start_time=$_SESSION['filter']['startTime'];
+            }
             if(empty($tmpend_time)){
+                $end_time=$_SESSION['filter']['endTime'];
+            }
+            else{
+                $_SESSION['filter']['endTime']=$tmpend_time;
                 $end_time=$_SESSION['filter']['endTime'];
             }
             $start_time=strtotime($start_time);
@@ -262,11 +277,26 @@ class Article_list extends REST_Controller
         $keywords= $_SESSION['filter']['keyword'];
         $data['form_keyword']=$_SESSION['filter']['keyword'];
 
+        $start_time=$_SESSION['filter']['startTime'];
+        $end_time=$_SESSION['filter']['endTime'];
+        $start_time=strtotime($start_time);
+        $end_time=strtotime($end_time);
+        $where["release_time >= {$start_time} and release_time <= {$end_time}"]=null;
+        $data['startTime']=date('Y-m-d',$start_time);
+        $data['endTime']=date('Y-m-d',$end_time);
         if(!empty($tmpstart_time) or !empty($tmpend_time)){
             if(empty($tmpstart_time)){
                 $start_time=$_SESSION['filter']['startTime'];
             }
+            else{
+                $_SESSION['filter']['startTime']=$tmpstart_time;
+                $start_time=$_SESSION['filter']['startTime'];
+            }
             if(empty($tmpend_time)){
+                $end_time=$_SESSION['filter']['endTime'];
+            }
+            else{
+                $_SESSION['filter']['endTime']=$tmpend_time;
                 $end_time=$_SESSION['filter']['endTime'];
             }
             $start_time=strtotime($start_time);

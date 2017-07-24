@@ -123,11 +123,26 @@ class Listing extends REST_Controller {
         $keywords= $_SESSION['filter']['keyword'];
         $data['form_keyword']=$_SESSION['filter']['keyword'];
 
+        $start_time=$_SESSION['filter']['startTime'];
+        $end_time=$_SESSION['filter']['endTime'];
+        $start_time=strtotime($start_time);
+        $end_time=strtotime($end_time);
+        $where["release_time >= {$start_time} and release_time <= {$end_time}"]=null;
+        $data['startTime']=date('Y-m-d',$start_time);
+        $data['endTime']=date('Y-m-d',$end_time);
         if(!empty($tmpstart_time) or !empty($tmpend_time)){
             if(empty($tmpstart_time)){
                 $start_time=$_SESSION['filter']['startTime'];
             }
+            else{
+                $_SESSION['filter']['startTime']=$tmpstart_time;
+                $start_time=$_SESSION['filter']['startTime'];
+            }
             if(empty($tmpend_time)){
+                $end_time=$_SESSION['filter']['endTime'];
+            }
+            else{
+                $_SESSION['filter']['endTime']=$tmpend_time;
                 $end_time=$_SESSION['filter']['endTime'];
             }
             $start_time=strtotime($start_time);
@@ -409,17 +424,70 @@ class Listing extends REST_Controller {
         $data['token_name'] = $this->security->get_csrf_token_name();
         $data['hash'] = $this->security->get_csrf_hash();
 
-        $cid=$this->get('cid');
-        $author=$this->get('author');
-        $status=$this->get('status');
-        $positive=$this->get('positive');
-        $reply=$this->get('reply');
-        $start_time=$this->get('startTime');
-        $end_time=$this->get('endTime');
+//        $cid=$this->get('cid');
+//        $author=$this->get('author');
+//        $status=$this->get('status');
+//        $positive=$this->get('positive');
+//        $reply=$this->get('reply');
+//        $start_time=$this->get('startTime');
+//        $end_time=$this->get('endTime');
+        $tmpcid=$this->get('cid');
+        $tmpauthor=$this->get('author');
+        $tmpstatus=$this->get('status');
+        $tmppositive=$this->get('positive');
+        $tmpreply=$this->get('reply');
+        $tmpstart_time=$this->get('startTime');
+        $tmpend_time=$this->get('endTime');
+        $tmpkeywords=$this->get('keyword');
 
 
 
-        $cnrs=$this->Column_model->get($cid);
+//        $cnrs=$this->Column_model->get($cid);
+//
+//        $data['cnrs']=$cnrs;
+//
+//
+//        $skipnum = $this->get('skipnum');
+//        $length = $this->get('length');
+//
+//        init_page_params($skipnum, $length);
+//
+//        $where=array();
+//
+//        if(!empty($cid)){
+//            $where['brand_id']=intval($cid);
+//        }
+//
+//        if(!empty($author)){
+//            $where['author']=$author;
+//        }
+//
+//        if($positive!='' and $positive!=2){
+//            $where['positive']=$positive;
+//        }
+//
+//        if($status!=''){
+//            $where['status']=$status;
+//        }
+//
+//        if($reply!=''){
+//            $where['reply >=']=intval($reply);
+//        }
+//
+//        if(!empty($start_time) or !empty($end_time)){
+//            if(empty($start_time)){
+//                $start_time=2010-01-01;
+//            }
+//            if(empty($end_time)){
+//                $end_time=2210-01-01;
+//            }
+//            $start_time=strtotime($start_time);
+//            $end_time=strtotime($end_time);
+//            $where["release_time >= {$start_time} and release_time <= {$end_time}"]=null;
+//            $data['startTime']=date('Y-m-d',$start_time);
+//            $data['endTime']=date('Y-m-d',$end_time);
+//        }
+        $cnrs=$this->Column_model->get($tmpcid);
 
         $data['cnrs']=$cnrs;
 
@@ -431,32 +499,86 @@ class Listing extends REST_Controller {
 
         $where=array();
 
-        if(!empty($cid)){
-            $where['brand_id']=intval($cid);
-        }
+        //unset($_SESSION['filter']);
 
-        if(!empty($author)){
-            $where['author']=$author;
+        if(!array_key_exists('filter',$_SESSION)){
+            $_SESSION['filter']['cid']=-1;
+            //$_SESSION['filter']['author']='';
+            $_SESSION['filter']['status']=0;
+            $_SESSION['filter']['positive']=2;
+            $_SESSION['filter']['reply']=0;
+            $_SESSION['filter']['startTime']='2010-01-01';
+            $_SESSION['filter']['endTime']='2210-01-01';
+            $_SESSION['filter']['keyword']='';
         }
-
-        if($positive!='' and $positive!=2){
-            $where['positive']=$positive;
+        if(!empty($tmpcid)){
+            $_SESSION['filter']['cid']=$tmpcid;
         }
+        if($_SESSION['filter']['cid']==-1){
 
-        if($status!=''){
-            $where['status']=$status;
         }
-
-        if($reply!=''){
-            $where['reply >=']=intval($reply);
+        else{
+            $where['brand_id']=intval($_SESSION['filter']['cid']);
         }
+        $data['form_brand_id']=intval($_SESSION['filter']['cid']);
 
-        if(!empty($start_time) or !empty($end_time)){
-            if(empty($start_time)){
-                $start_time=2010-01-01;
+//        if(!empty($tmpauthor)){
+//            $_SESSION['filter']['author']=$tmpauthor;
+//        }
+//        $where['author']=$_SESSION['filter']['author'];
+//        $data['form_author']=$_SESSION['filter']['author'];
+
+        if($tmppositive!='' ){
+            $_SESSION['filter']['positive']=$tmppositive;
+        }
+        if($_SESSION['filter']['positive']==2){
+            //$where['positive']=array(0,1);
+        }
+        else{
+            $where['positive']=$_SESSION['filter']['positive'];
+        }
+        $data['form_positive']=$_SESSION['filter']['positive'];
+
+        if($tmpstatus!=''){
+            $_SESSION['filter']['status']=$tmpstatus;
+        }
+        $where['status']=$_SESSION['filter']['status'];
+        $data['form_status']=$_SESSION['filter']['status'];
+
+        if($tmpreply!=''){
+            $_SESSION['filter']['reply']=$tmpreply;
+        }
+        $where['reply >=']=intval($_SESSION['filter']['reply']);
+        $data['form_reply']=intval($_SESSION['filter']['reply']);
+
+        //$keywords='';
+        if($tmpkeywords!=''){
+            $_SESSION['filter']['keyword']=$tmpkeywords;
+        }
+        $keywords= $_SESSION['filter']['keyword'];
+        $data['form_keyword']=$_SESSION['filter']['keyword'];
+
+        $start_time=$_SESSION['filter']['startTime'];
+        $end_time=$_SESSION['filter']['endTime'];
+        $start_time=strtotime($start_time);
+        $end_time=strtotime($end_time);
+        $where["release_time >= {$start_time} and release_time <= {$end_time}"]=null;
+        $data['startTime']=date('Y-m-d',$start_time);
+        $data['endTime']=date('Y-m-d',$end_time);
+        if(!empty($tmpstart_time) or !empty($tmpend_time)){
+            if(empty($tmpstart_time)){
+                $start_time=$_SESSION['filter']['startTime'];
             }
-            if(empty($end_time)){
-                $end_time=2210-01-01;
+            else{
+                $_SESSION['filter']['startTime']=$tmpstart_time;
+                $start_time=$_SESSION['filter']['startTime'];
+            }
+            if(empty($tmpend_time)){
+                $end_time=$_SESSION['filter']['endTime'];
+            }
+            else{
+                $_SESSION['filter']['endTime']=$tmpend_time;
+                $end_time=$_SESSION['filter']['endTime'];
             }
             $start_time=strtotime($start_time);
             $end_time=strtotime($end_time);
