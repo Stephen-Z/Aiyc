@@ -194,6 +194,9 @@ $admin_path=REST_Controller::MANAGER_PATH;
                               case 2:
                                   echo '未处理';
                                   break;
+                              case -3:
+                                  echo '<span style="color:red">未处理</span>';
+                                  break;
                           }?></td>
                       <td><?php switch($rs_row['status']){
                               case 0:
@@ -202,16 +205,32 @@ $admin_path=REST_Controller::MANAGER_PATH;
                               case 1:
                                   echo '处理中';
                                   break;
+                              case -3:
+                                  echo '<span style="color:red">未处理</span>';
+                                  break;
                               case 2:
                                   echo '<span style="color:red">处理完成</span>';
                                   break;
                           }?></td>
                       <td>
-                          <button class="btn btn-white btn-xs btn-margin" onclick="javascript:window.location.href='<?php echo base_url($admin_path.'/dispatcher/select_member/comment/'.$rs_row['id']) ?>'">评论</button>
+                          <div class="dropdown">
+                              <button id="dLabel" class="btn btn-white btn-xs btn-margin" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  维护
+                                  <span class="caret"></span>
+                              </button>
+                              <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel">
+                                  <li><input style="text-align: center;"  type="text" value="3" id="order_num" /></li>
+                                  <li><button  class="btn btn-white btn-block btn-margin" type="button" onclick="submit_request(<?php echo $rs_row['id'] ?>)">提交</button></li>
+
+                              </ul>
+                          </div>
                       </td>
-                      <td>
-                          <button class="btn btn-white btn-xs btn-margin" onclick="javascript:window.location.href='<?php echo base_url($admin_path.'/dispatcher/select_member/positive/'.$rs_row['id'])?>'">正负面</button>
-                      </td>
+<!--                      <td>-->
+<!--                          <!--<button class="btn btn-white btn-xs btn-margin" onclick="javascript:window.location.href='--><?php ////echo base_url($admin_path.'/dispatcher/select_member/comment/'.$rs_row['id']) ?><!--//'">评论</button>-->
+<!--                      </td>-->
+<!--                      <td>-->
+<!--                          <!--<button class="btn btn-white btn-xs btn-margin" onclick="javascript:window.location.href='--><?php ////echo base_url($admin_path.'/dispatcher/select_member/positive/'.$rs_row['id'])?><!--'">正负面</button>-->
+<!--                      </td>-->
                   </tr>
               <?php
               endforeach;
@@ -224,6 +243,23 @@ $admin_path=REST_Controller::MANAGER_PATH;
 
   </div>
 </section>
+
+<script>
+    $('.dropdown-menu input').click(function(e) {
+        e.stopPropagation(); //This will prevent the event from bubbling up and close the dropdown when you type/click on text boxes.
+    });
+</script>
+
+<script>
+    function submit_request(articleID){
+        var numbers=$('#order_num').val();
+        var post_url="<?php echo base_url($admin_path.'/dispatcher/select_member/comment/') ?>" ;
+        post_url=post_url+'/'+articleID+'/'+numbers;
+        //alert(post_url);
+        window.location.href=post_url;
+    }
+</script>
+
 <script>
 
 $(function(){

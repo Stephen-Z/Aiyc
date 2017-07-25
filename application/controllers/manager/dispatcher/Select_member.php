@@ -22,10 +22,12 @@ class Select_member extends REST_Controller
         $this->nav = 'dispatch_system';
     }
 
-    public function comment_get($articleID){
+    public function comment_get($articleID,$numbers){
 
         $data=array();
         $data['article_id']=$articleID;
+        $data['order_num']=$numbers;
+        //echo $numbers;
         $data['kind']=0;
         $data['nav'] = $this->nav;
         $data['child_nav'] = 'dispatcher_articleList';
@@ -65,6 +67,7 @@ class Select_member extends REST_Controller
         $memberID=$this->input->post('member_id');
         $articleID=$this->input->post('article_id');
         $operation=$this->input->post('operation');
+        $numbs=$this->input->post('orderNum');
 
         $data=array();
         $data['admin_id']=$adminID;
@@ -72,12 +75,23 @@ class Select_member extends REST_Controller
         $data['article_id']=$articleID;
         $data['operation']=$operation;
 
+        $i=0;
+        for($i=0;$i<$numbs;$i++){
+            if($this->Dispatch_model->insert($data)){
+
+            }
+            else{
+                echo 2;
+            }
+        }
+        $data['operation']=1;
         if($this->Dispatch_model->insert($data)){
-            echo 1;
+
         }
         else{
             echo 2;
         }
+        echo 1;
     }
 
     public function positive_get($articleID){

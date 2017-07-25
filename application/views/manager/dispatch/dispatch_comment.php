@@ -110,6 +110,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
             data: {member_id:membersID,
                 article_id:articleID,
                 operation:0,
+                orderNum:<?php echo $order_num ?>,
                 '<?php echo $token_name; ?>':"<?php echo $hash; ?>"
             },
             dataType: "text",

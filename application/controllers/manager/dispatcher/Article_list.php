@@ -21,6 +21,7 @@ class Article_list extends REST_Controller
         $this->load->model('article/Column_model','Column_model',true);
         $this->load->model('article/List_model','List_model',true);
         $this->load->model('article/Content_model','Content_model',true);
+        $this->load->model('dispatch/Dispatch_model','Dispatch_model',true);
         $this->nav = 'dispatch_system';
     }
 
@@ -159,6 +160,12 @@ class Article_list extends REST_Controller
                 $rs[$i]['cname'] = $crs['name'];
             }else{
                 $rs[$i]['cname'] = '未分类';
+            }
+
+            $tmp=$this->Dispatch_model->get_by(array('article_id'=>$rs_row['id']));
+            if($tmp){
+                $rs[$i]['positive']=-3;
+                $rs[$i]['status']=-3;
             }
             $i++;
         }
