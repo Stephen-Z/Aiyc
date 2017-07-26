@@ -160,7 +160,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
             cache:false,
             success:
                 function(data){
-                    if(data=='1'){
+                    if(data==1){
                         alert('操作成功');
                         window.location.reload();
                     }else{
