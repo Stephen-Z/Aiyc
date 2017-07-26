@@ -32,9 +32,15 @@ class Dispatched extends REST_Controller
         $data['token_name'] = $this->security->get_csrf_token_name();
         $data['hash'] = $this->security->get_csrf_hash();
 
+        $skipnum = $this->get('skipnum');
+        $length = $this->get('length');
+        init_page_params($skipnum, $length);
+
         $where=array();
         $where['admin_id']=$_SESSION['admin']['id'];
-        $rs=$this->Dispatch_model->get_many_by($where);
+        $rs=$this->Dispatch_model->limit($length, $skipnum)->order_by('id','desc')->get_many_by($where);
+
+
 
         $newrs=array();
         foreach ($rs as $rs_row){
@@ -50,6 +56,8 @@ class Dispatched extends REST_Controller
         }
 
         $data['rs']=$newrs;
+
+        $data['page_total']=count($newrs);
 
         $this->load->view($this->template_patch.'/dispatch/dispatched_list',$data);
     }
