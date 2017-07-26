@@ -104,9 +104,9 @@ class Comment extends REST_Controller
                 else{
                     $this->Replydispatch_model->update_by(array('member_id' => $_SESSION['admin']['id'],'id'=>$task_id),$update_data);
                 }
-                echo '1';
+                echo 1;
             }else{
-                echo '0';
+                echo 0;
             }
         }
         else{
@@ -120,10 +120,10 @@ class Comment extends REST_Controller
                 else{
                     $this->Replydispatch_model->update_by(array('member_id' => $_SESSION['admin']['id'],'id'=>$task_id),$update_data);
                 }
-                echo '1';
+                echo 1;
             }
             else{
-                echo '0';
+                echo 0;
             }
         }
 

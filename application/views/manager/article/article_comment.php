@@ -187,7 +187,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
             cache:false,
             success:
                 function(data){
-                    if(data=='1'){
+                    if(data==1){
                         alert('评论成功，等待审核');  //as a debugging message.
                         window.location.href="<?php echo base_url($admin_path.'/article/comment');?>";
                     }else{
