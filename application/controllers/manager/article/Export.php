@@ -94,6 +94,9 @@ class Export extends REST_Controller {
             $data['endTime']=date('Y-m-d',$end_time);
         }
 
+        $where["reply > 0"]=null;
+        $where["id"]=39138;
+
         $orderby_name='reply,id';
         $orderby_value='DESC';
 
@@ -122,7 +125,7 @@ class Export extends REST_Controller {
     }
 
 
-    public function request_export_post(){
+    public function Requestexport_post(){
         $article_id=$this->input->post('articleID');
 
         $article_tmp=$this->List_model->get_by(array('id'=>$article_id));

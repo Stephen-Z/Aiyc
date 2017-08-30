@@ -195,7 +195,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
 <script>
     function export_comment(articleID){
         $.ajax({
-            url: "<?php echo base_url($admin_path.'/article/export/request_export');?>",
+            url: "<?php echo base_url($admin_path.'/article/export/Requestexport');?>",
             method: "POST",
             async: true ,
             data:{

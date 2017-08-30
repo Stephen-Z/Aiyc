@@ -313,7 +313,7 @@ class Article_list extends REST_Controller
             $data['endTime']=date('Y-m-d',$end_time);
         }
 
-        $where['author']='头条问答';
+        $where['author']='悟空问答';
 
         $orderby_name='release_time';
         $orderby_value='DESC';

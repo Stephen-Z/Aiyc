@@ -119,7 +119,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
                         <div class="form-group">
                             <div style="padding-top: 3px">
                                 <button type="button" class="btn btn-info" onclick="special_article()" >
-                                    <i class="glyphicon glyphicon-search"></i> 今日问答
+                                    <i class="glyphicon glyphicon-search"></i> 悟空问答
                                 </button>
                             </div>
                         </div>
@@ -141,7 +141,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
 <!--        --><?php //if($is_post!=1) echo "document.getElementById('filter').submit();" ?>
 <!--    </script>-->
 
-<!--    今日问答-->
+<!--    悟空问答-->
     <script>
         function special_article(){
             //alert('11');
