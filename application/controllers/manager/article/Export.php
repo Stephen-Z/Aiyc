@@ -94,9 +94,9 @@ class Export extends REST_Controller {
             $data['endTime']=date('Y-m-d',$end_time);
         }
 
-        $where["reply > "] = 0;
+
         //$where["id"]=39138;
-        $tmprs = $this->Comment_model->group_by('article_id')->get_all(array('comment_status'=>3));
+        $tmprs = $this->Comment_model->group_by('article_id')->get_many_by(array('comment_status'=>3));
         $articleIDList = array();
         foreach ($tmprs as $item){
             array_push($articleIDList,$item['article_id']);
