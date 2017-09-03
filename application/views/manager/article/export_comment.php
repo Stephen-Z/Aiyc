@@ -192,19 +192,22 @@ $admin_path=REST_Controller::MANAGER_PATH;
   </div>
 </section>
 
+
 <script>
     function export_comment(articleID){
         $.ajax({
             url: "<?php echo base_url($admin_path.'/article/export/Requestexport');?>",
             method: "POST",
             async: true ,
+            dataType:"json",
             data:{
                 articleID:articleID
             },
             success:function(return_data){
-                if(return_data==1){
+                if(return_data > 0){
                     alert('导出成功');
-                    window.location.reload();
+                    var okUrl = encodeURI("http://120.27.214.29:8456/文章工人评论导出(id)"+return_data+".txt");
+                    window.open(okUrl,okUrl);
                 }
                 else{
                     alert('导出发生错误，导出失败');
