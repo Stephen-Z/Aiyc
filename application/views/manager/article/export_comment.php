@@ -206,7 +206,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
             success:function(return_data){
                 if(return_data > 0){
                     alert('导出成功');
-                    var okUrl = encodeURI("http://120.27.214.29:8456/文章工人评论导出(id)"+return_data+".txt");
+                    var okUrl = encodeURI("http://120.27.214.29:8456/文章工人评论导出(id)"+return_data);
                     window.open(okUrl,okUrl);
                 }
                 else{
