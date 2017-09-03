@@ -96,6 +96,13 @@ class Export extends REST_Controller {
 
         $where["reply > "] = 0;
         //$where["id"]=39138;
+        $tmprs = $this->Comment_model->group_by('article_id')->get_all(array('comment_status'=>3));
+        $articleIDList = array();
+        foreach ($tmprs as $item){
+            array_push($articleIDList,$item['article_id']);
+        }
+
+        $where['id']=$articleIDList;
 
         $orderby_name='reply,id';
         $orderby_value='DESC';
