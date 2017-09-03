@@ -52,7 +52,7 @@ class Dispatch_model extends MY_Model
     }
 
     public function admin_join_comment(){
-        $this->db->select('*,dispatch.id AS Did');
+        $this->db->select('*,dispatch.id AS Did,article.id AS Aid');
         $this->db->from('site_task_article_comment');
         $this->db->join('dispatch','dispatch.id = site_task_article_comment.task_id AND dispatch.deleted=0 AND site_task_article_comment.is_reply=0','inner');
         $this->db->join('article','article.id=site_task_article_comment.article_id','left');
