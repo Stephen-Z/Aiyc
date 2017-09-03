@@ -94,8 +94,8 @@ class Export extends REST_Controller {
             $data['endTime']=date('Y-m-d',$end_time);
         }
 
-        $where["reply > 0"]=null;
-        $where["id"]=39138;
+        $where["reply > "] = 0;
+        //$where["id"]=39138;
 
         $orderby_name='reply,id';
         $orderby_value='DESC';
