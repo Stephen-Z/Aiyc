@@ -70,7 +70,7 @@ class Comment extends REST_Controller
 
         $data=array();
         $data['article_id']=$articleId;
-        $data['content']=$comment_content;
+        $data['content']="\r\n".$comment_content;
         $data['user_id']=$user_id;
         $data['is_reply']=$isReply;
         $data['task_id']=$task_id;

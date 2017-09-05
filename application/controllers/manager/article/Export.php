@@ -156,9 +156,9 @@ class Export extends REST_Controller {
 //        echo $article_id;
 
         $files=fopen('Export_dir/文章工人评论导出(id)'.$article_id,'wb');
-        fwrite($files,$article_url.'('.$article_title.')'.PHP_EOL);
+        fwrite($files,$article_url.'('.$article_title.')'."\r\n".PHP_EOL);
         foreach ($rs as $rs_row){
-            fwrite($files,$rs_row['content'].PHP_EOL);
+            fwrite($files,$rs_row['content']."\r\n".PHP_EOL);
         }
         fclose($files);
 
