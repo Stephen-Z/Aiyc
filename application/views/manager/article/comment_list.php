@@ -84,7 +84,7 @@ $admin_path=REST_Controller::MANAGER_PATH;
                 <?php foreach($rs as $rs_row):?>
                     <tr>
                         <td><?php echo $rs_row['Did']?></td>
-                        <td style="width: 30%;"><a target="_blank" href="<?php echo $rs_row['url'] ?>"><?php echo $rs_row['title']?></a></td>
+                        <td style="width: 30%;"><a target="_blank" href="<?php echo $rs_row['share_url'] ?>"><?php echo $rs_row['title']?></a></td>
                         <td style="width: 40%;"><?php echo $rs_row['content']?></td>
 <!--                        <td>--><?php //echo $rs_row['author']?><!--</td>-->
 <!--                        <td>--><?php //echo date("Y-m-d H:i:s",$rs_row['created']);?><!--</td>-->
